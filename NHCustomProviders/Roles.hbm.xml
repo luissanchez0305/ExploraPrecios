@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- the following mapping will be generated dynamically but its included here for documentation purposes -->
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="NHCustomProviders" assembly="NHCustomProviders">
+  <class name="BasicUser" table="USERS2">
+    
+    <!-- the type of the identifier and the generator class can be changed -->
+    <id name="UserId" column="userId" type="Int32">
+      <generator class="native" />
+    </id>
+
+    <property name="UserName" column="USERNAME" type="String" not-null="true" unique="true" />
+
+    <set name="Roles" table="USERS_IN_ROLES" cascade="save-update" fetch="subselect">
+      <key column="USERID" />
+      <many-to-many class="BasicRole" column="ROLEID" />
+    </set>
+  </class>
+  
+  <class name="BasicRole" table="ROLES">
+    
+    <!-- the type of the identifier and the generator class can be changed -->
+    <id name="RoleId" column="roleId" type="Int32">
+      <generator class="native" />
+    </id>
+
+    <property name="RoleName" column="name" type="String" not-null="true" />
+
+    <set name="Users" table="USERS_IN_ROLES" cascade="save-update" fetch="subselect">
+      <key column="ROLEID" />
+      <many-to-many class="BasicUser" column="USERID" />
+    </set>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,575 @@
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>
+		<asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+	</title>
+	<script type="text/javascript" src="../../Scripts/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.simpletip-1.3.1.min.js"></script>
+	<script type="text/javascript" src="../../Scripts/jquery-outsideevents-1.1.js"></script>
+	<script type="text/javascript" src="../../Scripts/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="../../Scripts/jquery-ui-1.7.2.custom.min.js"></script>
+	<script type="text/javascript" src="../../Scripts/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../../Scripts/Explora_Precios.js"></script>
+	<script type="text/javascript" src="../../Scripts/verticaldropdown.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.raty.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/banner/jquery.anythingslider.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/banner/jquery.colorbox-min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.webticker.1.3.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.hoverIntent.minified.js"></script>
+    <script type="text/javascript" src="../../Scripts/banner/diapo.js"></script>
+    <%--<script type="text/javascript" src="../../Scripts/banner/jquery.mobile-1.0rc2.customized.min.js"></script>--%>
+	<link href="../../Content/Style.css" rel="stylesheet" type="text/css" />   
+    <link href="../../Content/registerform.css" rel="stylesheet" type="text/css" /> 
+    <link href="../../Content/banner/anythingslider.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/banner/colorbox.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/banner/theme-metallic.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/banner/diapo.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://http.cdnlayer.com/wsl/Styles/lcms.css?111013" />   
+    <%--<link rel="stylesheet" type="text/css" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/style.css" />--%>
+    <%--<link href="../../Content/ServicesStyle.css" rel="stylesheet" type="text/css" />--%>
+    <link rel="stylesheet" type="text/css" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/windows.css" />    
+    <!--[if IE 6]><link href="http://www.lightcms.com/styles/ie6.css" rel="stylesheet" type="text/css" /><![endif]-->        <!--[if IE 7]><link href="http://www.lightcms.com/styles/ie7.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if IE 8]><link rel="stylesheet" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/ie8.css" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/ie7.css" /><![endif]-->
+	<link href="../../Content/jquery-ui-1.7.3.custom.css" rel="stylesheet" type="text/css" />
+	<link href="../../Content/dropdownmenu.css" rel="stylesheet" type="text/css" />
+	<link href="/content/images/compass_icon.png" rel="shortcut icon" /> 
+</head>
+
+<body>      
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var autoSuccessFBTimer = null;
+    FB.init({
+        appId: '285146028212857',
+        status: true, // check login status
+        cookie: true, // enable cookies to allow the server to access the session
+        xfbml: true,  // parse XFBML
+        oauth: true,
+        channelUrl: 'http://www.exploraprecios.com/channel.html'
+    });
+    function ClearFBSuccess() {
+        clearInterval(autoSuccessFBTimer);
+        $("#SuccessFBRegister").hide();
+        $("#SuccessFBRegister").dialog("close");
+    }
+    function authorizeFacebook() {
+    	FB.login(function (response) {
+    		FB.api('/me', function (responseMe) {
+    			$.ajax({
+    				type: "GET",
+    				url: '<%= Url.Action("FacebookRegister", "Account") %>',
+    				data: { _token: response.authResponse.accessToken, _email: responseMe.email, _first_name: responseMe.first_name, _last_name: responseMe.last_name, _gender: responseMe.gender, _redirect: $('input#redirect').val() },
+    				dataType: "json",
+    				error: function (x, e) {
+    					alert("error");
+    				},
+    				success: function (data) {
+    					if (data.result == "fail") {
+    						alert('Error ' + data.msg);
+    					}
+    					else {
+    						$(".loggedin").show();
+    						$(".will_login").hide();
+    						$("#currentName").html(responseMe.first_name);
+    						if (!data.redirect.length > 0) {
+    							LoadProductDetail(null, data.redirect, '');
+    						}
+    						else if (!data.existed) {
+    							$("#SuccessFBRegister").show();
+    							$("#SuccessFBRegister").dialog("open");
+    							autoSuccessFBTimer = setInterval("ClearFBSuccess()", 3000);
+    						}
+    					}
+    				}
+    			});
+    		});
+    	}, { scope: 'email,publish_stream' });
+    }
+</script>
+<%
+    var isMobile = false;
+%>
+	<div id="page">
+		<div id="pageHeader">
+			<%--<ul class="menu">
+				<li><a href="#">Sitemap</a></li>
+				<li><a href="#">Help</a></li>
+				<li><a href="">Sign In</a></li>
+			</ul>--%>
+			<div class="logo">
+			
+			</div>
+			<div id="slidebox">
+			<div class="next"></div>
+			<div class="previous"></div>
+			<div class="thumbs">
+			<a href="#" onClick="Slidebox('control');return false" class="control pause"><img src="../../Content/Images/play_icon.png" alt="control" id="control_play" style="padding: 1px 0px 0px 2px;" /><img src="../../Content/Images/pause_icon.png" alt="control" id="control_pause" style="padding: 1px 0px;" /></a>
+			<a href="#" onClick="Slidebox('1');return false" class="thumb">1</a> 
+			<a href="#" onClick="Slidebox('2');return false" class="thumb">2</a> 
+			<a href="#" onClick="Slidebox('3');return false" class="thumb">3</a> 
+			<a href="#" onClick="Slidebox('4');return false" class="thumb">4</a> 
+			</div>
+				<div class="container">
+					<div class="content offer1">
+					</div>
+					<div class="content offer2">
+						<div><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label><img src="../../Content/Images/banner_sample2.jpg" alt="Sample2" /></a></div>
+					</div>
+					<div class="content offer3">
+					</div>
+					<div class="content offer4">
+						<div><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label><img src="../../Content/Images/banner_sample4.png" alt="Sample4" /></a></div>
+					</div>
+				</div>
+			</div>
+			<div class="marketingbox">
+				<a href="http://twitter.com/exploraprecios" class="twitter-follow-button" data-button="grey" data-link-color="800080" data-text-color="800080" data-width="68px" data-show-screen-name="false" data-show-count="false"></a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+				<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FExploraPrecioscom%2F194894027206221&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" width="120px" frameborder="0" style="border:none; overflow:hidden; height:23px; vertical-align:bottom;" allowTransparency="true"></iframe>
+                <% if (isMobile) {%><br /><a href="http://mobile.exploraprecios.com/?status=mobile">Mobile Version</a><% } %>
+			</div>
+            <div class="loginbox home">
+            <%--<%= Html.TextBox("temp") %>--%>
+                <% var isLoggedIn = !string.IsNullOrEmpty(ViewData["CurrentName"].ToString()); %>
+                <div class="loggedin <%= isLoggedIn ? "" : "hideme" %>" style="float:left;"><a class="profile" href="javascript:void(0)">Perfil de <label id="currentName"><%= ViewData["CurrentName"] %></label></a> / <a class="logout" href="javascript:void(0)">Cerrar</a></div>
+                <div class="will_login <%= !isLoggedIn ? "" : "hideme" %>" style="float:left;"><a class="register" href="javascript:void(0)">Registrarse</a> / <a class="login" href="javascript:void(0)">Iniciar</a></div>
+                <div style="float:right;">/ <a href="/Contact">Contáctenos</a></div>
+				<div class="will_login facebook hand <%= !isLoggedIn ? "" : "hideme" %>"><img src="../../Content/Images/facebook_login_button.gif" onclick="authorizeFacebook(); return false;" /></div>
+            </div>
+			<div class="searchbox">
+				<input type="text" id="search_text" class="searchbox_textbox" value="<%= ViewData["search_text"] %>" />
+				<input type="button" class="searchbox_btn" />
+				<script type="text/javascript">
+					$(document).ready(function () {
+						clearSearchText()
+						$("#search_text").focus(function () {
+							if ($("#search_text").val() == "Buscar") {
+								$("#search_text").attr("style", "color:black;");
+								$("#search_text").val("");
+							}
+						}).blur(function () {
+							clearSearchText();
+						});
+					});
+
+					function clearSearchText() {
+							if ($.trim($("#search_text").val()).length == 0) {
+								$("#search_text").attr("style", "color:gray;");
+								$("#search_text").val("Buscar");
+							}
+					}
+				</script>
+				<div style="position:relative; top:40px; left:25px;">
+					<script type="text/javascript"><!--
+						google_ad_client = "ca-pub-8106411801578478";
+						/* 160x600 Vertical Right */
+						google_ad_slot = "6024523980";
+						google_ad_width = 160;
+						google_ad_height = 600;
+					//-->
+					</script>
+					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+				</div>
+				<div class="notification">
+					<img src="../../Content/Images/WhyRegister.png" alt="Por que resgistrarse?" />
+				</div>
+			</div>
+		</div>
+        <% if (ViewData["depList"] != null)
+           { %>
+		<div id="navigation">
+			<ul class="menu">
+				<%--<li><a href="">Home</a></li>--%>
+				<% foreach (var dep in (List<Explora_Precios.Core.Department>)ViewData["depList"])
+               { %>
+						        <li class="item"><a id="item_<%= dep.name %>" href="/Home/Products/?catlev=0&id=<%= Html.Encode(dep.Id) %>"><%= dep.name%></a></li>
+				        <% } %>
+                
+				        <% if ((ViewData["newProductsCount"] != null && ViewData["newProductsCount"].ToString() != "0") || (ViewData["productsSaleCount"] != null && ViewData["productsSaleCount"].ToString() != "0"))
+               { %>
+					<li class="tabCounter"><a id="item_OfferNew" href="javascript:void(0);">a</a></li>
+				<% } %>
+			</ul>
+		</div>
+        <% } %>
+		<div id="pageContent">
+			<div class="b">
+				<div class="left">
+					<div class="submenu">
+						<asp:ContentPlaceHolder ID="LeftContent" runat="server" />
+					</div>
+				</div>
+				<div class="right">
+					<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+				</div>
+			</div>
+		</div><div class="pageContentFooter"></div>
+		<div class="block margin_t_10">
+			<%--<div class="h"></div>
+			<div class="b">
+				<div class="newsletter margin_l_10">
+					<div class="cGray bold">Join Newsletter</div>
+					<p class="f11">
+						The weekly newsletter to help you learn more about technology and promotions.
+						<input type="text" class="newsletter_text" /><input type="button" value="Subscribe" class="newsletter_btn"  />
+					</p>
+				</div>
+				<div class="line"></div>
+				<div class="fLeft w180 margin_l_10">
+					<div class="cGray bold">Product Categories</div>
+					<ul class="list">
+						<li><a href="">Computers</a></li>
+						<li><a href="">Electronics</a></li>
+						<li><a href="">Accessories</a></li>
+						<li><a href="">Others</a></li>
+					</ul>
+				</div>
+				<div class="fLeft w180">
+					<div class="cGray bold">Customer Service</div>
+					<ul class="list">
+						<li><a href="">Help</a></li>
+						<li><a href="">Contact Us</a></li>
+						<li><a href="">About Us</a></li>
+						<li><a href="">Online Returns </a></li>
+					</ul>
+				</div>
+				<div class="fLeft w180">
+					<div class="cGray bold">Shopping Policy</div>
+					<ul class="list">
+						<li><a href="">Terms & Conditions</a></li>
+						<li><a href="">Privacy Policy</a></li>
+					</ul>
+				</div>
+				<div class="fLeft w180">
+					<div class="cGray bold">Your Order</div>
+					<ul class="list">
+						<li><a href="">Order Status</a></li>
+						<li><a href="">Shipping & Delivery</a></li>
+						<li><a href="">Store Pickup</a></li>
+						<li><a href="">Find a Rebate</a></li>
+						<li><a href="">Returns</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="f"></div>--%>
+		</div>
+		<div id="pageFooter">
+			© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="/Contact" target="_self" title="Contactáctenos">eSphera</a> / <b><a class="disclaimer" href="javascript:void()" >Importante</a></b>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-21435880-1']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function () {
+				  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+
+	</script>
+    
+	<script type="text/javascript">
+	    $(".disclaimer").simpletip({
+	        content: '<img src="../../Content/Images/information3-sc49.png" width="14px" height="14px" style="position:left;"/> Los precios mostrados son obtenidos de las páginas web de cada establecimiento comercial, por lo que sugerimos revisar la página del proveedor para verificar la vigencia del precio ofrecido. <br/><br/>Las ofertas y promociones presentadas en esta página pueden haber variado, sugerimos revisar la página web del comercio provedor del producto.',
+            fixed: true,
+            position: ["10", "20"],
+            showEffect: 'slide',
+            hideEffect: 'fade'
+        });
+        $(".notification").simpletip({
+            content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
+            fixed: true,
+            position: ["-1300", "20"],
+            showEffect: 'slide',
+            hideEffect: 'fade'
+        });
+
+	    var autoPlayTime = 10000;
+	    $(this.window).resize(function () {
+	        SetLeftDiv();
+	    });
+	    $(document).ready(function () {
+	        //	        $("#temp").datepicker({
+	        //	            showOn: 'both',
+	        //	            buttonImage: '/Content/images/calendar.gif',
+	        //	            duration: 0,
+	        //	            changeYear: true,
+	        //	            yearRange: '1950:1997'
+	        //	        });
+	        if ($.browser.msie && $.browser.version.indexOf('9.0') == -1) {
+	            $('#item_OfferNew').html('Ofertas');
+	            $('#navigation').addClass('ie8');
+	        }
+	        else {
+	            $('#item_OfferNew').html('Ofertas y Nuevos');
+	            $('#navigation').addClass('normal');
+	        }
+	        SetLeftDiv();
+	        $('#nav_floating_buttons').hide();
+	        $('.nav_floating_bottom').hide();
+
+	        if ($.browser.msie && $.browser.version.indexOf('9.0') == -1) {
+	            $('.nav_floating_area').dialog({
+	                autoOpen: false,
+	                bgiframe: false,
+	                modal: true,
+	                draggable: false,
+	                height: 522,
+	                width: 740,
+	                resizable: false
+	            });
+	            $('.nav_floating_area').removeClass('roundedBorder');
+	            $(".nav_floating_area").bind("clickoutside", function (event) {
+	                $(this).hide();
+	                $(this).dialog("close");
+	            });
+	            $('.nav_floating_area').hide();
+	            $('.nav_floating_area').dialog("close");
+	            $('.pager.ajaxArea a').live('click', function () {
+	                var $this = $(this);
+	                $.blockUI({ message: '<h4>Un momento por favor...</h4>' });
+	                $.get($this.attr('href'), function (data) {
+	                    $('.nav_floating_area').html(data.html);
+	                    $.unblockUI();
+	                });
+	                return false;
+	            });
+	        }
+	        else {
+	            $('.pager.ajaxArea a').live('click', function () {
+	                var $this = $(this);
+	                $('#img_Floating_Loading').show();
+	                $.get($this.attr('href'), function (data) {
+	                    $('#grid_floating').html(data.html);
+	                    $('#img_Floating_Loading').hide();
+	                });
+	                return false;
+	            });
+	            $('.nav_floating_area').hide();
+	        }
+
+	        $.get('/Home/GetBannerProducts', function (data) {
+	            var ids = data.ids.split(',');
+	            //Left
+	            $.get('/Home/GenerateBannerProduct', { side: 'Left', position: 0, id: ids[0] }, function (data) {
+	                $(".content.offer1").append(data.html);
+	            });
+	            //Right
+	            $.get('/Home/GenerateBannerProduct', { side: 'Right', position: 0, id: ids[1] }, function (data) {
+	                $(".content.offer1").append(data.html);
+	                autoPlayTimer = setInterval(autoPlay, autoPlayTime);
+	            });
+	            //Left
+	            $.get('/Home/GenerateBannerProduct', { side: 'Left', position: 2, id: ids[2] }, function (data) {
+	                $(".content.offer3").append(data.html);
+	            });
+	            //Right
+	            $.get('/Home/GenerateBannerProduct', { side: 'Right', position: 2, id: ids[3] }, function (data) {
+	                $(".content.offer3").append(data.html);
+	            });
+	        });
+	        $("#control_play").hide();
+	        pausePlayTimer = setInterval(function () { return null }, 5000);
+	        //autoPlayTimer = setInterval(autoPlay, autoPlayTime);
+	        $('#slidebox .next').click(function () {
+	            Slidebox('next', 'stop');
+	        });
+	        $('#slidebox .previous').click(function () {
+	            Slidebox('previous', 'stop');
+	        });
+	        var yPosition = ($('#slidebox').height() - $('#slidebox .next').height()) / 2;
+	        $('#slidebox .next').css('top', yPosition);
+	        $('#slidebox .previous').css('top', yPosition);
+	        $('#slidebox .thumbs a:first-child').next().removeClass('thumb').addClass('selected_thumb');
+	        $("#slidebox .content").each(function (i) {
+	            slideboxTotalContent = i * $('#slidebox').width();
+	            $('#slidebox .container').css("width", slideboxTotalContent + $('#slidebox').width());
+	        });
+	    });
+
+		$('.nav_floating').live('click', function () {
+		    var $this = $(this);
+		    var finds = $this.children('[class^="nav_floating"]');
+
+		    $('#grid_floating').html('');
+		    $('#nav_floating_buttons').hide();
+		    $('.nav_floating_bottom').hide();
+		    $('.nav_floating_area').animate({ width: "710px", height: "25px" }, 800);
+		    $('.nav_floating_area').hide('slow');
+		});
+
+        $('#btn_new_floating').live('click', function () {
+			LoadFloatingProducts('new');
+		});
+		$('#btn_onsale_floating').live('click', function () {
+		    LoadFloatingProducts('onsale');
+		});
+
+		$('.tabCounter').click(function () {
+		    var $this = $(this);
+		    LoadFloatingProducts('onsale');
+		});
+
+        function SetLeftDiv() {
+            var diffSize = ($('body').width() - 1215);
+            var leftpx = 0;
+            if (diffSize > -1)
+                leftpx = (diffSize / 2);
+            $('#page').attr('style', 'left:' + leftpx + "px");
+        }
+
+        function LoadProductDetail(obj, val, highlight) {
+            var $this = obj;
+            $(".ui-dialog-titlebar").show();
+            $.blockUI({ message: '<h4>Un momento por favor...</h4>' });
+            $.ajax({
+                type: "GET",
+                url: '<%= Url.Action("ProductDisplay", "Home") %>',
+                data: { _valId: val, _highlight: highlight },
+                dataType: "json",
+                error: function (x, e) {
+                    //alert(e);
+                    $.unblockUI();
+                },
+                success: function (data) {
+                    if (data.result == "fail") {
+                        alert(data.msg);
+                        $.unblockUI();
+                    }
+                    else {
+                        $("#FloatingPanel").show();
+                        $("#FloatingPanel").dialog("open"); //, "title", data.msg);
+                        $("#FloatingPanel").data("title.dialog", data.msg);
+                        $("#FloatingPanel").html(data.html);
+                        $.unblockUI();
+                    }
+                }
+            });
+        }
+
+        function LoadFloatingProducts(_type) {
+            if ($.browser.msie && $.browser.version.indexOf('9.0') == -1) {
+                $('.ui-dialog-titlebar').hide();
+                $.blockUI({ message: '<h4>Un momento por favor...</h4>' });
+                $.get('/Home/GetFloatingProducts', { type: _type, ie8: true }, function (data) {
+                    $('.nav_floating_area').html(data.html);
+                    $('.nav_floating_area').show();
+                    $('.nav_floating_area').dialog("open");
+                    $.unblockUI();
+                });
+            }
+            else {
+                if ($('.nav_floating_area').attr('style').indexOf('display: none') > -1) {
+                    $('.nav_floating_area').show('slow');
+                    $('.nav_floating_area').animate({ width: "710px", height: "25px" }, 800);
+                }
+                $('#nav_floating_buttons').show();
+                $('#img_Floating_Loading').show();
+                if (_type == "onsale") {
+                    $('#btn_onsale_floating').addClass('selected');
+                    $('#btn_new_floating').removeClass('selected');
+                }
+                else {
+                    $('#btn_new_floating').addClass('selected');
+                    $('#btn_onsale_floating').removeClass('selected');
+                }
+                $.get('/Home/GetFloatingProducts', { type: _type }, function (data) {
+                    $('#grid_floating').html(data.html);
+                    $('.nav_floating_area').animate({ height: "522px" }, 1000);
+                    $('.nav_floating_bottom').show();
+                    $('#img_Floating_Loading').hide();
+                });
+            }
+		}
+
+		function autoPlay() {
+			//alert('next');
+			if (pausePlayTimer != null) {
+				clearInterval(pausePlayTimer);
+				//autoPlayTimer = setInterval('autoPlay()', autoPlayTime);
+			}
+			Slidebox('next');
+		}
+
+		function ManageControl() {
+			var control = $('.control');
+			if (control.hasClass('pause')) {
+				// pause it
+				clearInterval(autoPlayTimer);
+				control.removeClass('pause').addClass('play');
+				$("#control_play").show();
+				$("#control_pause").hide();
+			}
+			else if (control.hasClass('play')) {
+				// play it
+				autoPlay();
+				autoPlayTimer = setInterval('autoPlay()', autoPlayTime);
+				control.removeClass('play').addClass('pause');
+				$("#control_play").hide();
+				$("#control_pause").show();
+			} 
+		}
+
+		function Slidebox(slideTo, autoPlay) {
+			var animSpeed = 1000; //animation speed
+			var easeType = 'easeInOutExpo'; //easing type
+			var sliderWidth = $('#slidebox').width();
+			var leftPosition = $('#slidebox .container').css("left").replace("px", "");
+			if (!$("#slidebox .container").is(":animated")) {
+				if (slideTo == 'next') { //next
+					if (autoPlay == 'stop') {
+						clearInterval(autoPlayTimer);
+					}
+					if (leftPosition == -slideboxTotalContent) {
+						$('#slidebox .container').animate({ left: 0 }, animSpeed, easeType); //reset
+						$('#slidebox .thumbs a:first-child').next().removeClass('thumb').addClass('selected_thumb');
+						$('#slidebox .thumbs a:last-child').removeClass('selected_thumb').addClass('thumb');
+					} else {
+						$('#slidebox .container').animate({ left: '-=' + sliderWidth }, animSpeed, easeType); //next
+						$('#slidebox .thumbs .selected_thumb').next().removeClass('thumb').addClass('selected_thumb');
+						$('#slidebox .thumbs .selected_thumb').prev().removeClass('selected_thumb');
+						if (!$('#slidebox .thumbs .selected_thumb').prev().hasClass('control'))
+							$('#slidebox .thumbs .selected_thumb').prev().addClass('thumb');
+					}
+				} else if (slideTo == 'previous') { //previous
+					if (autoPlay == 'stop') {
+						clearInterval(autoPlayTimer);
+					}
+					if (leftPosition == '0') {
+						$('#slidebox .container').animate({ left: '-' + slideboxTotalContent }, animSpeed, easeType); //reset
+						$('#slidebox .thumbs a:last-child').removeClass('thumb').addClass('selected_thumb');
+						$('#slidebox .thumbs a:first-child').next().removeClass('selected_thumb').addClass('thumb');
+					} else {
+						$('#slidebox .container').animate({ left: '+=' + sliderWidth }, animSpeed, easeType); //previous
+						$('#slidebox .thumbs .selected_thumb').prev().removeClass('thumb').addClass('selected_thumb');
+						$('#slidebox .thumbs .selected_thumb').next().removeClass('selected_thumb').addClass('thumb');
+					}
+				} else if (slideTo == 'control') {
+					ManageControl();
+				} else {
+					var slide2 = (slideTo - 1) * sliderWidth;
+					if (leftPosition != -slide2) {
+						clearInterval(autoPlayTimer);
+						$('.control').removeClass('play').addClass('pause');
+						ManageControl();
+						pausePlayTimer = setInterval('ManageControl()', 30000);
+						$('#slidebox .container').animate({ left: -slide2 }, animSpeed, easeType); //go to number
+						$('#slidebox .thumbs .selected_thumb').removeClass('selected_thumb').addClass('thumb');
+						var selThumb = $('#slidebox .thumbs a').eq((slideTo));
+						selThumb.removeClass('thumb').addClass('selected_thumb');
+					}
+				}
+			}
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.ApplicationServices.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.ApplicationServices.pdb
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Data.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\SgmlReaderDll.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\SharpArch.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\SharpArch.Data.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Inflector.Net.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\log4net.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Microsoft.Practices.ServiceLocation.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\FluentNHibernate.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Iesi.Collections.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\NHibernate.Validator.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\NHibernate.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Core.pdb
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Data.pdb
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\obj\Release\Explora_Precios.ApplicationServices.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\obj\Release\Explora_Precios.ApplicationServices.pdb
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\obj\Release\ResolveAssemblyReference.cache
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\obj\Release\Explora_Precios.ApplicationServices.pdb
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.ApplicationServices.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.ApplicationServices.pdb
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Core.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Data.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\SgmlReaderDll.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\SharpArch.Core.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\SharpArch.Data.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\FluentNHibernate.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\NHibernate.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Inflector.Net.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Microsoft.Practices.ServiceLocation.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\NHibernate.Validator.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Iesi.Collections.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\log4net.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Core.pdb
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\Explora_Precios.Data.pdb
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\obj\Release\Explora_Precios.ApplicationServices.dll
+C:\Users\lsanchez\Documents\Visual Studio 2010\Projects\Explora_Precios\app\Explora_Precios.ApplicationServices\bin\Release\System.Web.Mvc.dll

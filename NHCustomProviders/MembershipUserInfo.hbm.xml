@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- the following mapping will be generated dynamically but its included here for documentation purposes -->
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="NHCustomProviders" assembly="NHCustomProviders">
+  <class name="MembershipUserInfo" table="USERS" dynamic-update="true"> <!-- the dynamic-update is configurable -->
+    
+    <!-- the type of the identifier and the generator class can be changed -->
+    <id name="UserId" column="userId" type="Int32">
+      <generator class="native" />
+    </id>
+
+    <property name="UserName" column="username" type="String" not-null="true" unique="true" />
+    <property name="Email" column="email" type="String" not-null="true" unique="true" /><!-- the uniqueness of the email depends on the RequiresUniqueEmail property -->
+    <property name="Password" column="password" type="String" not-null="true" />
+    <property name="PasswordSalt" column="passwordSalt" type="String" not-null="false" />
+    <property name="PasswordFormat" column="passwordFormat" type="System.Web.Security.MembershipPasswordFormat, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" not-null="true" />
+    <property name="PasswordQuestion" column="passwordQuestion" type="String" not-null="true" />
+    <property name="PasswordAnswer" column="passwordAnswer" type="String" not-null="true" />
+    <property name="FailedPasswordAttemptCount" column="failedPasswordAttemptCount" type="Int32" not-null="true" />
+    <property name="FailedPasswordAttemptWindowStart" column="failedPasswordAttemptWindowStart" type="DateTime" not-null="false" />
+    <property name="FailedPasswordAnswerAttemptCount" column="failedPasswordAnswerAttemptCount" type="Int32" not-null="true" />
+    <property name="FailedPasswordAnswerAttemptWindowStart" column="failedPasswordAnswerAttemptWindowStart" type="DateTime" not-null="false" />
+    <property name="LastPasswordChangedDate" column="lastPasswordChangedDate" type="DateTime" not-null="false" />
+    <property name="CreationDate" column="creationDate" type="DateTime" not-null="true" />
+    <property name="LastActivityDate" column="lastActivityDate" type="DateTime" not-null="true" />
+    <property name="IsApproved" column="isApproved" type="Boolean" not-null="true" />
+    <property name="IsLockedOut" column="isLockedOut" type="Boolean" not-null="true" />
+    <property name="LastLockOutDate" column="lastLockOutDate" type="DateTime" not-null="false" />
+    <property name="LastLoginDate" column="lastLoginDate" type="DateTime" not-null="false" />
+    <property name="Comments" column="comments" type="String" not-null="false" />
+  </class>
+</hibernate-mapping>

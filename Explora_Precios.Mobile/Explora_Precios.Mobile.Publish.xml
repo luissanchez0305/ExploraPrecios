@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\Users\luis.sanchez\Documents\ToDeploy\Mobile" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Views/Home/Index.aspx" publishTime="01/11/2012 10:52:26" />
+    <file relUrl="Scripts/MicrosoftAjax.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Global.asax" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/jquery.validate-vsdoc.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Web.config" publishTime="01/11/2012 12:21:33" />
+    <file relUrl="Scripts/jquery-1.4.1.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Shared/LogOnUserControl.ascx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.debug.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/MicrosoftMvcValidation.debug.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/jquery.validate.min.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/jquery.validate.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/jquery-1.4.1.min.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Home/About.aspx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Account/LogOn.aspx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Account/Register.aspx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="bin/Explora_Precios.Mobile.pdb" publishTime="01/11/2012 10:53:11" />
+    <file relUrl="Views/Account/ChangePassword.aspx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Account/ChangePasswordSuccess.aspx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Shared/Site.Master" publishTime="01/11/2012 10:50:52" />
+    <file relUrl="bin/Explora_Precios.Mobile.dll" publishTime="01/11/2012 10:53:11" />
+    <file relUrl="Views/Shared/Error.aspx" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Content/Site.css" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/MicrosoftAjax.debug.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/MicrosoftMvcValidation.js" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Views/Web.config" publishTime="01/11/2012 10:48:30" />
+    <file relUrl="Scripts/jquery-1.4.1-vsdoc.js" publishTime="01/11/2012 10:48:30" />
+  </publishProfile>
+</publishData>

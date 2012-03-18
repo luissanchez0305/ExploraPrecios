@@ -1,0 +1,165 @@
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>
+        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+    </title>
+    <script type="text/javascript" src="../../Scripts/jquery-1.3.2.min.js"></script>
+    <%--<script type="text/javascript" src="../../Scripts/jquery-1.4.min.js"></script>--%>
+    <script type="text/javascript" src="../../Scripts/jquery-ui-1.7.2.custom.min.js"></script>
+    <%--<script type="text/javascript" src="../../Scripts/jquery-ui-1.8.min.js"></script>--%>
+    <script type="text/javascript" src="../../Scripts/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="../../Scripts/Explora_Precios.js"></script>
+    <link href="../../Content/Style.css" rel="stylesheet" type="text/css" />
+    <%--<link href="../../Content/jquery-ui.css" rel="stylesheet" type="text/css" />--%>
+    <link href="../../Content/jquery-ui-1.7.3.custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../Content/dropdownmenu.css" />
+    <script type="text/javascript" src="../../Scripts/verticaldropdown.js"></script>
+</head>
+
+<body>
+    <div id="page">
+        <div id="pageHeader">
+            <%--<ul class="menu">
+                <li><a href="#">Sitemap</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="">Sign In</a></li>
+            </ul>--%>
+            <div class="logo">
+            
+            </div>
+            <div class="counter">
+            <% if (ViewData["productCount"] != null && ViewData["productCount"].ToString() != "0")
+               { %>
+            <%= ViewData["productCount"]%> productos nuevos
+            <% } %> 
+            </div>
+            <div class="searchbox">
+                <input type="text" id="search_text" class="searchbox_textbox" value="<%= ViewData["search_text"] %>" />
+                <input type="button" class="searchbox_btn" />
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        clearSearchText()
+                        $("#search_text").focus(function () {
+                            if ($("#search_text").val() == "Buscar") {
+                                $("#search_text").attr("style", "color:black;");
+                                $("#search_text").val("");
+                            }
+                        }).blur(function () {
+                            clearSearchText();
+                        });
+
+                    });
+                    function clearSearchText() {
+                            if ($.trim($("#search_text").val()).length == 0) {
+                                $("#search_text").attr("style", "color:gray;");
+                                $("#search_text").val("Buscar");
+                            }
+                    }
+                </script>
+            </div>
+            <div class="marketingbox">
+                <label>Puedes contactarnos en &nbsp;</label><br />
+                <a href="/Contact"><img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" /></a>&nbsp;
+                <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="exploraprecios">Tweet</a>&nbsp;
+                <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FExploraPrecioscom%2F194894027206221&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" width="100px" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe>
+            </div>
+            
+            <%--<table class="marketingbox" cellpadding="0" cellspacing="0"><tr>
+                <td><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="exploraprecios">Tweet</a>&nbsp;</td>
+                <td><script type="text/javascript" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.facebook.com/pages/ExploraPrecioscom/194894027206221" layout="button_count" show_faces="false"></fb:like></td>
+            </tr></table>--%>
+        </div>
+        <div id="navigation">
+            <ul class="menu">
+                <%--<li><a href="">Home</a></li>--%>
+                <% foreach (var dep in (List<Explora_Precios.Core.Department>)ViewData["depList"])
+                   { %>
+                        <li><a id="item_<%= dep.name %>" href="/?catlev=0&id=<%= Html.Encode(dep.Id) %>"><%= dep.name %></a></li>
+                <% } %>
+            </ul>
+        </div>
+        <div id="pageContent">
+            <div class="b">
+                <div class="left">
+                    <div class="submenu">
+                        <asp:ContentPlaceHolder ID="LeftContent" runat="server" />
+                    </div>
+                </div>
+                <div class="right">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                </div>
+            </div>
+        </div><div class="pageContentFooter"></div>
+        <div class="block margin_t_10">
+            <%--<div class="h"></div>
+            <div class="b">
+                <div class="newsletter margin_l_10">
+                    <div class="cGray bold">Join Newsletter</div>
+                    <p class="f11">
+                        The weekly newsletter to help you learn more about technology and promotions.
+                        <input type="text" class="newsletter_text" /><input type="button" value="Subscribe" class="newsletter_btn"  />
+                    </p>
+                </div>
+                <div class="line"></div>
+                <div class="fLeft w180 margin_l_10">
+                    <div class="cGray bold">Product Categories</div>
+                    <ul class="list">
+                        <li><a href="">Computers</a></li>
+                        <li><a href="">Electronics</a></li>
+                        <li><a href="">Accessories</a></li>
+                        <li><a href="">Others</a></li>
+                    </ul>
+                </div>
+                <div class="fLeft w180">
+                    <div class="cGray bold">Customer Service</div>
+                    <ul class="list">
+                        <li><a href="">Help</a></li>
+                        <li><a href="">Contact Us</a></li>
+                        <li><a href="">About Us</a></li>
+                        <li><a href="">Online Returns </a></li>
+                    </ul>
+                </div>
+                <div class="fLeft w180">
+                    <div class="cGray bold">Shopping Policy</div>
+                    <ul class="list">
+                        <li><a href="">Terms & Conditions</a></li>
+                        <li><a href="">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="fLeft w180">
+                    <div class="cGray bold">Your Order</div>
+                    <ul class="list">
+                        <li><a href="">Order Status</a></li>
+                        <li><a href="">Shipping & Delivery</a></li>
+                        <li><a href="">Store Pickup</a></li>
+                        <li><a href="">Find a Rebate</a></li>
+                        <li><a href="">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="f"></div>--%>
+        </div>
+        <div id="pageFooter">
+            © 2011 MVC E-commerce. All Rights Reserved. Dev by <a href="/Contact" target="_self" title="Contact us">eSphere</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+              var _gaq = _gaq || [];
+              _gaq.push(['_setAccount', 'UA-21435880-1']);
+              _gaq.push(['_trackPageview']);
+
+              (function () {
+                  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+              })();
+
+    </script>
+</body>
+</html>

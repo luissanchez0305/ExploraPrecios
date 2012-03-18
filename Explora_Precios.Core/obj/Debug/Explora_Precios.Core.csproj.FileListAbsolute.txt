@@ -1,0 +1,54 @@
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Northwind.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Northwind.Core\bin\Debug\Explora_Precios.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Northwind.Core\bin\Debug\Explora_Precios.Core.pdb
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Northwind.Core\obj\Debug\Explora_Precios.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Northwind.Core\obj\Debug\Explora_Precios.Core.pdb
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\Explora_Precios.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\Explora_Precios.Core.pdb
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.Validator.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Core.NHibernateValidator.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\FluentNHibernate.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\Iesi.Collections.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\log4net.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Data.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\obj\Debug\Explora_Precios.Core.dll
+C:\Documents and Settings\Luis Ricardo Sanchez\My Documents\Visual Studio 2008\Projects\Explora_Precios\app\Explora_Precios.Core\obj\Debug\Explora_Precios.Core.pdb
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Explora_Precios.Core.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Explora_Precios.Core.pdb
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.Linq.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.Validator.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Core.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Core.NHibernateValidator.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\System.Web.Mvc.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Iesi.Collections.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\log4net.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Data.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\FluentNHibernate.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\obj\Debug\Explora_Precios.Core.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\obj\Debug\Explora_Precios.Core.pdb
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Explora_Precios.Core.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Explora_Precios.Core.pdb
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.Linq.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\NHibernate.Validator.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Core.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Core.NHibernateValidator.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\System.Web.Mvc.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Iesi.Collections.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\log4net.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Newtonsoft.Json.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\SharpArch.Data.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\FluentNHibernate.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Newtonsoft.Json.xml
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\obj\Debug\Explora_Precios.Core.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\obj\Debug\Explora_Precios.Core.pdb
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Newtonsoft.Json.dll
+C:\Users\lsanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Core\bin\Debug\Newtonsoft.Json.xml

@@ -1,0 +1,9 @@
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\bin\GoLive\NHCustomProviders.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\bin\GoLive\NHCustomProviders.pdb
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\bin\GoLive\NHCustomProviders.XML
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\bin\GoLive\Iesi.Collections.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\bin\GoLive\NHibernate.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\bin\GoLive\log4net.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\obj\GoLive\ResolveAssemblyReference.cache
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\obj\GoLive\NHCustomProviders.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\NHCustomProviders\obj\GoLive\NHCustomProviders.pdb

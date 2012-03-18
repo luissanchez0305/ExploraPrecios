@@ -1,0 +1,5 @@
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Mobile\bin\Explora_Precios.Mobile.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Mobile\bin\Explora_Precios.Mobile.pdb
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Mobile\obj\GoLive\ResolveAssemblyReference.cache
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Mobile\obj\GoLive\Explora_Precios.Mobile.dll
+C:\Users\luis.sanchez\Dropbox\eSphera-Precios\app\Explora_Precios.Mobile\obj\GoLive\Explora_Precios.Mobile.pdb
