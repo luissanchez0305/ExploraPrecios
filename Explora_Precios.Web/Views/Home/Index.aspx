@@ -120,8 +120,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
         			$(this).dialog("close");
         		});
         		url = '<%= Url.Action("Forgot", "Account") %>';
-        	}
-        	_redirect = $('input#redirect').val();
+              }
+              _redirect = $('#Redirect').val();
 
         	if (goAjax) {
         		$.blockUI({ message: '<h4>Un momento por favor...</h4>' });

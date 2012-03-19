@@ -59,37 +59,44 @@
         $("#SuccessFBRegister").dialog("close");
     }
     function authorizeFacebook() {
-    	FB.login(function (response) {
-    		FB.api('/me', function (responseMe) {
-    			$.ajax({
-    				type: "GET",
-    				url: '<%= Url.Action("FacebookRegister", "Account") %>',
-    				data: { _token: response.authResponse.accessToken, _email: responseMe.email, _first_name: responseMe.first_name, _last_name: responseMe.last_name, _gender: responseMe.gender, _redirect: $('input#redirect').val() },
-    				dataType: "json",
-    				error: function (x, e) {
-    					alert("error");
-    				},
-    				success: function (data) {
-    					if (data.result == "fail") {
-    						alert('Error ' + data.msg);
-    					}
-    					else {
-    						$(".loggedin").show();
-    						$(".will_login").hide();
-    						$("#currentName").html(responseMe.first_name);
-    						if (!data.redirect.length > 0) {
-    							LoadProductDetail(null, data.redirect, '');
-    						}
-    						else if (!data.existed) {
-    							$("#SuccessFBRegister").show();
-    							$("#SuccessFBRegister").dialog("open");
-    							autoSuccessFBTimer = setInterval("ClearFBSuccess()", 3000);
-    						}
-    					}
-    				}
-    			});
-    		});
-    	}, { scope: 'email,publish_stream' });
+        FB.login(function (response) {
+            FB.api('/me', function (responseMe) {
+                $.ajax({
+                    type: "GET",
+                    url: '<%= Url.Action("FacebookRegister", "Account") %>',
+                    data: {
+                        _token: response.authResponse.accessToken,
+                        _email: responseMe.email,
+                        _first_name: responseMe.first_name,
+                        _last_name: responseMe.last_name,
+                        _gender: responseMe.gender,
+                        _redirect: $('#Redirect').val()
+                    },
+                    dataType: "json",
+                    error: function (x, e) {
+                        alert("error");
+                    },
+                    success: function (data) {
+                        if (data.result == "fail") {
+                            alert('Error ' + data.msg);
+                        }
+                        else {
+                            $(".loggedin").show();
+                            $(".will_login").hide();
+                            $("#currentName").html(responseMe.first_name);
+                            if (data.redirect.length > 0) {
+                                LoadProductDetail(null, data.redirect, '');
+                            }
+                            else if (!data.existed) {
+                                $("#SuccessFBRegister").show();
+                                $("#SuccessFBRegister").dialog("open");
+                                autoSuccessFBTimer = setInterval("ClearFBSuccess()", 3000);
+                            }
+                        }
+                    }
+                });
+            });
+        }, { scope: 'email,publish_stream' });
     }
 </script>
 <%
@@ -436,7 +443,7 @@
                 data: { _valId: val, _highlight: highlight },
                 dataType: "json",
                 error: function (x, e) {
-                    //alert(e);
+                    alert(e);
                     $.unblockUI();
                 },
                 success: function (data) {

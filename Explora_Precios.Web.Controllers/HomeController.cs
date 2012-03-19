@@ -34,7 +34,7 @@ namespace Explora_Precios.Web.Controllers
         IUser_ProductRepository _uProductRepository;
         private int currentPage = 0;
 		private const string RegisterPage = @"<div style=""background-color:#F6F5EA;"">Para poder {0} debes<br />registrarte a <b>ExploraPrecios.com</b>.<br />Que esperas suscribete ya!</div>
-                        <div class='loginbox' style=""color:#D84018;""><input type='hidden' id='redirect' value='{1}' /><a class='register' style=""color:#D84018;"" href='javascript:void(0)'>Registrarse</a> / <a class='login' style=""color:#D84018;"" href='javascript:void(0)'>Entrar</a></div>";
+                        <div class='loginbox' style=""color:#D84018;""><input type='hidden' id='Redirect' value='{1}' /><a class='register' style=""color:#D84018;"" href='javascript:void(0)'>Registrarse</a> / <a class='login' style=""color:#D84018;"" href='javascript:void(0)'>Entrar</a></div>";
 
         public HomeController(ICategoryRepository catRepository, 
             IProductRepository productRepository, 

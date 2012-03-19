@@ -81,7 +81,8 @@
                 <div class="loginbox">
                     <% if (Model.IsNew)
                        { %><a href="javascript:void(0)" class="login" style="padding-right: 5px;">Ingresar</a> 
-                    <a href="javascript:void(0)" class="forgot" style="padding-right: 5px;">Olvido la contraseña?</a><br /><% } %>
+                    <a href="javascript:void(0)" class="forgot" style="padding-right: 5px;">Olvido la contraseña?</a><br />
+                    <div class="will_login facebook hand" style="float:right;"><img src="../../Content/Images/facebook_login_button.gif" onclick="authorizeFacebook(); return false;" /></div><% } %>
                 </div>
             </li>
             <li id="foli13" class="button notranslate rightHalf">

@@ -35,5 +35,7 @@ Thumbs.db
 
 # Folders #
 ###########
-Explora_Precios.Web/bin/
-Explora_Precios.Web/obj/
+Explora_Precios.Web/bin/*
+Explora_Precios.Web/obj/*
+Explora_Precios.Web.Controllers/bin/*
+Explora_Precios.Web.Controllers/obj/*

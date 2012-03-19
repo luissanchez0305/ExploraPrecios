@@ -115,68 +115,67 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     });
 
     $('.loginbox a').live('click', function () {
-    	var goAjax = true;
-    	var $this = $(this);
-    	var url = '';
-    	var _redirect = ''
-    	$('.LoginLoading').show();
+        var goAjax = true;
+        var $this = $(this);
+        var url = '';
+        var _redirect = ''
+        $('.LoginLoading').show();
 
-    	//        alert($this.attr('class'));
-    	if ($this.attr('class') == 'login') {
-    		$(".ui-dialog-titlebar").hide();
-    		$("#FloatingPanel").bind("clickoutside", function (event) {
-    			$(this).hide();
-    			$(this).dialog("close");
-    		});
-    		url = '<%= Url.Action("Login", "Account") %>';
-    	}
-    	else if ($this.attr('class') == 'register' || $this.attr('class') == 'profile') {
-    		$(".ui-dialog-titlebar").show();
-    		$("#FloatingPanel").unbind("clickoutside");
-    		$("#FloatingPanel").dialog("option", "title", 'Llene el formulario para registrarse en ExploraPrecios.com');
-    		url = '<%= Url.Action("Register", "Account") %>';
-    	}
-    	else if ($this.attr('class') == 'logout') {
-    		goAjax = false;
-    		window.location = '<%= Url.Action("Logout", "Account") %>';
-    		_redirect = $this.prev('input #redirect').val();
-    	}
-    	else if ($this.attr('class') == 'forgot') {
-    		$(".ui-dialog-titlebar").hide();
-    		$("#FloatingPanel").bind("clickoutside", function (event) {
-    			$(this).hide();
-    			$(this).dialog("close");
-    		});
-    		url = '<%= Url.Action("Forgot", "Account") %>';
-    	}
-    	_redirect = $('input#redirect').val();
+        //        alert($this.attr('class'));
+        if ($this.attr('class') == 'login') {
+            $(".ui-dialog-titlebar").hide();
+            $("#FloatingPanel").bind("clickoutside", function (event) {
+                $(this).hide();
+                $(this).dialog("close");
+            });
+            url = '<%= Url.Action("Login", "Account") %>';
+        }
+        else if ($this.attr('class') == 'register' || $this.attr('class') == 'profile') {
+            $(".ui-dialog-titlebar").show();
+            $("#FloatingPanel").unbind("clickoutside");
+            $("#FloatingPanel").dialog("option", "title", 'Llene el formulario para registrarse en ExploraPrecios.com');
+            url = '<%= Url.Action("Register", "Account") %>';
+        }
+        else if ($this.attr('class') == 'logout') {
+            goAjax = false;
+            window.location = '<%= Url.Action("Logout", "Account") %>';
+        }
+        else if ($this.attr('class') == 'forgot') {
+            $(".ui-dialog-titlebar").hide();
+            $("#FloatingPanel").bind("clickoutside", function (event) {
+                $(this).hide();
+                $(this).dialog("close");
+            });
+            url = '<%= Url.Action("Forgot", "Account") %>';
+        }
+        _redirect = $('#Redirect').val();
 
-    	if (goAjax) {
-    		$.blockUI({ message: '<h4>Un momento por favor...</h4>' });
-    		$.ajax({
-    			type: "GET",
-    			url: url,
-    			data: { redirect: _redirect },
-    			dataType: "json",
-    			error: function (x, e) {
-    				$('.LoginLoading').hide();
-    				$.unblockUI();
-    			},
-    			success: function (data) {
-    				$('.LoginLoading').hide();
-    				if (data.result == "fail") {
-    					alert(data.msg);
-    					$.unblockUI();
-    				}
-    				else {
-    					$("#FloatingPanel").show();
-    					$("#FloatingPanel").dialog("open");
-    					$("#FloatingPanel").html(data.html);
-    					$.unblockUI();
-    				}
-    			}
-    		});
-    	}
+        if (goAjax) {
+            $.blockUI({ message: '<h4>Un momento por favor...</h4>' });
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { redirect: _redirect },
+                dataType: "json",
+                error: function (x, e) {
+                    $('.LoginLoading').hide();
+                    $.unblockUI();
+                },
+                success: function (data) {
+                    $('.LoginLoading').hide();
+                    if (data.result == "fail") {
+                        alert(data.msg);
+                        $.unblockUI();
+                    }
+                    else {
+                        $("#FloatingPanel").show();
+                        $("#FloatingPanel").dialog("open");
+                        $("#FloatingPanel").html(data.html);
+                        $.unblockUI();
+                    }
+                }
+            });
+        }
     });
     function Clear() {
         clearInterval(autoFloatingTimer);
