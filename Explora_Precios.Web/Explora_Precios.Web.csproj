@@ -29,6 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,12 +39,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DesktopBuildPackageLocation>..\..\..\..\Documents\ToDeploy\Explora_Precios.Web.zip</DesktopBuildPackageLocation>
+    <DesktopBuildPackageLocation>..\..\..\..\Documents\ToDeploy</DesktopBuildPackageLocation>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'GoLive|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,8 +57,8 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <ExcludeApp_Data>true</ExcludeApp_Data>
     <PackageAsSingleFile>false</PackageAsSingleFile>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=1.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -366,6 +367,7 @@
     <Content Include="Content\resume_homepage_images\top_popelar.jpg" />
     <Content Include="Content\ServicesStyle.css" />
     <Content Include="Content\html\welcome.html" />
+    <Content Include="cv\index.htm" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\banner\diapo.js" />
@@ -421,6 +423,9 @@
     <Content Include="Views\ProductManager\RepeatedProducts.aspx" />
     <Content Include="Views\Services\Index.aspx" />
     <Content Include="Error.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftAjax.debug.js" />
@@ -497,18 +502,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\banner\temp.zip" />
-    <Content Include="Configs\connectionString_Local.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Configs\connectionString_Local.config" />
+    <Content Include="Configs\connectionString_Live.config" />
     <None Include="Content\resume_homepage_images\Thumbs.db" />
-    <Content Include="Configs\connectionString_Live.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="ep_signingfile.pfx" />
     <Content Include="Views\Shared\SiteMng.Master" />
     <Content Include="packages.config" />
-    <Content Include="Web.config" />
     <Content Include="Web.GoLive.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
