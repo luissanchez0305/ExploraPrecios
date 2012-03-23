@@ -97,11 +97,11 @@
                 data: { _id: $("#displaying").val() },
                 dataType: "json",
                 error: function (x, e) {
-                    alert("error");
+                    jAlert('Error', 'Alerta!');
                 },
                 success: function (data) {
                     if (data.result == "fail") {
-                        alert(data.msg);
+                        jAlert(data.msg, 'Alerta!');
                     }
                     else {                   
                         $this.removeClass('like');

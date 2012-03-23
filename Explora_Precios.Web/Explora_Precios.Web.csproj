@@ -254,11 +254,16 @@
     <Content Include="Content\Images\facebook-liked.jpg" />
     <Content Include="Content\Images\facebook_login_button.gif" />
     <Content Include="Content\Images\hometopreviewed2.jpg" />
+    <Content Include="Content\Images\jAlert\help.gif" />
+    <Content Include="Content\Images\jAlert\important.gif" />
+    <Content Include="Content\Images\jAlert\info.gif" />
+    <Content Include="Content\Images\jAlert\title.gif" />
     <Content Include="Content\Images\Network-Marketing.jpg" />
     <Content Include="Content\Images\Questionmark.png" />
     <Content Include="Content\Images\money-sign.jpg" />
     <Content Include="Content\Images\red_arrow.jpg" />
     <Content Include="Content\Images\WhyRegister.png" />
+    <Content Include="Content\jquery.alerts.css" />
     <Content Include="Content\registerForm.css" />
     <Content Include="Content\fsmenu\divmenu.css" />
     <Content Include="Content\fsmenu\listmenu_a.css" />
@@ -377,6 +382,7 @@
     <Content Include="Scripts\banner\jquery.anythingslider.min.js" />
     <Content Include="Scripts\banner\jquery.colorbox-min.js" />
     <Content Include="Scripts\banner\jquery.mobile-1.0rc2.customized.min.js" />
+    <Content Include="Scripts\jquery.alerts.js" />
     <Content Include="Scripts\jquery.hoverIntent.minified.js" />
     <Content Include="Scripts\fsmenu\fsmenu.js" />
     <Content Include="Scripts\fsmenu\fsmenu_commented.js" />

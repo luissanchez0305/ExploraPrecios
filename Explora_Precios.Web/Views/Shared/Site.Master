@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="../../Scripts/jquery.webticker.1.3.js"></script>
 	<script type="text/javascript" src="../../Scripts/jquery.hoverIntent.minified.js"></script>
 	<script type="text/javascript" src="../../Scripts/banner/diapo.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.alerts.js"></script>
 	<%--<script type="text/javascript" src="../../Scripts/banner/jquery.mobile-1.0rc2.customized.min.js"></script>--%>
 	<link href="../../Content/Style.css" rel="stylesheet" type="text/css" />   
 	<link href="../../Content/registerform.css" rel="stylesheet" type="text/css" /> 
@@ -34,6 +35,7 @@
 	<link href="../../Content/banner/colorbox.css" rel="stylesheet" type="text/css" />
 	<link href="../../Content/banner/theme-metallic.css" rel="stylesheet" type="text/css" />
 	<link href="../../Content/banner/diapo.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/jquery.alerts.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="http://http.cdnlayer.com/wsl/Styles/lcms.css?111013" />   
 	<%--<link rel="stylesheet" type="text/css" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/style.css" />--%>
 	<%--<link href="../../Content/ServicesStyle.css" rel="stylesheet" type="text/css" />--%>

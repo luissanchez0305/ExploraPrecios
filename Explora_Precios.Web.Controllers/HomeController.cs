@@ -431,14 +431,16 @@ namespace Explora_Precios.Web.Controllers
 
         public ActionResult SetLike(string _id)
         {
-            var ProductObj = _productRepository.Get(_id.ProductId());
-            var FBclient = new Facebook.FacebookClient();
-            FBclient.AccessToken = CurrentUser.facebookToken;
-            var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
-                                    "Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, _id);
+            try
+            {
+                var ProductObj = _productRepository.Get(_id.ProductId());
+                var FBclient = new Facebook.FacebookClient();
+                FBclient.AccessToken = CurrentUser.facebookToken;
+                var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
+                                        "Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, _id);
 
-            var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
-            var parameters = new Dictionary<string, object>
+                var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
+                var parameters = new Dictionary<string, object>
                 {
                     {"access_token",  CurrentUser.facebookToken},
                     {"appId", "285146028212857"},
@@ -449,11 +451,13 @@ namespace Explora_Precios.Web.Controllers
                     {"picture", string.Format("http://www.exploraprecios.com/image?id={0}", _id)},
                     {"link", string.Format("http://www.exploraprecios.com?i={0}", _id)}
                 };
-            try
-            {
                 var result = FBclient.Post("me/feed", parameters);
                 var upObj = new User_Product { Type = User_Product.RelationType.Liked, product = ProductObj, user = CurrentUser };
                 _uProductRepository.SaveOrUpdate(upObj);
+            }
+            catch (NullReferenceException ex)
+            {
+                return Json(new { result = "fail", msg = "Necesitas estar conectado con Facebook." });
             }
             catch (Facebook.FacebookApiException ex)
             {
