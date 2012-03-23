@@ -99,6 +99,7 @@
             $.ajax({
                 type: "GET",
                 url: '<%= Url.Action("Testing", "Home") %>',
+                data: { _id: $("#displaying").val() },
                 dataType: "json",
                 error: function (x, e) {
                     alert("error");
