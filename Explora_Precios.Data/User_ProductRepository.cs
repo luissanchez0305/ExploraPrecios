@@ -18,6 +18,13 @@ namespace Explora_Precios.Data
                 .UniqueResult<User_Product>();
         }
 
+        public User_Product GetByProductAndUser(Product product, User user)
+        {
+            return NHibernateSession.Current.CreateCriteria(typeof(User_Product))
+                .Add(Expression.Conjunction().Add(Expression.Eq("user", user)).Add(Expression.Eq("product", product)))
+                .UniqueResult<User_Product>();
+        }
+
         public IList<User_Product> GetByProductAndActive(Product product)
         {
             return NHibernateSession.Current.CreateCriteria(typeof(User_Product))

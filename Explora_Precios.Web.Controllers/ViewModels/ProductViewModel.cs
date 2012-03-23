@@ -62,6 +62,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public int catalogId { get; set; }
 		public string rating { get; set; }
 		public GroupViewModel group { get; set; }
+        public bool isLiked { get;set; }
 
 		public ProductViewModel LoadModel(Product prod, bool resume)
 		{
@@ -108,7 +109,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 			var Ratings = prod.ratings.Where(up => up.Type == User_Product.RelationType.Rating);
 			this.rating = !resume && Ratings.Count() > 0 ? Ratings.Average(rat => rat.value).ToString("0.##") : "0";
             this.group = new GroupViewModel { GroupSize = prod.groups.Count };
-
+            this.isLiked = prod.ratings.SingleOrDefault(up => up.Type == User_Product.RelationType.Liked) != null;
 			return this;
 		}
 

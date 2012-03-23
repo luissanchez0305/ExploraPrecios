@@ -8,9 +8,7 @@
     <input type="hidden" id="displaying" value="<%= id_val %>" />
     <div id="BreadCrums">
         Producto en <b><%= Explora_Precios.Web.Controllers.Helpers.CatalogHelper.CatalogToString(true, Model.catalogProduct, true)%></b>
-        <%--<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.exploraprecios.com%3ftype%3ddetail%26amp%3bi%3d<%=Server.UrlEncode(id_val)%>&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=verdana&amp;height=21&amp;appId=285146028212857" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>--%>
-        <%--<fb:like href="http://www.exploraprecios.com/?type=detail&amp;i=<%= id_val %>" send="false" layout="button_count" width="100" show_faces="false" action="recommend" font="verdana"></fb:like>--%>
-        <%--<div class="fb-like" data-href="http://www.exploraprecios.com/?type=detail&amp;i=<%= id_val %>" data-send="true" data-layout="button_count" data-width="100" data-show-faces="false" data-action="recommend" data-font="verdana"></div>--%>
+        
         <div class="attention disclaimerlink"><img src="../../Content/Images/information3-sc49.png" alt="Attention" /></div>
         <div class="rating"><div class="text">Califica este producto </div><div id="star"></div><div class="thanks">Gracias!</div></div>
         <div class="follow"><label class="text bold hand">Sigue este producto </label>&nbsp;<div class="imagecontainer"><img class="image" alt="Follow Arrow" src="/Content/Images/red_arrow.jpg" /></div><div class="followPanel"></div></div>
@@ -33,7 +31,7 @@
         <img width="250" height="200" class="productImage" alt="<%= Model.productName %>" src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(Model.productImage) %>" />
         <!-- TODO LISTA DE IMAGENES -->
         <div class="qualities">
-            <label class="title">Caracteristicas</label><img class="hand" style="float:right;" id="like" src="../../../Content/Images/facebook-like.jpg" width="79px" height="20px" />
+            <label class="title">Caracteristicas</label><div class="<%= Model.isLiked ? "liked" : "like" %> hand" style="float:right;" src="../../../Content/Images/facebook-like.jpg" width="79px" height="20px"></div>
                 <% var index = 0; 
                     foreach (var quality in Model.qualities)
                    {
@@ -91,10 +89,11 @@
         //$(".followPanel").hide();
         $("#reportLoadingImg").hide();
         $(".thanks").hide();
-        $("#like").click(function(){
+        $(".like").click(function(){
+            var $this = $(this);
             $.ajax({
                 type: "GET",
-                url: '<%= Url.Action("Testing", "Home") %>',
+                url: '<%= Url.Action("SetLike", "Home") %>',
                 data: { _id: $("#displaying").val() },
                 dataType: "json",
                 error: function (x, e) {
@@ -104,8 +103,9 @@
                     if (data.result == "fail") {
                         alert(data.msg);
                     }
-                    else {                        
-                        alert(data.msg);
+                    else {                   
+                        $this.removeClass('like');
+                        $this.addClass('liked');
                     }
                 }
             });

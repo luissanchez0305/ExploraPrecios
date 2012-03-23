@@ -12,5 +12,6 @@ namespace Explora_Precios.Core.DataInterfaces
         IList<User_Product> GetByProductAndActive(Product product);
         void Update(User_Product FollowOffer, User_Product FollowPrice);
         void Update(IEnumerable<User_Product> FollowObj);
+        User_Product GetByProductAndUser(Product product, User user);
     }
 }

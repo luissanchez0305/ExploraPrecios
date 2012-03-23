@@ -250,6 +250,8 @@
     <Content Include="Content\Images\banner\waterdrops-blue.jpg" />
     <Content Include="Content\Images\brochures\brochure_final.jpg" />
     <Content Include="Content\Images\brochures\brochure_oferta1.jpg" />
+    <Content Include="Content\Images\facebook-like.jpg" />
+    <Content Include="Content\Images\facebook-liked.jpg" />
     <Content Include="Content\Images\facebook_login_button.gif" />
     <Content Include="Content\Images\hometopreviewed2.jpg" />
     <Content Include="Content\Images\Network-Marketing.jpg" />

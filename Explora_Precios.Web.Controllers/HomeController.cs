@@ -429,7 +429,7 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new { result = "success", msg = "" });
 		}
 
-        public ActionResult Testing(string _id)
+        public ActionResult SetLike(string _id)
         {
             var ProductObj = _productRepository.Get(_id.ProductId());
             var FBclient = new Facebook.FacebookClient();
@@ -446,12 +446,14 @@ namespace Explora_Precios.Web.Controllers
                     {"caption", "Desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
                     {"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
                     {"name", ProductObj.name},
-                    {"picture", "http://www.ipodtotal.com/imagenes/noticias/elecom-altavoces-estereo-2.jpg"},
+                    {"picture", string.Format("http://www.exploraprecios.com/image?id={0}", _id)},
                     {"link", string.Format("http://www.exploraprecios.com?i={0}", _id)}
                 };
             try
             {
                 var result = FBclient.Post("me/feed", parameters);
+                var upObj = new User_Product { Type = User_Product.RelationType.Liked, product = ProductObj, user = CurrentUser };
+                _uProductRepository.SaveOrUpdate(upObj);
             }
             catch (Facebook.FacebookApiException ex)
             {
@@ -486,7 +488,7 @@ namespace Explora_Precios.Web.Controllers
                     {"caption", "Lo puedes encontrar desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
                     {"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
                     {"name", ProductObj.name},
-                    {"picture", "http://www.ipodtotal.com/imagenes/noticias/elecom-altavoces-estereo-2.jpg"},
+                    {"picture", string.Format("http://www.exploraprecios.com/image?id={0}", GroupModel.Product)},
                     {"link", string.Format("http://www.exploraprecios.com?i={0}", GroupModel.Product)}
                 };
                 try

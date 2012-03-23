@@ -8,7 +8,7 @@ namespace Explora_Precios.Core
 {
     public class User_Product : Entity
     {
-        public enum RelationType { Rating = 1, FollowIsOnSale = 2, FollowLessThanPrice = 3, FollowDoesPriceWentDown = 4 }
+        public enum RelationType { Rating = 1, FollowIsOnSale = 2, FollowLessThanPrice = 3, FollowDoesPriceWentDown = 4, Liked = 5 }
 
         public User_Product() { Notified = DateTime.Parse("05/03/1976"); }
 

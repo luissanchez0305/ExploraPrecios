@@ -270,6 +270,8 @@ label .itemModified .new { color: Green; }
 .details .productLeft .productImage { position:relative; font: bold 12px Arial;}
 /*.details .productLeft .qualities { position:relative; }*/
 .details .productLeft .qualities .title {position:relative; font: bold 14px Arial; }
+.details .productLeft .qualities .like { background:url('Images/facebook-like.jpg') no-repeat left top; width:49px; height:26px; }
+.details .productLeft .qualities .liked { background:url('Images/facebook-liked.jpg') no-repeat left top; width:49px; height:26px; }
 .details .productRight { padding-left: 130px; margin-left: 130px;}
 .details .productRight .productTitle { position:relative; margin-bottom: 10px; font: normal 14px Arial; }
 /*.details .productRight .productTitle h2 { font: bold 15px Arial; }*/
