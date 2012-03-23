@@ -47,7 +47,7 @@ namespace Explora_Precios.ApplicationServices
             Smtp.UseDefaultCredentials = false;
             Smtp.Credentials = Info;
             Smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            Smtp.Port = 587;
+            Smtp.Port = int.Parse(System.Configuration.ConfigurationManager.AppSettings["emailPort"]);
 
             try
             {

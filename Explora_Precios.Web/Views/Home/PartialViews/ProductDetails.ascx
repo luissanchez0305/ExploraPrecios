@@ -2,22 +2,27 @@
 <% var moneyFormat = "#,###.00";
 
    var highlight = Request.QueryString["_highlight"];
-   var id_val = Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]); %>
+   var id_val = Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]);%>
+
     <div id="FloatingPanel" class="details">
-    <input type="hidden" id="displaying" value="<%= Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]) %>" />
+    <input type="hidden" id="displaying" value="<%= id_val %>" />
     <div id="BreadCrums">
         Producto en <b><%= Explora_Precios.Web.Controllers.Helpers.CatalogHelper.CatalogToString(true, Model.catalogProduct, true)%></b>
+        <a href="javascript:void(0)" id="like">Like</a>
+        <%--<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.exploraprecios.com%3ftype%3ddetail%26amp%3bi%3d<%=Server.UrlEncode(id_val)%>&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=verdana&amp;height=21&amp;appId=285146028212857" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>--%>
+        <%--<fb:like href="http://www.exploraprecios.com/?type=detail&amp;i=<%= id_val %>" send="false" layout="button_count" width="100" show_faces="false" action="recommend" font="verdana"></fb:like>--%>
+        <%--<div class="fb-like" data-href="http://www.exploraprecios.com/?type=detail&amp;i=<%= id_val %>" data-send="true" data-layout="button_count" data-width="100" data-show-faces="false" data-action="recommend" data-font="verdana"></div>--%>
         <div class="attention disclaimerlink"><img src="../../Content/Images/information3-sc49.png" alt="Attention" /></div>
         <div class="rating"><div class="text">Califica este producto </div><div id="star"></div><div class="thanks">Gracias!</div></div>
         <div class="follow"><label class="text bold hand">Sigue este producto </label>&nbsp;<div class="imagecontainer"><img class="image" alt="Follow Arrow" src="/Content/Images/red_arrow.jpg" /></div><div class="followPanel"></div></div>
         <div class="group">
-		<%--<% if (Model.group.Grouped != Explora_Precios.Web.Controllers.ViewModels.GroupDisplay.InGroup)
+		<% if (Model.group.Grouped != Explora_Precios.Web.Controllers.ViewModels.GroupDisplay.InGroup)
 		{ %>
         <label class="text bold hand"><%= Model.group.Grouped == Explora_Precios.Web.Controllers.ViewModels.GroupDisplay.IncludeMe ? "Unirse al" : "Crea un"%> grupo</label>&nbsp;
         <% }
 		else { %>
-		<label class="text bold hand">Grupo - <%= Model.group.GroupSize %> pers.</label>&nbsp;
-		<% } %><div class="imagecontainer"><img class="image" alt="Group Product" src="/Content/Images/people.png" height="18px" width="18px" /></div><div class="groupPanel"></div>--%>
+		<label class="text bold hand <%= Model.group.IsFacebooked ? "" : "noaction" %>">Grupo - <%= Model.group.GroupSize %> pers.</label>&nbsp;
+		<% } %><div class="imagecontainer"><img class="image" alt="Group Product" src="/Content/Images/people.png" height="18px" width="18px" /></div><div class="groupPanel"></div>
 		</div>
         <%--<div class="share">
             <!-- AddThis Button BEGIN -->
@@ -90,6 +95,24 @@
         //$(".followPanel").hide();
         $("#reportLoadingImg").hide();
         $(".thanks").hide();
+        $("#like").click(function(){
+            $.ajax({
+                type: "GET",
+                url: '<%= Url.Action("Testing", "Home") %>',
+                dataType: "json",
+                error: function (x, e) {
+                    alert("error");
+                },
+                success: function (data) {
+                    if (data.result == "fail") {
+                        alert(data.msg);
+                    }
+                    else {                        
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
     });
     $("#star").raty({
         click: function (score, evt) {
@@ -125,11 +148,13 @@
     });
 
     $(".group .text").click(function(){
-        ClickEvent('group');
+        if(!$(this).hasClass('noaction'))
+            ClickEvent('group');
     });
 
-    $(".group .image").click(function(){
-        ClickEvent('group');
+    $(".group .image").click(function(){    
+        if(!$(".group .text").hasClass('noaction'))
+            ClickEvent('group');
     });
 
     function ClickEvent(obj)

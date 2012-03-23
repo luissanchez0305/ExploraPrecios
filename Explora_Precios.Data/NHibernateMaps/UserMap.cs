@@ -23,11 +23,10 @@ namespace Explora_Precios.Data.NHibernateMaps
             mapping.Map(x => x.birthdate, "birthdate");
             mapping.Map(x => x.isApproved, "isApproved");
             mapping.Map(x => x.facebookToken, "facebookToken");
-            mapping.HasManyToMany(x => x.groups)
+            mapping.HasMany(x => x.groups)
                 .Table("Group_Users")
-                .ParentKeyColumn("user_Id")
-                .ChildKeyColumn("product_Id")
-                .Cascade.AllDeleteOrphan();
+                .KeyColumn("user_Id")
+                .Cascade.All();
         }
     }
 }

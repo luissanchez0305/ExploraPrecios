@@ -14,7 +14,6 @@ namespace Explora_Precios.Web.Controllers
 {
     public class PrimaryController : Controller
     {
-        private string FbTokenKey = ConfigurationManager.AppSettings["fbTokenKey"];
         public User CurrentUser { get; set; }
 
         public PrimaryController()
@@ -31,6 +30,7 @@ namespace Explora_Precios.Web.Controllers
                 if (!string.IsNullOrEmpty(HttpContext.User.Identity.Name))
                 {
                     CurrentUser = new UserRepository().GetByEmail(HttpContext.User.Identity.Name);
+                    ViewData["GroupSize"] = CurrentUser.groups.Count;
                     if (!string.IsNullOrEmpty(CurrentUser.facebookToken))
                     {
                         var client = new FacebookClient();

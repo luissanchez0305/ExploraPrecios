@@ -32,7 +32,7 @@ ExploraPrecios.com
             });
 
             $(".gridItem, .gridItem_v").live('click', function () {
-                LoadProductDetail($(this), $(this).prev().val(), 0);
+                LoadProductDetail($(this).prev().val(), '0');
             });
         });
 

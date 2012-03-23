@@ -35,11 +35,10 @@ namespace Explora_Precios.Data.NHibernateMaps
                 .Cascade.AllDeleteOrphan()
                 .Inverse()
                 .AsBag();
-            mapping.HasManyToMany(x => x.groups)
-                .Table("Group_Users")
-                .ParentKeyColumn("product_Id")
-                .ChildKeyColumn("user_Id")
-                .Cascade.AllDeleteOrphan();
+            mapping.HasMany(x => x.groups)
+                .Cascade.SaveUpdate()
+                .Inverse()
+                .AsBag();
         }
     }
 }

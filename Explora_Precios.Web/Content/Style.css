@@ -31,6 +31,7 @@ img { border: 0; }
 .loginbox.home { top: -2px; right:15px; }
 .loginbox .facebook { position:absolute; top: 23px; }
 .loginbox.home .facebook { left: 26px; }
+.loginbox.home .groups { position:absolute; top: 23px; float:right;}
 
 .searchbox {position:absolute; top: 90px; right:15px; padding: 6px; color:black; vertical-align: middle; }
 .searchbox label { font-weight:bold; }
@@ -235,6 +236,7 @@ a.disabled { color:gray; }
 .possible { background-color: #F1E0B2; }
 .thanks { float:left; padding-left: 5px; font-size: 12px; font-weight: bold; }
 .LoginLoading { width:25px;height:25px; float:left; padding-right: 5px; position:relative; }
+.questionMark { background: url(images/ui-icons_222222_256x240.png) no-repeat -50px -146px; width:10px; height:10px;   }
 
 label .itemModified { font-weight:bold; }
 label .itemModified .deleted { color: Red; }
@@ -255,10 +257,10 @@ label .itemModified .new { color: Green; }
 .details #BreadCrums div.follow .text { float:left; color:#2F2818; text-decoration: underline; }
 .details #BreadCrums div.follow .imagecontainer { height: 1px; float:left; position:relative; padding-left: 10px; }
 .details #BreadCrums div.follow .followPanel {  padding-top:4px; }
-.details #BreadCrums div.group { float:left; position:relative; top:-23px; width: 160px; }
+.details #BreadCrums div.group { float:left; position:relative; top:-23px; width: 170px; }
 .details #BreadCrums div.group .text { float:left; color:#2F2818; text-decoration: underline; }
 .details #BreadCrums div.group .imagecontainer { height: 1px; float:left; position:relative; padding-left: 10px; }
-.details #BreadCrums div.group .groupPanel { padding-top:4px; width:200px; }
+.details #BreadCrums div.group .groupPanel { padding-top:4px; width:170px; }
 .details #BreadCrums div.share { float:left; position:relative; top: -23px; padding-left: 100px; width:240px; }
 .details div.attention20_20 img { width:20px; height:20px; }
 .details .productLeft { float:left; width:250px; }

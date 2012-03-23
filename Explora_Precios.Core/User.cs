@@ -23,6 +23,6 @@ namespace Explora_Precios.Core
         public virtual DateTime birthdate { get; set; }
         public virtual bool isApproved { get; set; }
         public virtual string facebookToken { get; set; }
-        public virtual IList<Product> groups { get; set; }
+        public virtual IList<Group_User> groups { get; set; }
     }
 }

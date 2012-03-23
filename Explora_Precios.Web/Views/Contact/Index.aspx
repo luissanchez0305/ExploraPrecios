@@ -111,7 +111,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     $(".gridItem").live('click', function () {
         var $this = $(this);
         var val = $(this).prev().val();
-        LoadProductDetail($this, val, "0");        
+        LoadProductDetail(val, "0");        
     });
 
     $('.loginbox a').live('click', function () {

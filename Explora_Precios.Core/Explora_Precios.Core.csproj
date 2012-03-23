@@ -113,9 +113,11 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DataInterfaces\IGroup_UserRepository.cs" />
     <Compile Include="DataInterfaces\IProductLogRepository.cs" />
     <Compile Include="DataInterfaces\IUserRepository.cs" />
     <Compile Include="DataInterfaces\IUser_ProductRepository.cs" />
+    <Compile Include="Group_User.cs" />
     <Compile Include="Helper\AuditableAttribute.cs" />
     <Compile Include="ProductLog.cs" />
     <Compile Include="CatalogTypes.cs" />

@@ -73,7 +73,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
             $(".gridItem, .gridItem_v").live('click', function () {
                 var $this = $(this);
                 var val = $(this).prev().val();
-                LoadProductDetail($this, val, "0");
+                LoadProductDetail(val, "0");
             });
 
             //LoadSlider('MegaBanner', true);
@@ -504,7 +504,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     </div>
     <script type="text/javascript">
         $('div.section [id$=Banner] div.item, div.highlighted [id$=Banner] div.item').live('click', function () {
-            LoadProductDetail($(this), $(this).prev().val(), $(this).prev().prev().val());
+            LoadProductDetail($(this).prev().val(), $(this).prev().prev().val());
         });
     </script>
 
