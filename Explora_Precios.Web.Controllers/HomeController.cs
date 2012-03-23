@@ -431,15 +431,36 @@ namespace Explora_Precios.Web.Controllers
 
         public ActionResult Testing(string _id)
         {
-            var client = new Facebook.FacebookClient(CurrentUser.facebookToken);
-            dynamic throwAwayVariable = client.Get("/me/likes");
+            var ProductObj = _productRepository.Get(_id.ProductId());
+            var FBclient = new Facebook.FacebookClient();
+            FBclient.AccessToken = CurrentUser.facebookToken;
+            var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
+                                    "Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, _id);
 
+            var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
             var parameters = new Dictionary<string, object>
                 {
-                    {"url", "http://localhost:50545?type=detail&i="+_id}
+                    {"access_token",  CurrentUser.facebookToken},
+                    {"appId", "285146028212857"},
+                    {"message", msg},
+                    {"caption", "Desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
+                    {"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
+                    {"name", ProductObj.name},
+                    {"picture", "http://www.ipodtotal.com/imagenes/noticias/elecom-altavoces-estereo-2.jpg"},
+                    {"link", string.Format("http://www.exploraprecios.com?i={0}", _id)}
                 };
-            dynamic result = client.Post("/me/likes", parameters);
-            return null;
+            try
+            {
+                var result = FBclient.Post("me/feed", parameters);
+            }
+            catch (Facebook.FacebookApiException ex)
+            {
+                if (ex.Message.Contains("authorized"))
+                    return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
+                if (ex.Message.Contains("Duplicate"))
+                    return Json(new { result = "fail", msg = "Mensaje duplicado" });
+            }
+            return Json(new { result = "success", msg = "KUDOS!!" });
         }
 
         // AJAX
@@ -448,23 +469,29 @@ namespace Explora_Precios.Web.Controllers
             var GroupModel = new GroupViewModel();
             TryUpdateModel(GroupModel);
 
-            var ProductObj = _productRepository.Get(int.Parse(GroupModel.Product.DecryptString()));
+            var ProductObj = _productRepository.Get(GroupModel.Product.ProductId());
             if (GroupModel.DoPublish)
             {
-                var client = new Facebook.FacebookClient();
-                client.AccessToken = CurrentUser.facebookToken;
+                var FBclient = new Facebook.FacebookClient();
+                FBclient.AccessToken = CurrentUser.facebookToken;
                 var msg = string.Format("He creado un grupo de compra de \"{0}\" en www.ExploraPrecios.com. Ven, registrate y entra al grupo para recibir grandes descuentos! "+
-                                        "Haz click en el siguiente link: http://www.exploraprecios.com?type=detail&i={1}", ProductObj.name, GroupModel.Product);
+                                        "Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, GroupModel.Product);
+                var description = string.Join(", ", ProductObj.clients.Select(client => client.name).ToArray());
 
                 var parameters = new Dictionary<string, object>
                 {
                     {"access_token",  CurrentUser.facebookToken},
                     {"appId", "285146028212857"},
-                    {"message", msg}
+                    {"message", msg},
+                    {"caption", "Lo puedes encontrar desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
+                    {"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
+                    {"name", ProductObj.name},
+                    {"picture", "http://www.ipodtotal.com/imagenes/noticias/elecom-altavoces-estereo-2.jpg"},
+                    {"link", string.Format("http://www.exploraprecios.com?i={0}", GroupModel.Product)}
                 };
                 try
                 {
-                    var result = client.Post("me/feed", parameters);
+                    var result = FBclient.Post("me/feed", parameters);
                 }
                 catch (Facebook.FacebookApiException ex)
                 {
@@ -516,13 +543,8 @@ namespace Explora_Precios.Web.Controllers
 		{
 			try
 			{
-				var productId = 0;
-				if (!int.TryParse(_valId, out productId))
-				{
-					productId = int.Parse(_valId.DecryptString());
-				}
 				var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
-				var productObj = _productRepository.Get(productId);
+                var productObj = _productRepository.Get(_valId.ProductId());
 				var productVMObj = productVM.LoadModel(productObj, false);
 				productVMObj.group.Grouped = productObj.groups.Count == 0 || CurrentUser == null ? GroupDisplay.Create : productObj.groups.Where(x => x.user == CurrentUser).Count() > 0 ? GroupDisplay.InGroup : GroupDisplay.IncludeMe;
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);

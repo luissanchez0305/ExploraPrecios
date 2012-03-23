@@ -136,7 +136,9 @@ li a.filter:hover {color:#f2581c; text-decoration:none;}
 .banners ul li a:hover {background: url(images/banner_btn.png) repeat-x -40px left; color:White;}
 
 /* ===================== Grid / Table / List ====================== */
-.qualitiesTable { border-width: 0; font: normal 10px Arial; }
+.qualityItem { font: normal 12px Arial; }
+.qualityItem.even { background-color:#F2F2F2;}
+.qualityItem .name { font-weight:bold; }
 
 .grid {margin-left:15px;}
 .gridItem { float:left; width:170px; display:block; height:210px; cursor:pointer; }
@@ -266,7 +268,7 @@ label .itemModified .new { color: Green; }
 .details .productLeft { float:left; width:250px; }
 .details .productLeft a { float: right; }
 .details .productLeft .productImage { position:relative; font: bold 12px Arial;}
-.details .productLeft .qualities { position:relative; }
+/*.details .productLeft .qualities { position:relative; }*/
 .details .productLeft .qualities .title {position:relative; font: bold 14px Arial; }
 .details .productRight { padding-left: 130px; margin-left: 130px;}
 .details .productRight .productTitle { position:relative; margin-bottom: 10px; font: normal 14px Arial; }

@@ -14,6 +14,16 @@ namespace Explora_Precios.Web.Controllers.Helpers
             return text.Length >= lenght ? text.Substring(0, lenght) + "..." : text;
         }
 
+        public static int ProductId(this string Id)
+        {
+            var productId = 0;
+            if (!int.TryParse(Id, out productId))
+            {
+                productId = int.Parse(Id.DecryptString());
+            }
+            return productId;
+        }
+
         public static string DecryptString(this string Product)
         {
             var key = System.Configuration.ConfigurationManager.AppSettings["PublicKey"];

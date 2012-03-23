@@ -8,7 +8,6 @@
     <input type="hidden" id="displaying" value="<%= id_val %>" />
     <div id="BreadCrums">
         Producto en <b><%= Explora_Precios.Web.Controllers.Helpers.CatalogHelper.CatalogToString(true, Model.catalogProduct, true)%></b>
-        <a href="javascript:void(0)" id="like">Like</a>
         <%--<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.exploraprecios.com%3ftype%3ddetail%26amp%3bi%3d<%=Server.UrlEncode(id_val)%>&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=verdana&amp;height=21&amp;appId=285146028212857" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>--%>
         <%--<fb:like href="http://www.exploraprecios.com/?type=detail&amp;i=<%= id_val %>" send="false" layout="button_count" width="100" show_faces="false" action="recommend" font="verdana"></fb:like>--%>
         <%--<div class="fb-like" data-href="http://www.exploraprecios.com/?type=detail&amp;i=<%= id_val %>" data-send="true" data-layout="button_count" data-width="100" data-show-faces="false" data-action="recommend" data-font="verdana"></div>--%>
@@ -34,20 +33,17 @@
         <img width="250" height="200" class="productImage" alt="<%= Model.productName %>" src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(Model.productImage) %>" />
         <!-- TODO LISTA DE IMAGENES -->
         <div class="qualities">
-            <label class="title">Caracteristicas</label>
-            <table class="qualitiesTable">
-                <% foreach (var quality in Model.qualities)
-                   { %>
-                <tr>
-                    <td>
-                        <%= quality.name %>
-                    </td>
-                    <td>
-                        <%= quality.value %>
-                    </td>
-                </tr>
-                <% } %>
-            </table>
+            <label class="title">Caracteristicas</label><img class="hand" style="float:right;" id="like" src="../../../Content/Images/facebook-like.jpg" width="79px" height="20px" />
+                <% var index = 0; 
+                    foreach (var quality in Model.qualities)
+                   {
+                       %>
+                <div class="qualityItem <%= index %> <%= index%2==1 ? "even" : "" %>">
+                    <label class="name"><%= quality.name %></label>
+                    <label class="value"><%= quality.value %></label>
+                </div>
+                <% index++;
+                   } %>
         </div>
     </div>
     <div class="productRight">

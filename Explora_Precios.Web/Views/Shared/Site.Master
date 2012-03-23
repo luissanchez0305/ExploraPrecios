@@ -408,7 +408,7 @@
 		        slideboxTotalContent = i * $('#slidebox').width();
 		        $('#slidebox .container').css("width", slideboxTotalContent + $('#slidebox').width());
 		    });
-		    if (getParameterByName('type') == 'detail') {
+		    if (getParameterByName('i').length > 0) {
 		        LoadProductDetail(getParameterByName('i'), '0');
 		    }
 		});
