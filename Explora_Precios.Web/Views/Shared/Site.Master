@@ -96,7 +96,7 @@
                     }
                 });
             });
-        }, { scope: 'email,publish_stream,user_likes' });
+        }, { scope: 'email,publish_stream' });
     }
 </script>
 <%
