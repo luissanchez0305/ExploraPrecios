@@ -32,7 +32,7 @@ namespace Explora_Precios.Web.Controllers
 		IClient_ProductRepository _cpRepository;
 		IUserRepository _uRepository;
 		IUser_ProductRepository _uProductRepository;
-        IGroup_UserRepository _groupRepository;
+		IGroup_UserRepository _groupRepository;
 		private int currentPage = 0;
 		private const string RegisterPage = @"<div style=""background-color:#F6F5EA;"">Para poder {0} debes<br />registrarte a <b>ExploraPrecios.com</b>.<br />Que esperas suscribete ya!</div>
 						<div class='loginbox' style=""color:#D84018;""><input type='hidden' id='Redirect' value='{1}' /><a class='register' style=""color:#D84018;"" href='javascript:void(0)'>Registrarse</a> / <a class='login' style=""color:#D84018;"" href='javascript:void(0)'>Entrar</a></div>";
@@ -45,7 +45,7 @@ namespace Explora_Precios.Web.Controllers
 			IClient_ProductRepository cpRepository,
 			IUserRepository uRepository,
 			IUser_ProductRepository uProductRepository,
-            IGroup_UserRepository groupRepository)
+			IGroup_UserRepository groupRepository)
 		{
 			_catRepository = catRepository;
 			_productRepository = productRepository;
@@ -55,7 +55,7 @@ namespace Explora_Precios.Web.Controllers
 			_cpRepository = cpRepository;
 			_uRepository = uRepository;
 			_uProductRepository = uProductRepository;
-            _groupRepository = groupRepository;
+			_groupRepository = groupRepository;
 		}
 
 		public ActionResult Index()
@@ -124,22 +124,69 @@ namespace Explora_Precios.Web.Controllers
 			var IntroModel = new IntroViewModel();
 			IntroModel.TickerList = result;
 
-			// Provisionalmente vamos a traer 20 productos en oferta para ser desplegados como destacados
-			var offerProducts = _cpRepository.GetProductsOnSale().RandomizeList();
-			var clientIds = offerProducts.Select(cp => cp.client.Id).Distinct();
-			var highlightedProducts = new List<Client_Product>();
-			foreach(var clientId in clientIds)
-			{
-				highlightedProducts.AddRange(offerProducts.Where(cp => cp.client.Id == clientId).Take(6));
-			}
-			var newProducts = _cpRepository.GetLastAdded();
+            //Productos de las lista de destacados, en ofertas y nuevos
+            if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
+            {
+                var offerProducts = _cpRepository.GetProductsOnSale().RandomizeList(); // sacamos al azar los productos en oferta
+                var clientIds = offerProducts.Select(cp => cp.client.Id).Distinct(); // sacamos los clientes que tienen productos en oferta
+                var highlightedProducts = new List<Client_Product>();
+                foreach (var clientId in clientIds) // tomamos maximo 6 productos de cada cliente y lo ponemos en la lista de destacados
+                {
+                    highlightedProducts.AddRange(offerProducts.Where(cp => cp.client.Id == clientId).Take(6));
+                }
+                var newProducts = _cpRepository.GetLastAdded(); // sacamos los nuevos productos
 
-			IntroModel.HighlightProducts = highlightedProducts.Select(client_product => new BannerProduct() { ProductId = client_product.product.Id, Name = client_product.product.name, Client = client_product.client.name, Image = client_product.product.image.imageObj, ClientId = client_product.client.Id, Price = client_product.specialPrice}).RandomizeList();
-			IntroModel.OfferProducts = offerProducts.Select(client_product => new BannerProduct() { ProductId = client_product.product.Id, Name = client_product.product.name, Client = client_product.client.name, Image = client_product.product.image.imageObj, Price = client_product.specialPrice }).RandomizeList();
-			IntroModel.NewProducts = newProducts.Select(client_product => new BannerProduct() { ProductId = client_product.product.Id, Name = client_product.product.name, Client = client_product.client.name, Image = client_product.product.image.imageObj, Price = client_product.price });
-			
+                // se generan los objetos de banner, se revuelven y se guardan una variable
+                var Raw_HighlightProducts = highlightedProducts.RandomizeList();
+                var Raw_OfferProducts = offerProducts.RandomizeList();
+
+                // se guardan en memoria en ese orden
+                System.Web.HttpRuntime.Cache.Insert("HighlightProducts", Raw_HighlightProducts,
+                    null,
+                    DateTime.Now.AddHours(2),
+                    System.Web.Caching.Cache.NoSlidingExpiration);
+                System.Web.HttpRuntime.Cache.Insert("OfferProducts", Raw_OfferProducts,
+                 null,
+                 DateTime.Now.AddHours(2),
+                 System.Web.Caching.Cache.NoSlidingExpiration);
+                System.Web.HttpRuntime.Cache.Insert("NewProducts", newProducts,
+                    null,
+                    DateTime.Now.AddHours(2),
+                    System.Web.Caching.Cache.NoSlidingExpiration);
+
+                // Rellenamos el modelo con bannerproduct models vacios
+                IntroModel.HighlightProducts = LoadBannerProductModelList(Raw_HighlightProducts);
+                IntroModel.OfferProducts = LoadBannerProductModelList(Raw_OfferProducts);
+                IntroModel.NewProducts = LoadBannerProductModelList(newProducts);
+            }
+            else
+            {
+               
+                // Rellenamos el modelo con bannerproduct models vacios
+                IntroModel.HighlightProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("HighlightProducts"));
+                IntroModel.OfferProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("OfferProducts"));
+                IntroModel.NewProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("NewProducts"));
+            }
 			return View(IntroModel);
 		}
+
+        private IEnumerable<BannerProduct> LoadBannerProductModelList(IEnumerable<Client_Product> cpList)
+        {
+            return cpList.Take(5).Select(cp => LoadBannerProduct(cp, true)).Concat(cpList.Skip(5).Select(cp => LoadBannerProduct(cp, false)));
+        }
+
+        private BannerProduct LoadBannerProduct(Client_Product cp, bool loadImage)
+        {
+            return new BannerProduct()
+            {
+                ProductId = cp.product.Id,
+                Name = cp.product.name,
+                Client = cp.client.name,
+                Image = loadImage ? cp.product.image.imageObj : null,
+                ClientId = cp.client.Id,
+                Price = cp.specialPrice
+            };
+        }
 
 		public ActionResult Products(int? catLev, int? id, int? page)
 		{
@@ -392,7 +439,7 @@ namespace Explora_Precios.Web.Controllers
 
 				GroupVM.GroupSize = ProductObj.groups.Count;
 				GroupVM.IsFacebooked = !string.IsNullOrEmpty(CurrentUser.facebookToken);
-                GroupVM.DoPublish = GroupVM.Grouped == GroupDisplay.InGroup; // si esta en un grupo que solo pueda hacer publish sin tener que presionar el checkbox
+				GroupVM.DoPublish = GroupVM.Grouped == GroupDisplay.InGroup; // si esta en un grupo que solo pueda hacer publish sin tener que presionar el checkbox
 				ViewData.Model = GroupVM;
 				return Json(new { html = this.RenderViewToString("PartialViews/GroupProduct", ViewData) });
 			}
@@ -429,94 +476,94 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new { result = "success", msg = "" });
 		}
 
-        public ActionResult SetLike(string _id)
-        {
-            try
-            {
-                var ProductObj = _productRepository.Get(_id.ProductId());
-                var FBclient = new Facebook.FacebookClient();
-                FBclient.AccessToken = CurrentUser.facebookToken;
-                var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
-                                        "Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, _id);
+		public ActionResult SetLike(string _id)
+		{
+			try
+			{
+				var ProductObj = _productRepository.Get(_id.ProductId());
+				var FBclient = new Facebook.FacebookClient();
+				FBclient.AccessToken = CurrentUser.facebookToken;
+				var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
+										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, _id);
 
-                var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
-                var parameters = new Dictionary<string, object>
-                {
-                    {"access_token",  CurrentUser.facebookToken},
-                    {"appId", "285146028212857"},
-                    {"message", msg},
-                    {"caption", "Desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
-                    {"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
-                    {"name", ProductObj.name},
-                    {"picture", ProductObj.image.url},
-                    {"link", string.Format("http://www.exploraprecios.com?i={0}", _id)}
-                };
-                var result = FBclient.Post("me/feed", parameters);
-                var upObj = new User_Product { Type = User_Product.RelationType.Liked, product = ProductObj, user = CurrentUser };
-                _uProductRepository.SaveOrUpdate(upObj);
-            }
-            catch (NullReferenceException ex)
-            {
-                return Json(new { result = "fail", msg = "Necesitas estar conectado con Facebook." });
-            }
-            catch (Facebook.FacebookApiException ex)
-            {
-                if (ex.Message.Contains("authorized"))
-                    return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
-                if (ex.Message.Contains("Duplicate"))
-                    return Json(new { result = "fail", msg = "Mensaje duplicado" });
-            }
-            return Json(new { result = "success", msg = "KUDOS!!" });
-        }
+				var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
+				var parameters = new Dictionary<string, object>
+				{
+					{"access_token",  CurrentUser.facebookToken},
+					{"appId", "285146028212857"},
+					{"message", msg},
+					{"caption", "Desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
+					{"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
+					{"name", ProductObj.name},
+					{"picture", ProductObj.image.url},
+					{"link", string.Format("http://www.exploraprecios.com?i={0}", _id)}
+				};
+				var result = FBclient.Post("me/feed", parameters);
+				var upObj = new User_Product { Type = User_Product.RelationType.Liked, product = ProductObj, user = CurrentUser };
+				_uProductRepository.SaveOrUpdate(upObj);
+			}
+			catch (NullReferenceException ex)
+			{
+				return Json(new { result = "fail", msg = "Necesitas estar conectado con Facebook." });
+			}
+			catch (Facebook.FacebookApiException ex)
+			{
+				if (ex.Message.Contains("authorized"))
+					return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
+				if (ex.Message.Contains("Duplicate"))
+					return Json(new { result = "fail", msg = "Mensaje duplicado" });
+			}
+			return Json(new { result = "success", msg = "KUDOS!!" });
+		}
 
-        // AJAX
-        public ActionResult SetGroup()
-        {
-            var GroupModel = new GroupViewModel();
-            TryUpdateModel(GroupModel);
+		// AJAX
+		public ActionResult SetGroup()
+		{
+			var GroupModel = new GroupViewModel();
+			TryUpdateModel(GroupModel);
 
-            var ProductObj = _productRepository.Get(GroupModel.Product.ProductId());
-            if (GroupModel.DoPublish)
-            {
-                var FBclient = new Facebook.FacebookClient();
-                FBclient.AccessToken = CurrentUser.facebookToken;
-                var msg = string.Format("He creado un grupo de compra de \"{0}\" en www.ExploraPrecios.com. Ven, registrate y entra al grupo para recibir grandes descuentos! "+
-                                        "Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, GroupModel.Product);
-                var description = string.Join(", ", ProductObj.clients.Select(client => client.name).ToArray());
+			var ProductObj = _productRepository.Get(GroupModel.Product.ProductId());
+			if (GroupModel.DoPublish)
+			{
+				var FBclient = new Facebook.FacebookClient();
+				FBclient.AccessToken = CurrentUser.facebookToken;
+				var msg = string.Format("He creado un grupo de compra de \"{0}\" en www.ExploraPrecios.com. Ven, registrate y entra al grupo para recibir grandes descuentos! "+
+										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, GroupModel.Product);
+				var description = string.Join(", ", ProductObj.clients.Select(client => client.name).ToArray());
 
-                var parameters = new Dictionary<string, object>
-                {
-                    {"access_token",  CurrentUser.facebookToken},
-                    {"appId", "285146028212857"},
-                    {"message", msg},
-                    {"caption", "Lo puedes encontrar desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
-                    {"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
-                    {"name", ProductObj.name},
-                    {"picture", ProductObj.image.url},
-                    {"link", string.Format("http://www.exploraprecios.com?i={0}", GroupModel.Product)}
-                };
-                try
-                {
-                    var result = FBclient.Post("me/feed", parameters);
-                }
-                catch (Facebook.FacebookApiException ex)
-                {
-                    if (ex.Message.Contains("authorized"))
-                        return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
-                    if (ex.Message.Contains("Duplicate"))
-                        return Json(new { result = "fail", msg = "Mensaje duplicado" });
-                }
-            }
+				var parameters = new Dictionary<string, object>
+				{
+					{"access_token",  CurrentUser.facebookToken},
+					{"appId", "285146028212857"},
+					{"message", msg},
+					{"caption", "Lo puedes encontrar desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
+					{"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
+					{"name", ProductObj.name},
+					{"picture", ProductObj.image.url},
+					{"link", string.Format("http://www.exploraprecios.com?i={0}", GroupModel.Product)}
+				};
+				try
+				{
+					var result = FBclient.Post("me/feed", parameters);
+				}
+				catch (Facebook.FacebookApiException ex)
+				{
+					if (ex.Message.Contains("authorized"))
+						return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
+					if (ex.Message.Contains("Duplicate"))
+						return Json(new { result = "fail", msg = "Mensaje duplicado" });
+				}
+			}
 
-            if (ProductObj.groups.Count == 0 || ProductObj.groups.SingleOrDefault(group => group.user == CurrentUser) == null)
-            {
-                var newGroup_User = new Group_User { user = CurrentUser, product = ProductObj, created = DateTime.Now };
-                _groupRepository.Update(newGroup_User);
-                ProductObj.groups.Add(newGroup_User);
-            }
+			if (ProductObj.groups.Count == 0 || ProductObj.groups.SingleOrDefault(group => group.user == CurrentUser) == null)
+			{
+				var newGroup_User = new Group_User { user = CurrentUser, product = ProductObj, created = DateTime.Now };
+				_groupRepository.Update(newGroup_User);
+				ProductObj.groups.Add(newGroup_User);
+			}
 
-            return Json(new { result = "success", msg = "", groupSize = ProductObj.groups.Count });
-        }
+			return Json(new { result = "success", msg = "", groupSize = ProductObj.groups.Count });
+		}
 
 		public ActionResult SetRate(string _product, int _value)
 		{
@@ -550,7 +597,7 @@ namespace Explora_Precios.Web.Controllers
 			try
 			{
 				var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
-                var productObj = _productRepository.Get(_valId.ProductId());
+				var productObj = _productRepository.Get(_valId.ProductId());
 				var productVMObj = productVM.LoadModel(productObj, false);
 				productVMObj.group.Grouped = productObj.groups.Count == 0 || CurrentUser == null ? GroupDisplay.Create : productObj.groups.Where(x => x.user == CurrentUser).Count() > 0 ? GroupDisplay.InGroup : GroupDisplay.IncludeMe;
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);
