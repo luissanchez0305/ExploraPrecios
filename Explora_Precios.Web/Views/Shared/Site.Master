@@ -94,7 +94,7 @@
 							$(".will_login").hide();
 							$("#currentName").html(responseMe.first_name);
 							if (data.redirect.length > 0) {
-								LoadProductDetail(data.redirect, '');
+								LoadProductDetail(data.redirect, '0');
 							}
 							else if (!data.existed) {
 								$("#SuccessFBRegister").show();
