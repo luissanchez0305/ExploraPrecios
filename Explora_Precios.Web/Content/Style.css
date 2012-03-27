@@ -340,8 +340,8 @@ label .itemModified .new { color: Green; }
 #ProductDisplayPanel .section label.sectiontitle { color: #354359; font-family: 'verdana'; font-size: 20px; font-weight: bold; padding-left: 10px; }
 #ProductDisplayPanel .section div.title { background: rgba(250, 252, 22, 0.4); color: #354359; font-family: 'verdana'; font-size: 12px; font-weight: bold; left: 10px; position:absolute; z-index:200; }
 #ProductDisplayPanel .section img { padding-left: 15px; width:120px; height:80px; position:absolute; z-index:199; }
-#ProductDisplayPanel .section div.itemprice { background: rgba(250, 252, 22, 0.6); color: #C80F02; font-family: 'verdana'; font-size: 14px; font-weight: bold; float:right; top:60px; position:relative; z-index:200; }
-#ProductDisplayPanel .section div.client { background: rgba(250, 252, 22, 0.6); color: #2C7C7C; font-family: 'verdana'; font-size: 12px; font-weight: bold; float:right; left:0px; top:60px; position:relative; z-index:200; }
+#ProductDisplayPanel .section div.itemprice { background: rgba(250, 252, 22, 0.6); color: #C80F02; font-family: 'verdana'; font-size: 14px; font-weight: bold; float:right; top:85px; position:relative; z-index:200; }
+#ProductDisplayPanel .section div.client { background: rgba(250, 252, 22, 0.6); color: #2C7C7C; font-family: 'verdana'; font-size: 12px; font-weight: bold; float:right; left:0px; top:85px; position:relative; z-index:200; }
 
 #ProductDisplayPanel .highlighted { border:1px solid black; border-radius:5px; height:200px; width:750px; margin-bottom:20px; }
 #ProductDisplayPanel .highlighted label.sectiontitle { color: #354359; font-family: 'verdana'; font-size: 20px; font-weight: bold; padding-left: 10px; }

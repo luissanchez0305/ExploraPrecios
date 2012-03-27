@@ -127,47 +127,57 @@ namespace Explora_Precios.Web.Controllers
             //Productos de las lista de destacados, en ofertas y nuevos
             if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
             {
-                var offerProducts = _cpRepository.GetProductsOnSale().RandomizeList(); // sacamos al azar los productos en oferta
-                var clientIds = offerProducts.Select(cp => cp.client.Id).Distinct(); // sacamos los clientes que tienen productos en oferta
-                var highlightedProducts = new List<Client_Product>();
-                foreach (var clientId in clientIds) // tomamos maximo 6 productos de cada cliente y lo ponemos en la lista de destacados
-                {
-                    highlightedProducts.AddRange(offerProducts.Where(cp => cp.client.Id == clientId).Take(6));
-                }
-                var newProducts = _cpRepository.GetLastAdded(); // sacamos los nuevos productos
-
-                // se generan los objetos de banner, se revuelven y se guardan una variable
-                var Raw_HighlightProducts = highlightedProducts.RandomizeList();
-                var Raw_OfferProducts = offerProducts.RandomizeList();
-
-                // se guardan en memoria en ese orden
-                System.Web.HttpRuntime.Cache.Insert("HighlightProducts", Raw_HighlightProducts,
-                    null,
-                    DateTime.Now.AddHours(2),
-                    System.Web.Caching.Cache.NoSlidingExpiration);
-                System.Web.HttpRuntime.Cache.Insert("OfferProducts", Raw_OfferProducts,
-                 null,
-                 DateTime.Now.AddHours(2),
-                 System.Web.Caching.Cache.NoSlidingExpiration);
-                System.Web.HttpRuntime.Cache.Insert("NewProducts", newProducts,
-                    null,
-                    DateTime.Now.AddHours(2),
-                    System.Web.Caching.Cache.NoSlidingExpiration);
+				var RawLists = LoadBannerLists();
 
                 // Rellenamos el modelo con bannerproduct models vacios
-                IntroModel.HighlightProducts = LoadBannerProductModelList(Raw_HighlightProducts);
-                IntroModel.OfferProducts = LoadBannerProductModelList(Raw_OfferProducts);
-                IntroModel.NewProducts = LoadBannerProductModelList(newProducts);
+				IntroModel.HighlightProducts = LoadBannerProductModelList(RawLists[0]); // Highlighted
+				IntroModel.OfferProducts = LoadBannerProductModelList(RawLists[1]); // Offers
+				IntroModel.NewProducts = LoadBannerProductModelList(RawLists[2]); // News
             }
             else
             {
-               
                 // Rellenamos el modelo con bannerproduct models vacios
                 IntroModel.HighlightProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("HighlightProducts"));
                 IntroModel.OfferProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("OfferProducts"));
                 IntroModel.NewProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("NewProducts"));
             }
 			return View(IntroModel);
+		}
+
+		private List<IEnumerable<Client_Product>> LoadBannerLists()
+		{
+			var lists = new List<IEnumerable<Client_Product>>();
+			var offerProducts = _cpRepository.GetProductsOnSale().RandomizeList(); // sacamos al azar los productos en oferta
+			var clientIds = offerProducts.Select(cp => cp.client.Id).Distinct(); // sacamos los clientes que tienen productos en oferta
+			var highlightedProducts = new List<Client_Product>();
+			foreach (var clientId in clientIds) // tomamos maximo 6 productos de cada cliente y lo ponemos en la lista de destacados
+			{
+				highlightedProducts.AddRange(offerProducts.Where(cp => cp.client.Id == clientId).Take(6));
+			}
+			var newProducts = _cpRepository.GetLastAdded(); // sacamos los nuevos productos
+
+			// se generan los objetos de banner, se revuelven y se guardan una variable
+			var Raw_HighlightProducts = highlightedProducts.RandomizeList();
+			var Raw_OfferProducts = offerProducts.RandomizeList();
+
+			// se guardan en memoria en ese orden
+			System.Web.HttpRuntime.Cache.Insert("HighlightProducts", Raw_HighlightProducts,
+				null,
+				DateTime.Now.AddHours(2),
+				System.Web.Caching.Cache.NoSlidingExpiration);
+			System.Web.HttpRuntime.Cache.Insert("OfferProducts", Raw_OfferProducts,
+			 null,
+			 DateTime.Now.AddHours(2),
+			 System.Web.Caching.Cache.NoSlidingExpiration);
+			System.Web.HttpRuntime.Cache.Insert("NewProducts", newProducts,
+				null,
+				DateTime.Now.AddHours(2),
+				System.Web.Caching.Cache.NoSlidingExpiration);
+
+			lists.Add(Raw_HighlightProducts);
+			lists.Add(Raw_OfferProducts);
+			lists.Add(newProducts);
+			return lists;
 		}
 
         private IEnumerable<BannerProduct> LoadBannerProductModelList(IEnumerable<Client_Product> cpList)
@@ -187,6 +197,42 @@ namespace Explora_Precios.Web.Controllers
                 Price = cp.specialPrice
             };
         }
+
+		public ActionResult PageBanner(int toPage, string banner)
+		{			
+			var lists = new List<IEnumerable<Client_Product>>();
+			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
+			{
+				lists = LoadBannerLists();
+			}
+			else {
+
+				lists.Add((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("HighlightProducts"));
+				lists.Add((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("OfferProducts"));
+				lists.Add((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("NewProducts"));
+			}
+
+			var guids = new List<string>();
+			IEnumerable<Client_Product> list;
+			switch (banner)
+			{
+				case "Highlighted":
+					list = lists[0];
+					break;
+				case "Offers":
+					list = lists[1];
+					break;
+				default:
+					list = lists[2];
+					break;
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				guids.Add(CommonUtilities.CacheImage(list.ElementAt(i + ((toPage - 1) * 5) - 1).product.image.imageObj));
+			}
+
+			return Json(new { guids= string.Join(",", guids.ToArray()) });
+		}
 
 		public ActionResult Products(int? catLev, int? id, int? page)
 		{
@@ -333,7 +379,7 @@ namespace Explora_Precios.Web.Controllers
 			var key = System.Configuration.ConfigurationManager.AppSettings["PublicKey"];
 			return Json(new
 			{
-				key = new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(GenerateImageBytesCaptcha()),
+				key = Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(GenerateImageBytesCaptcha()),
 				text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
 			});
 		}

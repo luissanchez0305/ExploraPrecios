@@ -28,7 +28,7 @@
         </div>--%>
     </div>
     <div class="productLeft">
-        <img width="250" height="200" class="productImage" alt="<%= Model.productName %>" src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(Model.productImage) %>" />
+        <img width="250" height="200" class="productImage" alt="<%= Model.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model.productImage) %>" />
         <!-- TODO LISTA DE IMAGENES -->
         <div class="qualities">
             <label class="title">Caracteristicas</label><div class="<%= Model.isLiked ? "liked" : "like" %> hand" style="float:right;" src="../../../Content/Images/facebook-like.jpg" width="79px" height="20px"></div>

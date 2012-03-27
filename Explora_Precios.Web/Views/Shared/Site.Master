@@ -3,13 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta property="og:title" content="Oferta en ExploraPrecios.com" />
-    <meta property="og:type" content="company" />
-    <meta property="og:url" content="http://www.exploraprecios.com" />
-    <meta property="og:image" content="http://www.exploraprecios.com/Content/Images/logo_oferta.jpg" />
-    <meta property="og:site_name" content="ExploraPrecios.com" />
-    <meta property="fb:admins" content="285146028212857" />
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title>
 		<asp:ContentPlaceHolder ID="TitleContent" runat="server" />
 	</title>
@@ -276,7 +269,7 @@
 			<div class="f"></div>--%>
 		</div>
 		<div id="pageFooter">
-			© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="/Contact" target="_self" title="Contactáctenos">eSphera</a> / <b><a class="disclaimer" href="javascript:void()" >Importante</a></b>
+			© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="http://www.espherasoluciones.com" target="_blank" title="eSphera Soluciones Webpage">eSphera</a> / <b><a class="disclaimer" href="javascript:void()" >Importante</a></b>
 		</div>
 	</div>
 	<script type="text/javascript">

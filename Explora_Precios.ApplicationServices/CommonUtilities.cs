@@ -122,7 +122,7 @@ namespace Explora_Precios.ApplicationServices
             return d[d.GetUpperBound(0), d.GetUpperBound(1)];
         }
 
-        public string CacheImage(Byte[] ImageArray)
+        public static string CacheImage(Byte[] ImageArray)
         {
             Guid id = Guid.NewGuid();
             System.Web.HttpRuntime.Cache.Insert(id.ToString(), ImageArray,

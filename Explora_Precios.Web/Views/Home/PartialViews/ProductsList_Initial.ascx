@@ -24,7 +24,7 @@
     <%= Html.Hidden("productId_" + product.productId, product.productId) %>
     <div id="<%= product.productRef.Replace(" ","_") %>" class="gridItem <%= isIE8 ? "nogo" : "" %>" onmouseover="enlarge(this);" onmouseout="enlarge(this);" >
         <div class="frame">
-            <img width="125" height="100" alt="<%= product.productName %>" src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(product.productImage) %>" />
+            <img width="125" height="100" alt="<%= product.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.productImage) %>" />
             <% if (specialOffer != "0")
                {%>
             <img src="../../Content/Images/etiqueta_oferta.gif" alt="Oferta" width="30px" height="35px" class="offerImage" /><%} %>

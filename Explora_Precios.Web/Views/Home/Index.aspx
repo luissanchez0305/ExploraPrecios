@@ -84,7 +84,38 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			$('.start-stop').hide();
 			$('.thumbNav').hide();
 			$("ul#TickerBanner").webTicker();
+		});
 
+		// Paginacion en sliders
+		$('div.anythingSlider-metallic .forward, div.anythingSlider-metallic .back').live('click', function () {
+			var $this = $(this);
+			var maxPage = $this.parent().prev().prev().val();
+			var curPage = $this.parent().prev().prev().prev().val();
+			if ($this.hasClass('forward')) {
+				if (curPage == maxPage) {
+					curPage = 1;
+				}
+				else {
+					curPage = parseInt(curPage) + 1;
+				}
+			}
+			else if ($this.hasClass('back')) {
+				if (curPage == 1) {
+					curPage = maxPage;
+				}
+				else {
+					curPage = curPage - 1;
+				}
+			}
+			$this.parent().prev().prev().prev().val(curPage);
+			var curBanner = $this.parent().parent().attr('id');
+			$.get('<%= Url.Action("PageBanner", "Home") %>', { toPage: curPage, banner: curBanner },
+			function (data) {
+				var guids = data.guids.split(',');
+				for (i = 1; i <= 5; i++) {
+					$('#' + curBanner + '_' + curPage + '_' + i).setAttribute('src', '/ShowImage/?image=' + guids[i]);
+				}
+			});
 		});
 
 		$('.loginbox a, .register').live('click', function () {
@@ -386,7 +417,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<style type="text/css"> 
 		#OffersBanner, #NewProductsBanner {
 		  width: 700px;
-		  height: 90px;
+		  height: 120px;
 		  list-style: none;
 		 }
 		#MediumBanner {
@@ -403,13 +434,18 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<div id="ProductDisplayPanel">
 		<% if (Model.HighlightProducts.Count() > 0)
 		   {  %>
-		<div class="highlighted">
+		<div id="Highlighted" class="highlighted">
+			<input type="hidden" id="highlighted_page" value="1" />
+			<input type="hidden" id="highlighted_max" value="<%= (int)(Model.HighlightProducts.Count() / 5) + 1 %>" />
 			<label class="sectiontitle" style="color:#C80F02">Productos destacados</label>
 			<ul id="MediumBanner">
 				<%  var index = 0;
+					var page = 0;
+					var indexItem = 1;
 					var isLiOpen = false;
 					foreach (var product in Model.HighlightProducts)
 					{
+						page = index % 5 == 0 ? page + 1 : page + 0;
 						if (!isLiOpen)
 						{
 							isLiOpen = true;%>
@@ -418,10 +454,12 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
 					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
-						<% if (product.Image != null)
-						   { %>
-						<img src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(product.Image) %>" alt="image" />
-						<% } %>
+
+						<img id="highlighted_<%= page %>_<%= indexItem %>"
+							<% if (product.Image != null)
+						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %>
+						   alt="image" />
+						
 						<div class="title"><%= product.Name.Shorten(25)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
@@ -429,10 +467,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.HighlightProducts.Count() - 1 == index)
 					   {%>
 					</li>
-					<% isLiOpen = false;
+					<%  isLiOpen = false;
 					   } %>     
 				<%  
-					   index++;
+						index++;
+						indexItem = index % 5 == 0 ? 1 : indexItem + 1;
 					}
 				%>
 			</ul>
@@ -440,13 +479,18 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		<%} %> 
 		<% if (Model.OfferProducts.Count() > 0)
 		   {  %>
-		<div class="section">
+		<div id="Offers" class="section">
+			<input type="hidden" id="offer_page" value="1" />
+			<input type="hidden" id="offer_max" value="<%= (int)(Model.OfferProducts.Count() / 5) + 1 %>" />
 			<label class="sectiontitle">Productos en ofertas</label>
 			<ul id="OffersBanner">
 				<%  var index = 0;
+					var page = 0;
+					var indexItem = 1;
 					var isLiOpen = false;
 					foreach (var product in Model.OfferProducts)
 					{
+						page = index % 5 == 0 ? page + 1 : page + 0;
 						if (!isLiOpen)
 						{
 							isLiOpen = true;%>
@@ -458,31 +502,38 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
+						<img id="offers_<%= page %>_<%= indexItem %>"                        
 						<% if (product.Image != null)
-						   { %>
-						<img src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(product.Image) %>" alt="image" />                        
-					   <% } %>     
+						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
+						   alt="image" />                        
+						   
 					</div> 
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.OfferProducts.Count() - 1 == index)
 					   {%>
 					</li>
-					<% isLiOpen = false;
+					<%  isLiOpen = false;
 					   } %>     
 				<%  
-					   index++;
+						index++;
+						indexItem = index % 5 == 0 ? 1 : indexItem + 1;
 					} %>  
 			</ul>
 		</div>
 		<%} %>
 		<% if (Model.NewProducts.Count() > 0)
 		   { %>
-		<div class="section">
+		<div id="News" class="section">
+			<input type="hidden" id="new_page" value="1" />
+			<input type="hidden" id="new_max" value="<%= (int)(Model.NewProducts.Count() / 5) + 1 %>" />
 			<label class="sectiontitle">Productos nuevos</label>
 			<ul id="NewProductsBanner">
 				<%  var index = 0;
+					var page = 0;
+					var indexItem = 1;
 					var isLiOpen = false;
 					foreach (var product in Model.NewProducts)
 					{
+						page = index % 5 == 0 ? page + 1 : page + 0;
 						if (!isLiOpen)
 						{
 							isLiOpen = true;%>
@@ -494,18 +545,19 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
+						<img id="news_<%= page %>_<%= indexItem %>"
 						<% if (product.Image != null)
-                            { %>
-						<img src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(product.Image) %>" alt="image" />
-                        <% } %>
+							{ %> src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
+						 alt="image" />
 					</div> 
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.NewProducts.Count() - 1 == index)
 					   {%>
 					</li>
-					<% isLiOpen = false;
+					<%  isLiOpen = false;
 					   } %>     
 				<%  
-					   index++;
+						index++;
+						indexItem = index % 5 == 0 ? 1 : indexItem + 1;
 					} %>     
 			</ul>
 		</div>

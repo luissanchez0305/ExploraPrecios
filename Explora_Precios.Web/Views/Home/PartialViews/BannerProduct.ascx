@@ -8,7 +8,7 @@
     <%= Html.Hidden("hdn_productId", Model.productId) %>
 <div class="offer<%= side %> gridItem">
     <img class="offerLogo" src="../../Content/Images/logo_oferta.gif" alt="Oferta" />
-    &nbsp;<img class="offerImage" src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(Model.image) %>" alt="<%= Model.brandName + " - " + Model.productName  %>"/>
+    &nbsp;<img class="offerImage" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model.image) %>" alt="<%= Model.brandName + " - " + Model.productName  %>"/>
     <label class="offer<%= side %>Name" style="top:10px; left: <%= nameLeft.ToString() %>px;"><%= Model.productName.Shorten(18) %></label>
     <label class="offer<%= side %>Prices" style="top:30px; left: <%= priceStoreLeft.ToString() %>px;"><label class="offerOriginalPrice"><%= "$" + Model.price.ToString(moneyFormat) %></label> - <label class="offerSpecialPrice"><%= "$" + Model.specialPrice.ToString(moneyFormat) %></label></label>
     <label class="offer<%= side %>Store" style="top:50px; left: <%= priceStoreLeft.ToString() %>px;"><%= Model.clientName %></label>

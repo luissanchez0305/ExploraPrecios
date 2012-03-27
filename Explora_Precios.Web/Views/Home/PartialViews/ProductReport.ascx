@@ -5,7 +5,7 @@
     <label id="novalid"></label>
 </div>
 <div>
-    <img class="captchaImage" alt="Captcha Image" src="/ShowImage/?image=<%= new Explora_Precios.ApplicationServices.CommonUtilities().CacheImage(Model) %>" />
+    <img class="captchaImage" alt="Captcha Image" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model) %>" />
     <br /><input type="text" style="width:45px; height:15px;" id="captchaText" />&nbsp;<img id="refreshCaptchaImage" class="hand" style="width:16px; height:16px;" alt="Captcha Image" src="../../Content/Images/view-refresh.png" />&nbsp;<input type="button" id="captchaButton" value="Reportar" class="formbutton" />
 </div>
 <script type="text/javascript">
