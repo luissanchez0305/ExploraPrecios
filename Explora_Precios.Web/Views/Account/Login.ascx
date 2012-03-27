@@ -19,7 +19,7 @@
                 <%= Html.Password("password", "", new { @class = "textpass", style = "margin-top:5px;" })%>
                 </label><br /><br />
                 <label><%= Html.CheckBox("remember") %>Recordarme</label>
-                <label style="float:right;"><input type="button" class="button" id="btnChangePassword" value="Entrar" /><img alt="Loading..." src="/content/images/loading_big.gif" class="LoginLoading" style="left:-45px;" /></label><br />
+                <label style="float:right;"><input type="button" class="button" id="btnLogin" value="Entrar" /><img alt="Loading..." src="/content/images/loading_big.gif" class="LoginLoading" style="left:-45px;" /></label><br />
                 <%=Html.ValidationMessage("ErrorMessage", new { @class = "validation-summary-errors", style = "position:relative; top:10px;" })%>
                 <%= Html.Hidden("Redirect", ViewData["redirect"])%>
             <div id="layer04_holder" class="loginbox">
@@ -37,11 +37,18 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.LoginLoading').hide();
-    });
-    $('#btnChangePassword').click(function () {
-        $('.LoginLoading').show();
+	$(document).ready(function () {
+		$('.LoginLoading').hide();
+		$('#LoginForm').keypress(function (event) {
+			if (event.which == 13)
+				LogMeIn();
+		});
+	});
+	$('#btnLogin').click(function () {
+		LogMeIn();
+	});
+    function LogMeIn() {
+		$('.LoginLoading').show();
         $.ajax({
             type: "POST",
             url: '<%= Url.Action("Login", "Account") %>',
@@ -64,6 +71,5 @@
                     window.location = '<%= Url.Action("Index", "Home") %>';
                 }
             }
-        });
-    });
+        });}
 </script>
