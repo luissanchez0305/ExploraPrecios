@@ -112,8 +112,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			$.get('<%= Url.Action("PageBanner", "Home") %>', { toPage: curPage, banner: curBanner },
 			function (data) {
 				var guids = data.guids.split(',');
-				for (i = 1; i <= 5; i++) {
-					$('#' + curBanner + '_' + curPage + '_' + i).setAttribute('src', '/ShowImage/?image=' + guids[i]);
+				for (i = 1; i <= data.count; i++) {
+					$('#' + curBanner + '_' + curPage + '_' + i).attr('src', '/ShowImage/?image=' + guids[i-1]);
 				}
 			});
 		});
@@ -455,7 +455,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<input type="hidden" value="<%= product.ProductId %>" />
 					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
 
-						<img id="highlighted_<%= page %>_<%= indexItem %>"
+						<img id="Highlighted_<%= page %>_<%= indexItem %>"
 							<% if (product.Image != null)
 						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %>
 						   alt="image" />
@@ -502,7 +502,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
-						<img id="offers_<%= page %>_<%= indexItem %>"                        
+						<img id="Offers_<%= page %>_<%= indexItem %>"                        
 						<% if (product.Image != null)
 						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
 						   alt="image" />                        
@@ -545,7 +545,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
-						<img id="news_<%= page %>_<%= indexItem %>"
+						<img id="News_<%= page %>_<%= indexItem %>"
 						<% if (product.Image != null)
 							{ %> src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
 						 alt="image" />

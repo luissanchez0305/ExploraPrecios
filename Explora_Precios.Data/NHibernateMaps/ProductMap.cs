@@ -18,7 +18,7 @@ namespace Explora_Precios.Data.NHibernateMaps
             mapping.Map(x => x.catalog_Id);
             mapping.Map(x => x.level_Id);
             mapping.References(x => x.brand).Cascade.SaveUpdate();
-            mapping.References(x => x.image).Cascade.SaveUpdate();
+			mapping.References(x => x.image).Cascade.SaveUpdate();
             mapping.Map(x => x.description);
             mapping.HasMany(x => x.qualities)
                 .Cascade.SaveUpdate()

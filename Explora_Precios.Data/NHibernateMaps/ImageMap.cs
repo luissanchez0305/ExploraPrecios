@@ -13,7 +13,7 @@ namespace Explora_Precios.Data.NHibernateMaps
         public void Override(AutoMapping<Image> mapping)
         {
             mapping.Id(x => x.Id).GeneratedBy.Identity();
-            mapping.Map(x => x.imageObj);
+			mapping.Map(x => x.imageObj);
         }
     }
 }

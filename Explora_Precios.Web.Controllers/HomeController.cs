@@ -199,7 +199,8 @@ namespace Explora_Precios.Web.Controllers
         }
 
 		public ActionResult PageBanner(int toPage, string banner)
-		{			
+		{
+			var pageSize = 5;
 			var lists = new List<IEnumerable<Client_Product>>();
 			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
 			{
@@ -226,12 +227,13 @@ namespace Explora_Precios.Web.Controllers
 					list = lists[2];
 					break;
 			}
-			for (int i = 0; i < 5; i++)
+			var pageItemsCount = toPage * pageSize < list.Count() ? pageSize : pageSize - ((toPage * pageSize) - list.Count());
+			for (int i = 0; i < pageItemsCount; i++)
 			{
-				guids.Add(CommonUtilities.CacheImage(list.ElementAt(i + ((toPage - 1) * 5) - 1).product.image.imageObj));
+				guids.Add(CommonUtilities.CacheImage(_productRepository.Get(list.ElementAt(i + ((toPage - 1) * pageSize)).product.Id).image.imageObj));
 			}
 
-			return Json(new { guids= string.Join(",", guids.ToArray()) });
+			return Json(new { guids = string.Join(",", guids.ToArray()), count = pageItemsCount });
 		}
 
 		public ActionResult Products(int? catLev, int? id, int? page)
