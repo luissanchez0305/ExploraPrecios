@@ -32,6 +32,7 @@ img { border: 0; }
 .loginbox .facebook { position:absolute; top: 23px; }
 .loginbox.home .facebook { left: 26px; }
 .loginbox.home .groups { position:absolute; top: 23px; float:right;}
+.loginbox.home .groups:hover { text-decoration:underline; }
 
 .searchbox {position:absolute; top: 90px; right:15px; padding: 6px; color:black; vertical-align: middle; }
 .searchbox label { font-weight:bold; }

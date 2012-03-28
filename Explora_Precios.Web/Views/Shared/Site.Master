@@ -149,7 +149,7 @@
 				<div class="will_login <%= isLoggedIn ? "hideme" : "" %>" style="float:left;"><a class="register" href="javascript:void(0)">Registrarse</a> / <a class="login" href="javascript:void(0)">Iniciar</a></div>
 				<div style="float:right;">/ <a href="/Contact">Contáctenos</a></div>
 				<div class="will_login facebook hand <%= isLoggedIn ? "hideme" : "" %>"><img src="../../Content/Images/facebook_login_button.gif" onclick="authorizeFacebook(); return false;" /></div>
-				<div class="will_login groups <%= isLoggedIn ? "" : "hideme" %>">Ud. esta en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
+				<div class="will_login hand groups <%= isLoggedIn ? "" : "hideme" %>">Ud. esta en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
 			</div>
 			<div class="searchbox">
 				<input type="text" id="search_text" class="searchbox_textbox" value="<%= ViewData["search_text"] %>" />
