@@ -4,26 +4,357 @@
         <name>NHCustomProviders</name>
     </assembly>
     <members>
-        <member name="T:NHCustomProviders.Func`1">
-            <summary>Delegate for functions.</summary>
+        <member name="T:NHCustomProviders.CreateUserExEventArgs">
+            <summary>Events with information for a new the creation of a new user.</summary>
         </member>
-        <member name="T:NHCustomProviders.Proc">
-            <summary>Delegate for procedures.</summary>
+        <member name="M:NHCustomProviders.CreateUserExEventArgs.#ctor(System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the CreateUserExEventArgs class.</summary>
+            <param name="encodedPassword">The encoded password.</param>
+            <param name="encodedPasswordSalt">The encoded password salt.</param>
+            <param name="encodedAnswer">The encoded answer.</param>
         </member>
-        <member name="T:NHCustomProviders.Inside">
-            <summary>Helper class for using transactions.</summary>
+        <member name="P:NHCustomProviders.CreateUserExEventArgs.EncodedPassword">
+            <summary>Gets the encoded password for the new user.</summary>
         </member>
-        <member name="M:NHCustomProviders.Inside.Transaction``1(NHibernate.ISessionFactory,NHCustomProviders.Func{``0})">
-            <summary>Executes the specified code inside a transaction.</summary>
-            <typeparam name="T">The type returned by the code to execute.</typeparam>
-            <param name="sessionFactory">The session factory to initiate the transaction.</param>
-            <param name="codeToExecute">The code to execute inside the transaction.</param>
-            <returns>The return value from the code executed.</returns>
+        <member name="P:NHCustomProviders.CreateUserExEventArgs.EncodedPasswordSalt">
+            <summary>Gets the encoded password salt for the new user.</summary>
         </member>
-        <member name="M:NHCustomProviders.Inside.Transaction(NHibernate.ISessionFactory,NHCustomProviders.Proc)">
-            <summary>Executes the specified code inside a transaction.</summary>
-            <param name="sessionFactory">The session factory to initiate the transaction.</param>
-            <param name="codeToExecute">The code to execute inside the transaction.</param>
+        <member name="P:NHCustomProviders.CreateUserExEventArgs.EncodedAnswer">
+            <summary>Gets the encoded answer for the new user.</summary>
+        </member>
+        <member name="T:NHCustomProviders.CreateUserExWizard">
+            <summary>Extension of CreateUserWizard control to allow creating users with extra information.</summary>
+            <remarks>As the CreateUserWizard control has some key methods and fields set as private we have to
+            override some methods and do some dirty things to obtain the results we want. This is not the best 
+            way to do what we want but it is the only one to avoid having to code a CreateUserWizard control
+            from scratch due to the incredibly lack of extensibility of some ASP.NET controls.</remarks>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.#ctor">
+            <summary>Initializes a new instance of the CreateUserExWizard class.</summary>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.OnCreatedUser(System.EventArgs)">
+            <summary>Raises the CreatedUseEx and CreatedUser events after the CreateUser method of the membership provider is called.</summary>
+            <param name="e">An EventArgs that contains the event data.</param>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.OnNextButtonClick(System.Web.UI.WebControls.WizardNavigationEventArgs)">
+            <summary>Raises the NextButtonClick event when the user clicks the Next button in one of the Create User wizard steps.</summary>
+            <param name="e">Data about the current navigation settings.</param>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>Renders the contents of the control to the specified writer. This method is used primarily by control developers.</summary>
+            <param name="writer">A System.Web.UI.HtmlTextWriter that represents the output stream to render HTML content on the client.</param>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.GetDesignModeState">
+            <summary>Gets the state of the design mode.</summary>
+            <returns>The state of the design mode.</returns>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.OnCreateUserEx(NHCustomProviders.CreateUserExEventArgs)">
+            <summary>Raises the CreateUserEx event after the ValidateUserCreation method of the membership provider is called.</summary>
+            <remarks>Here the user can insert their own users with the extra data they want. The 
+            NHibernateCustomMembershipProvider has the ignoreCreateUserMethod attribute to avoid
+            having the user created in the CreateUser method, so this can work, as the CreateUserWizard
+            has near to no extension capabilities due to really bad design.</remarks>
+            <param name="e">The CreateUserExEventArgs instance containing the event data.</param>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.ApplyCreateUserExProperties">
+            <summary>Applies some changes to a few properties based on the status of the CreateUserEx operation.</summary>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.GetMembershipErrorMessage(System.Web.Security.MembershipProvider,System.Web.Security.MembershipCreateStatus)">
+            <summary>Gets an error message based on the status from the membership operation.</summary>
+            <param name="provider">The provider.</param>
+            <param name="status">The status of the membership operation.</param>
+            <returns>A descriptive error message.</returns>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.GetProvider(System.String)">
+            <summary>Gets the provider used by the control.</summary>
+            <param name="providerName">Name of the provider to retrieve.</param>
+            <returns>The requested provider, or the default provider if no provider was specified.</returns>
+        </member>
+        <member name="M:NHCustomProviders.CreateUserExWizard.ExtractCreateUserStepTextBoxData(System.String,System.String)">
+            <summary>Extracts data from the create user wizard step.</summary>
+            <param name="value">The value stored.</param>
+            <param name="controlName">Name of the control to retrieve the value.</param>
+            <returns>The requested value.</returns>
+        </member>
+        <member name="P:NHCustomProviders.CreateUserExWizard.CreateUserExFailed">
+            <summary>Gets or sets a value indicating whether CreateUserEx failed.</summary>
+        </member>
+        <member name="P:NHCustomProviders.CreateUserExWizard.ErrorMessage">
+            <summary>Gets or sets the error message.</summary>
+        </member>
+        <member name="E:NHCustomProviders.CreateUserExWizard.CreateUserEx">
+            <summary>Event generated when an user with extra information can to be created.</summary>
+        </member>
+        <member name="T:NHCustomProviders.MembershipClassMappingInfo">
+            <summary>Class that contains the information to map the Membership provider.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.TableName">
+            <summary>Name of the table mapped associated to the class.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.DynamicUpdate">
+            <summary>If dynamic update is used or not.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IdColumnName">
+            <summary>Column name of the id column.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IdColumnType">
+            <summary>Type of the id column.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.GeneratorStrategy">
+            <summary>The generator strategy for the id.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.UserNameColumn">
+            <summary>Column name for the UserName property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.UserNameColumnSize">
+            <summary>Indicates the length of the UserName.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.EmailColumn">
+            <summary>Column name for the Email property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.EmailColumnSize">
+            <summary>Indicates the length of the Email.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.UniqueEmail">
+            <summary>Indicates if the Email property is unique.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordColumn">
+            <summary>Column name for the Password property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordColumnSize">
+            <summary>Indicates the length of the Password.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordSaltColumn">
+            <summary>Column name for the PasswordSalt property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordSaltColumnSize">
+            <summary>Indicates for the length of the PasswordSalt.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordFormatColumn">
+            <summary>Column name for the PasswordFormat property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordQuestionColumn">
+            <summary>Column name for the PasswordQuestion property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordQuestionColumnSize">
+            <summary>Indicates the length of the PasswordQuestion.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordAnswerColumn">
+            <summary>Column name for the PasswordAnswer property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordAnswerColumnSize">
+            <summary>Indicates the length of the PasswordAnswer.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAttemptCountColumn">
+            <summary>Column name for the FailedPasswordAttemptCount property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAttemptWindowStartColumn">
+            <summary>Column name for the FailedPasswordWindowStart property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAnswerAttemptCountColumn">
+            <summary>Column name for the FailedPasswordAnswerAttemptCount property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAnswerAttemptWindowStartColumn">
+            <summary>Column name for the FailedPasswordAnswerAttemptWindowStart property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastPasswordChangedDateColumn">
+            <summary>Column name for the LastPasswordChangedDate property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.CreationDateColumn">
+            <summary>Column name for the CreationDate property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastActivityDateColumn">
+            <summary>Column name for the LastActivityDate property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IsApprovedColumn">
+            <summary>Column name for the IsApproved property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IsLockedOutColumn">
+            <summary>Column name for the IsLockedOut property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastLockOutDateColumn">
+            <summary>Column name for the LastLockOutDate property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastLoginDateColumn">
+            <summary>Column name for the LastLoginDate property.</summary>
+        </member>
+        <member name="P:NHCustomProviders.MembershipClassMappingInfo.CommentsColumn">
+            <summary>Column name for the Comments property.</summary>
+        </member>
+        <member name="T:NHCustomProviders.BasicUser">
+            <summary>Class with the basic details of an user for the Role provider.</summary>
+        </member>
+        <member name="M:NHCustomProviders.BasicUser.#ctor">
+            <summary>Initializes a new instance of the BasicUser class.</summary>
+        </member>
+        <member name="M:NHCustomProviders.BasicUser.Equals(System.Object)">
+            <summary>Determines whether the specified System.Object is equal to the current System.Object</summary>
+            <param name="obj">The object to compare with the current object.</param>
+            <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
+        </member>
+        <member name="M:NHCustomProviders.BasicUser.GetHashCode">
+            <summary>Serves as a hash function for a particular type. GetHashCode is suitable for use in hashing algorithms and data structures like a hash table.</summary>
+            <returns>A hash code for the current object.</returns>
+        </member>
+        <member name="M:NHCustomProviders.BasicUser.op_Equality(NHCustomProviders.BasicUser,NHCustomProviders.BasicUser)">
+            <summary>Implements the operator ==.</summary>
+            <param name="obj1">The first object to compare.</param>
+            <param name="obj2">The second object to compare.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:NHCustomProviders.BasicUser.op_Inequality(NHCustomProviders.BasicUser,NHCustomProviders.BasicUser)">
+            <summary>Implements the operator !=.</summary>
+            <param name="obj1">The first object to compare.</param>
+            <param name="obj2">The second object to compare.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:NHCustomProviders.BasicUser.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="P:NHCustomProviders.BasicUser.UserId">
+            <summary>Gets or sets the identifier for the user.</summary>
+        </member>
+        <member name="P:NHCustomProviders.BasicUser.UserName">
+            <summary>Gets or sets the logon name of the user.</summary>
+        </member>
+        <member name="P:NHCustomProviders.BasicUser.Roles">
+            <summary>Gets or sets the roles for this user.</summary>
+        </member>
+        <member name="T:NHCustomProviders.ProviderInterceptor">
+            <summary>An Interceptor to handle UTC DateTime values properly</summary>
+        </member>
+        <member name="M:NHCustomProviders.ProviderInterceptor.#ctor(System.Web.Security.MembershipPasswordFormat)">
+            <summary>Initializes a new instance of the ProviderInterceptor class.</summary>
+            <param name="defaultPasswordFormat">The default password format.</param>
+        </member>
+        <member name="M:NHCustomProviders.ProviderInterceptor.OnLoad(System.Object,System.Object,System.Object[],System.String[],NHibernate.Type.IType[])">
+            <summary>Called just before an object is initialized.</summary>
+            <remarks>The interceptor may change the state, which will be propagated to the persistent object.
+            When this method is called, entity will be an empty uninitialized instance of the class.</remarks>
+            <param name="entity">The object to initialize.</param>
+            <param name="id">The identifier of the entity.</param>
+            <param name="state">The loaded state of the entity.</param>
+            <param name="propertyNames">The properties for the entity.</param>
+            <param name="types">The property types of the entity.</param>
+            <returns>true if the user modified the state in any way.</returns>
+        </member>
+        <member name="M:NHCustomProviders.ProviderInterceptor.OnSave(System.Object,System.Object,System.Object[],System.String[],NHibernate.Type.IType[])">
+            <summary>Called before an object is saved.</summary>
+            <remarks>
+            The interceptor may modify the state, which will be used for the SQL INSERT
+            and propagated to the persistent object.
+            </remarks>
+            <param name="entity">The object to be saved.</param>
+            <param name="id">The identifier of the entity.</param>
+            <param name="state">The current state of the entity.</param>
+            <param name="propertyNames">The properties for the entity.</param>
+            <param name="types">The property types of the entity.</param>
+            <returns>true if the user modified the state in any way.</returns>
+        </member>
+        <member name="M:NHCustomProviders.ProviderInterceptor.OnFlushDirty(System.Object,System.Object,System.Object[],System.Object[],System.String[],NHibernate.Type.IType[])">
+            <summary>Called when an object is detected to be dirty, during a flush.</summary>
+            <remarks>The interceptor may modify the detected currentState, which will be propagated to
+            both the database and the persistent object. All flushes end in an actual synchronization 
+            with the database, in which as the new currentState will be propagated to the object, but 
+            not necessarily (immediately) to the database. It is strongly recommended that the 
+            interceptor not modify the previousState.</remarks>
+            <param name="entity">The object to be flushed.</param>
+            <param name="id">The identifier of the entity.</param>
+            <param name="currentState">The current state of the entity.</param>
+            <param name="previousState">The previous state of the entity.</param>
+            <param name="propertyNames">The properties for the entity.</param>
+            <param name="types">The property types of the entity.</param>
+            <returns>true if the user modified the currentState in any way.</returns>
+        </member>
+        <member name="M:NHCustomProviders.ProviderInterceptor.SetUtcDateTimeKind(System.Object[],NHibernate.Type.IType[])">
+            <summary>Sets any DateTime property to use UTC format.</summary>
+            <param name="state">The current state of the entity.</param>
+            <param name="types">The property types of the entity.</param>
+        </member>
+        <member name="M:NHCustomProviders.ProviderInterceptor.CheckUtcDateTimeKind(System.Object,System.Object[],System.String[],NHibernate.Type.IType[])">
+            <summary>Checks that any DateTime property uses UTC format.</summary>
+            <param name="id">The identifier of the entity.</param>
+            <param name="state">The current state of the entity.</param>
+            <param name="propertyNames">The properties for the entity.</param>
+            <param name="types">The property types of the entity.</param>
+        </member>
+        <member name="P:NHCustomProviders.ProviderInterceptor.DefaultPasswordFormat">
+            <summary>Gets the default password format.</summary>
+        </member>
+        <member name="T:NHCustomProviders.ConfigurationHelper">
+            <summary>Helper methods to extract data from the configuration.</summary>
+        </member>
+        <member name="M:NHCustomProviders.ConfigurationHelper.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)">
+            <summary>Gets a boolean value from the configuration options.</summary>
+            <param name="config">The list of configuration parameters.</param>
+            <param name="propertyName">Name of the property to get.</param>
+            <param name="defaultValue">Value to return if the property is not set.</param>
+            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
+        </member>
+        <member name="M:NHCustomProviders.ConfigurationHelper.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>Gets an integer value from the configuration options.</summary>
+            <param name="config">The list of configuration parameters.</param>
+            <param name="propertyName">Name of the property to get.</param>
+            <param name="defaultValue">Value to return if the property is not set.</param>
+            <param name="minValueAllowed">The min value allowed.</param>
+            <param name="maxValueAllowed">The max value allowed.</param>
+            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
+        </member>
+        <member name="M:NHCustomProviders.ConfigurationHelper.GetString(System.Collections.Specialized.NameValueCollection,System.String,System.String)">
+            <summary>Gets a string value from the configuration options.</summary>
+            <param name="config">The list of configuration parameters.</param>
+            <param name="propertyName">Name of the property to get.</param>
+            <param name="defaultValue">Value to return if the property is not set.</param>
+            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
+        </member>
+        <member name="M:NHCustomProviders.ConfigurationHelper.GetEnum(System.Collections.Specialized.NameValueCollection,System.String,System.Type,System.Int32)">
+            <summary>Gets an enum value from the configuration options.</summary>
+            <param name="config">The list of configuration parameters.</param>
+            <param name="propertyName">Name of the property to get.</param>
+            <param name="enumType">the type of the enum we're retrieving.</param>
+            <param name="defaultValue">Value to return if the property is not set.</param>
+            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
+        </member>
+        <member name="T:NHCustomProviders.RolesDal">
+            <summary>Data Access Layer for the custom role provider.</summary>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.#ctor(NHibernate.ISession)">
+            <summary>Initializes a new instance of the RolesDal class.</summary>
+            <param name="session">The session.</param>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.GetRoleByName(System.String)">
+            <summary>Gets a Role by name.</summary>
+            <param name="roleName">The name of the role.</param>
+            <returns>The retrieved BasicRole instance or null if it wasn't found.</returns>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.GetUserByName(System.String)">
+            <summary>Gets an User instance by name.</summary>
+            <param name="userName">Name of the user to retrieve.</param>
+            <returns>The retrieved BasicUser instance or null if it wasn't found.</returns>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.Delete(NHCustomProviders.BasicRole)">
+            <summary>Deletes the specified role.</summary>
+            <param name="role">The instance to delete.</param>
+            <returns>true if the instance was removed from the DB; false otherwise.</returns>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.GetAllRoles">
+            <summary>Gets all available roles.</summary>
+            <returns>An array of all roles.</returns>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.FindUsersInRole(System.String,System.String)">
+            <summary>Finds the list of users that belong to a role.</summary>
+            <param name="roleName">Name of the role.</param>
+            <param name="userName">Name of the user.</param>
+            <returns>An array of users that belong to that role.</returns>
+        </member>
+        <member name="M:NHCustomProviders.RolesDal.GetRoles(System.String[])">
+            <summary>Gets a list of BasicRole instances based on the role names.</summary>
+            <param name="roleNames">The role names.</param>
+            <returns>A list of BasicRole instances.</returns>
+        </member>
+        <member name="P:NHCustomProviders.RolesDal.Session">
+            <summary>Gets or sets the session to use.</summary>
         </member>
         <member name="T:NHCustomProviders.MembershipUserInfo">
             <summary>Class with all the membership details for an user.</summary>
@@ -221,102 +552,6 @@
             <remarks>By default, the provider uses the configuration in the hibernate-configuration section or in 
             the hibernate.cfg.xml file. Using this property you to use a different file for the configuration.</remarks>
         </member>
-        <member name="T:NHCustomProviders.MembershipClassMappingInfo">
-            <summary>Class that contains the information to map the Membership provider.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.TableName">
-            <summary>Name of the table mapped associated to the class.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.DynamicUpdate">
-            <summary>If dynamic update is used or not.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IdColumnName">
-            <summary>Column name of the id column.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IdColumnType">
-            <summary>Type of the id column.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.GeneratorStrategy">
-            <summary>The generator strategy for the id.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.UserNameColumn">
-            <summary>Column name for the UserName property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.UserNameColumnSize">
-            <summary>Indicates the length of the UserName.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.EmailColumn">
-            <summary>Column name for the Email property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.EmailColumnSize">
-            <summary>Indicates the length of the Email.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.UniqueEmail">
-            <summary>Indicates if the Email property is unique.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordColumn">
-            <summary>Column name for the Password property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordColumnSize">
-            <summary>Indicates the length of the Password.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordSaltColumn">
-            <summary>Column name for the PasswordSalt property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordSaltColumnSize">
-            <summary>Indicates for the length of the PasswordSalt.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordFormatColumn">
-            <summary>Column name for the PasswordFormat property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordQuestionColumn">
-            <summary>Column name for the PasswordQuestion property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordQuestionColumnSize">
-            <summary>Indicates the length of the PasswordQuestion.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordAnswerColumn">
-            <summary>Column name for the PasswordAnswer property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.PasswordAnswerColumnSize">
-            <summary>Indicates the length of the PasswordAnswer.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAttemptCountColumn">
-            <summary>Column name for the FailedPasswordAttemptCount property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAttemptWindowStartColumn">
-            <summary>Column name for the FailedPasswordWindowStart property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAnswerAttemptCountColumn">
-            <summary>Column name for the FailedPasswordAnswerAttemptCount property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.FailedPasswordAnswerAttemptWindowStartColumn">
-            <summary>Column name for the FailedPasswordAnswerAttemptWindowStart property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastPasswordChangedDateColumn">
-            <summary>Column name for the LastPasswordChangedDate property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.CreationDateColumn">
-            <summary>Column name for the CreationDate property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastActivityDateColumn">
-            <summary>Column name for the LastActivityDate property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IsApprovedColumn">
-            <summary>Column name for the IsApproved property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.IsLockedOutColumn">
-            <summary>Column name for the IsLockedOut property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastLockOutDateColumn">
-            <summary>Column name for the LastLockOutDate property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.LastLoginDateColumn">
-            <summary>Column name for the LastLoginDate property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.MembershipClassMappingInfo.CommentsColumn">
-            <summary>Column name for the Comments property.</summary>
-        </member>
         <member name="T:NHCustomProviders.BasicRole">
             <summary>Class with the basic details of a role for the Role provider.</summary>
         </member>
@@ -357,114 +592,19 @@
         <member name="P:NHCustomProviders.BasicRole.Users">
             <summary>Gets or sets the users for this role.</summary>
         </member>
-        <member name="T:NHCustomProviders.RolesDal">
-            <summary>Data Access Layer for the custom role provider.</summary>
+        <member name="T:NHCustomProviders.WebEventsHelper">
+            <summary>Helper class to make WebEvents usable.</summary>
+            <remarks>This is necessary because in ASP.NET 2.0 none of the WebEvents can be created and 
+            there is no option to throw any system level events. What were they thinking about?</remarks>
         </member>
-        <member name="M:NHCustomProviders.RolesDal.#ctor(NHibernate.ISession)">
-            <summary>Initializes a new instance of the RolesDal class.</summary>
-            <param name="session">The session.</param>
-        </member>
-        <member name="M:NHCustomProviders.RolesDal.GetRoleByName(System.String)">
-            <summary>Gets a Role by name.</summary>
-            <param name="roleName">The name of the role.</param>
-            <returns>The retrieved BasicRole instance or null if it wasn't found.</returns>
-        </member>
-        <member name="M:NHCustomProviders.RolesDal.GetUserByName(System.String)">
-            <summary>Gets an User instance by name.</summary>
-            <param name="userName">Name of the user to retrieve.</param>
-            <returns>The retrieved BasicUser instance or null if it wasn't found.</returns>
-        </member>
-        <member name="M:NHCustomProviders.RolesDal.Delete(NHCustomProviders.BasicRole)">
-            <summary>Deletes the specified role.</summary>
-            <param name="role">The instance to delete.</param>
-            <returns>true if the instance was removed from the DB; false otherwise.</returns>
-        </member>
-        <member name="M:NHCustomProviders.RolesDal.GetAllRoles">
-            <summary>Gets all available roles.</summary>
-            <returns>An array of all roles.</returns>
-        </member>
-        <member name="M:NHCustomProviders.RolesDal.FindUsersInRole(System.String,System.String)">
-            <summary>Finds the list of users that belong to a role.</summary>
-            <param name="roleName">Name of the role.</param>
-            <param name="userName">Name of the user.</param>
-            <returns>An array of users that belong to that role.</returns>
-        </member>
-        <member name="M:NHCustomProviders.RolesDal.GetRoles(System.String[])">
-            <summary>Gets a list of BasicRole instances based on the role names.</summary>
-            <param name="roleNames">The role names.</param>
-            <returns>A list of BasicRole instances.</returns>
-        </member>
-        <member name="P:NHCustomProviders.RolesDal.Session">
-            <summary>Gets or sets the session to use.</summary>
-        </member>
-        <member name="T:NHCustomProviders.XmlDocHelper">
-            <summary>Helper class for creating NHibernate XML mapping documents.</summary>
-        </member>
-        <member name="M:NHCustomProviders.XmlDocHelper.CreateClassMappingDocument(System.String,System.String,System.Xml.XmlElement@)">
-            <summary>Creates a xml document for mapping a class.</summary>
-            <param name="className">Name of the class to map.</param>
-            <param name="tableName">Name of the table to map.</param>
-            <param name="classNode">The class node.</param>
-            <returns>The class node with the name and table attributes set</returns>
-        </member>
-        <member name="M:NHCustomProviders.XmlDocHelper.CreateElementWithAttributes(System.Xml.XmlDocument,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
-            <summary>Creates an Xml element with the specified attributes.</summary>
-            <param name="doc">The XmlDocument where the element will be added.</param>
-            <param name="elementName">Name of the element to create.</param>
-            <param name="attributes">The attributes to add to the element.</param>
-            <returns>The Xml element with the specified attributes.</returns>
-        </member>
-        <member name="M:NHCustomProviders.XmlDocHelper.CreateAttribute(System.Xml.XmlDocument,System.String,System.String)">
-            <summary>Creates an Xml attribute with the specified name and value.</summary>
-            <param name="doc">The XmlDocument where the element will be added.</param>
-            <param name="attributeName">Name of the attribute to create.</param>
-            <param name="attributeValue">The value of the attribute.</param>
-            <returns>The Xml attribute.</returns>
-        </member>
-        <member name="T:NHCustomProviders.RoleClassMappingInfo">
-            <summary>Class that contains the information to map the role provider.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.ClassName">
-            <summary>Name of the class to map.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.TableName">
-            <summary>Name of the table mapped associated to the class.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.IdPropertyName">
-            <summary>Name of the id property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.IdColumnName">
-            <summary>Column name of the id column.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.IdColumnType">
-            <summary>Type of the id column.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.GeneratorStrategy">
-            <summary>The generator strategy for the id.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.PropName">
-            <summary>Name of the Name property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.PropColumnName">
-            <summary>Column name the name property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.PropUnique">
-            <summary>Indicates if the name property is unique.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.CollectionPropertyName">
-            <summary>Name of the collection property.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.JoinTableName">
-            <summary>Name of the join table.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.Inverse">
-            <summary>Set to true to mark this relationship as the inverse side.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.AssociatedColumnName">
-            <summary>Name of the associated column for the many-to-many relationship.</summary>
-        </member>
-        <member name="P:NHCustomProviders.RoleClassMappingInfo.AssociatedClassName">
-            <summary>Name of the associated class for the many-to-many relationship.</summary>
+        <member name="M:NHCustomProviders.WebEventsHelper.RaiseSystemEvent(System.String,System.Object,System.Int32,System.Int32,System.Exception,System.String)">
+            <summary>Raises a system event.</summary>
+            <param name="message">The event description.</param>
+            <param name="source">The object that is the source of the event.</param>
+            <param name="eventCode">The event code.</param>
+            <param name="eventDetailCode">The event detail code.</param>
+            <param name="exception">The exception that triggered the event.</param>
+            <param name="nameToAuthenticate">The name of the authenticated user.</param>
         </member>
         <member name="T:NHCustomProviders.MembershipUserInfoDal">
             <summary>Data Access Layer for the MembershipUserInfo class.</summary>
@@ -525,100 +665,95 @@
         <member name="P:NHCustomProviders.MembershipUserInfoDal.Session">
             <summary>Gets or sets the session to use.</summary>
         </member>
-        <member name="T:NHCustomProviders.CreateUserExWizard">
-            <summary>Extension of CreateUserWizard control to allow creating users with extra information.</summary>
-            <remarks>As the CreateUserWizard control has some key methods and fields set as private we have to
-            override some methods and do some dirty things to obtain the results we want. This is not the best 
-            way to do what we want but it is the only one to avoid having to code a CreateUserWizard control
-            from scratch due to the incredibly lack of extensibility of some ASP.NET controls.</remarks>
+        <member name="T:NHCustomProviders.RoleClassMappingInfo">
+            <summary>Class that contains the information to map the role provider.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.#ctor">
-            <summary>Initializes a new instance of the CreateUserExWizard class.</summary>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.ClassName">
+            <summary>Name of the class to map.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.OnCreatedUser(System.EventArgs)">
-            <summary>Raises the CreatedUseEx and CreatedUser events after the CreateUser method of the membership provider is called.</summary>
-            <param name="e">An EventArgs that contains the event data.</param>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.TableName">
+            <summary>Name of the table mapped associated to the class.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.OnNextButtonClick(System.Web.UI.WebControls.WizardNavigationEventArgs)">
-            <summary>Raises the NextButtonClick event when the user clicks the Next button in one of the Create User wizard steps.</summary>
-            <param name="e">Data about the current navigation settings.</param>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.IdPropertyName">
+            <summary>Name of the id property.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.RenderContents(System.Web.UI.HtmlTextWriter)">
-            <summary>Renders the contents of the control to the specified writer. This method is used primarily by control developers.</summary>
-            <param name="writer">A System.Web.UI.HtmlTextWriter that represents the output stream to render HTML content on the client.</param>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.IdColumnName">
+            <summary>Column name of the id column.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.GetDesignModeState">
-            <summary>Gets the state of the design mode.</summary>
-            <returns>The state of the design mode.</returns>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.IdColumnType">
+            <summary>Type of the id column.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.OnCreateUserEx(NHCustomProviders.CreateUserExEventArgs)">
-            <summary>Raises the CreateUserEx event after the ValidateUserCreation method of the membership provider is called.</summary>
-            <remarks>Here the user can insert their own users with the extra data they want. The 
-            NHibernateCustomMembershipProvider has the ignoreCreateUserMethod attribute to avoid
-            having the user created in the CreateUser method, so this can work, as the CreateUserWizard
-            has near to no extension capabilities due to really bad design.</remarks>
-            <param name="e">The CreateUserExEventArgs instance containing the event data.</param>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.GeneratorStrategy">
+            <summary>The generator strategy for the id.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.ApplyCreateUserExProperties">
-            <summary>Applies some changes to a few properties based on the status of the CreateUserEx operation.</summary>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.PropName">
+            <summary>Name of the Name property.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.GetMembershipErrorMessage(System.Web.Security.MembershipProvider,System.Web.Security.MembershipCreateStatus)">
-            <summary>Gets an error message based on the status from the membership operation.</summary>
-            <param name="provider">The provider.</param>
-            <param name="status">The status of the membership operation.</param>
-            <returns>A descriptive error message.</returns>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.PropColumnName">
+            <summary>Column name the name property.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.GetProvider(System.String)">
-            <summary>Gets the provider used by the control.</summary>
-            <param name="providerName">Name of the provider to retrieve.</param>
-            <returns>The requested provider, or the default provider if no provider was specified.</returns>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.PropUnique">
+            <summary>Indicates if the name property is unique.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExWizard.ExtractCreateUserStepTextBoxData(System.String,System.String)">
-            <summary>Extracts data from the create user wizard step.</summary>
-            <param name="value">The value stored.</param>
-            <param name="controlName">Name of the control to retrieve the value.</param>
-            <returns>The requested value.</returns>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.CollectionPropertyName">
+            <summary>Name of the collection property.</summary>
         </member>
-        <member name="P:NHCustomProviders.CreateUserExWizard.CreateUserExFailed">
-            <summary>Gets or sets a value indicating whether CreateUserEx failed.</summary>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.JoinTableName">
+            <summary>Name of the join table.</summary>
         </member>
-        <member name="P:NHCustomProviders.CreateUserExWizard.ErrorMessage">
-            <summary>Gets or sets the error message.</summary>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.Inverse">
+            <summary>Set to true to mark this relationship as the inverse side.</summary>
         </member>
-        <member name="E:NHCustomProviders.CreateUserExWizard.CreateUserEx">
-            <summary>Event generated when an user with extra information can to be created.</summary>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.AssociatedColumnName">
+            <summary>Name of the associated column for the many-to-many relationship.</summary>
         </member>
-        <member name="T:NHCustomProviders.CreateUserExEventArgs">
-            <summary>Events with information for a new the creation of a new user.</summary>
+        <member name="P:NHCustomProviders.RoleClassMappingInfo.AssociatedClassName">
+            <summary>Name of the associated class for the many-to-many relationship.</summary>
         </member>
-        <member name="M:NHCustomProviders.CreateUserExEventArgs.#ctor(System.String,System.String,System.String)">
-            <summary>Initializes a new instance of the CreateUserExEventArgs class.</summary>
-            <param name="encodedPassword">The encoded password.</param>
-            <param name="encodedPasswordSalt">The encoded password salt.</param>
-            <param name="encodedAnswer">The encoded answer.</param>
+        <member name="T:NHCustomProviders.Func`1">
+            <summary>Delegate for functions.</summary>
         </member>
-        <member name="P:NHCustomProviders.CreateUserExEventArgs.EncodedPassword">
-            <summary>Gets the encoded password for the new user.</summary>
+        <member name="T:NHCustomProviders.Proc">
+            <summary>Delegate for procedures.</summary>
         </member>
-        <member name="P:NHCustomProviders.CreateUserExEventArgs.EncodedPasswordSalt">
-            <summary>Gets the encoded password salt for the new user.</summary>
+        <member name="T:NHCustomProviders.Inside">
+            <summary>Helper class for using transactions.</summary>
         </member>
-        <member name="P:NHCustomProviders.CreateUserExEventArgs.EncodedAnswer">
-            <summary>Gets the encoded answer for the new user.</summary>
+        <member name="M:NHCustomProviders.Inside.Transaction``1(NHibernate.ISessionFactory,NHCustomProviders.Func{``0})">
+            <summary>Executes the specified code inside a transaction.</summary>
+            <typeparam name="T">The type returned by the code to execute.</typeparam>
+            <param name="sessionFactory">The session factory to initiate the transaction.</param>
+            <param name="codeToExecute">The code to execute inside the transaction.</param>
+            <returns>The return value from the code executed.</returns>
         </member>
-        <member name="T:NHCustomProviders.WebEventsHelper">
-            <summary>Helper class to make WebEvents usable.</summary>
-            <remarks>This is necessary because in ASP.NET 2.0 none of the WebEvents can be created and 
-            there is no option to throw any system level events. What were they thinking about?</remarks>
+        <member name="M:NHCustomProviders.Inside.Transaction(NHibernate.ISessionFactory,NHCustomProviders.Proc)">
+            <summary>Executes the specified code inside a transaction.</summary>
+            <param name="sessionFactory">The session factory to initiate the transaction.</param>
+            <param name="codeToExecute">The code to execute inside the transaction.</param>
         </member>
-        <member name="M:NHCustomProviders.WebEventsHelper.RaiseSystemEvent(System.String,System.Object,System.Int32,System.Int32,System.Exception,System.String)">
-            <summary>Raises a system event.</summary>
-            <param name="message">The event description.</param>
-            <param name="source">The object that is the source of the event.</param>
-            <param name="eventCode">The event code.</param>
-            <param name="eventDetailCode">The event detail code.</param>
-            <param name="exception">The exception that triggered the event.</param>
-            <param name="nameToAuthenticate">The name of the authenticated user.</param>
+        <member name="T:NHCustomProviders.XmlDocHelper">
+            <summary>Helper class for creating NHibernate XML mapping documents.</summary>
+        </member>
+        <member name="M:NHCustomProviders.XmlDocHelper.CreateClassMappingDocument(System.String,System.String,System.Xml.XmlElement@)">
+            <summary>Creates a xml document for mapping a class.</summary>
+            <param name="className">Name of the class to map.</param>
+            <param name="tableName">Name of the table to map.</param>
+            <param name="classNode">The class node.</param>
+            <returns>The class node with the name and table attributes set</returns>
+        </member>
+        <member name="M:NHCustomProviders.XmlDocHelper.CreateElementWithAttributes(System.Xml.XmlDocument,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>Creates an Xml element with the specified attributes.</summary>
+            <param name="doc">The XmlDocument where the element will be added.</param>
+            <param name="elementName">Name of the element to create.</param>
+            <param name="attributes">The attributes to add to the element.</param>
+            <returns>The Xml element with the specified attributes.</returns>
+        </member>
+        <member name="M:NHCustomProviders.XmlDocHelper.CreateAttribute(System.Xml.XmlDocument,System.String,System.String)">
+            <summary>Creates an Xml attribute with the specified name and value.</summary>
+            <param name="doc">The XmlDocument where the element will be added.</param>
+            <param name="attributeName">Name of the attribute to create.</param>
+            <param name="attributeValue">The value of the attribute.</param>
+            <returns>The Xml attribute.</returns>
         </member>
         <member name="T:NHCustomProviders.NHCustomMembershipProvider">
             <summary>A highly configurable custom membership provider that uses NHibernate for DB access.</summary>
@@ -923,141 +1058,6 @@
         <member name="P:NHCustomProviders.NHCustomMembershipProvider.IgnoreCreateUserMethod">
             <summary>Gets a value indicating whether to ignore the CreateUser method.</summary>
             <remarks>This is useful if the user will be created outside the provider and to use the CreateUserExWizard control.</remarks>
-        </member>
-        <member name="T:NHCustomProviders.ProviderInterceptor">
-            <summary>An Interceptor to handle UTC DateTime values properly</summary>
-        </member>
-        <member name="M:NHCustomProviders.ProviderInterceptor.#ctor(System.Web.Security.MembershipPasswordFormat)">
-            <summary>Initializes a new instance of the ProviderInterceptor class.</summary>
-            <param name="defaultPasswordFormat">The default password format.</param>
-        </member>
-        <member name="M:NHCustomProviders.ProviderInterceptor.OnLoad(System.Object,System.Object,System.Object[],System.String[],NHibernate.Type.IType[])">
-            <summary>Called just before an object is initialized.</summary>
-            <remarks>The interceptor may change the state, which will be propagated to the persistent object.
-            When this method is called, entity will be an empty uninitialized instance of the class.</remarks>
-            <param name="entity">The object to initialize.</param>
-            <param name="id">The identifier of the entity.</param>
-            <param name="state">The loaded state of the entity.</param>
-            <param name="propertyNames">The properties for the entity.</param>
-            <param name="types">The property types of the entity.</param>
-            <returns>true if the user modified the state in any way.</returns>
-        </member>
-        <member name="M:NHCustomProviders.ProviderInterceptor.OnSave(System.Object,System.Object,System.Object[],System.String[],NHibernate.Type.IType[])">
-            <summary>Called before an object is saved.</summary>
-            <remarks>
-            The interceptor may modify the state, which will be used for the SQL INSERT
-            and propagated to the persistent object.
-            </remarks>
-            <param name="entity">The object to be saved.</param>
-            <param name="id">The identifier of the entity.</param>
-            <param name="state">The current state of the entity.</param>
-            <param name="propertyNames">The properties for the entity.</param>
-            <param name="types">The property types of the entity.</param>
-            <returns>true if the user modified the state in any way.</returns>
-        </member>
-        <member name="M:NHCustomProviders.ProviderInterceptor.OnFlushDirty(System.Object,System.Object,System.Object[],System.Object[],System.String[],NHibernate.Type.IType[])">
-            <summary>Called when an object is detected to be dirty, during a flush.</summary>
-            <remarks>The interceptor may modify the detected currentState, which will be propagated to
-            both the database and the persistent object. All flushes end in an actual synchronization 
-            with the database, in which as the new currentState will be propagated to the object, but 
-            not necessarily (immediately) to the database. It is strongly recommended that the 
-            interceptor not modify the previousState.</remarks>
-            <param name="entity">The object to be flushed.</param>
-            <param name="id">The identifier of the entity.</param>
-            <param name="currentState">The current state of the entity.</param>
-            <param name="previousState">The previous state of the entity.</param>
-            <param name="propertyNames">The properties for the entity.</param>
-            <param name="types">The property types of the entity.</param>
-            <returns>true if the user modified the currentState in any way.</returns>
-        </member>
-        <member name="M:NHCustomProviders.ProviderInterceptor.SetUtcDateTimeKind(System.Object[],NHibernate.Type.IType[])">
-            <summary>Sets any DateTime property to use UTC format.</summary>
-            <param name="state">The current state of the entity.</param>
-            <param name="types">The property types of the entity.</param>
-        </member>
-        <member name="M:NHCustomProviders.ProviderInterceptor.CheckUtcDateTimeKind(System.Object,System.Object[],System.String[],NHibernate.Type.IType[])">
-            <summary>Checks that any DateTime property uses UTC format.</summary>
-            <param name="id">The identifier of the entity.</param>
-            <param name="state">The current state of the entity.</param>
-            <param name="propertyNames">The properties for the entity.</param>
-            <param name="types">The property types of the entity.</param>
-        </member>
-        <member name="P:NHCustomProviders.ProviderInterceptor.DefaultPasswordFormat">
-            <summary>Gets the default password format.</summary>
-        </member>
-        <member name="T:NHCustomProviders.ConfigurationHelper">
-            <summary>Helper methods to extract data from the configuration.</summary>
-        </member>
-        <member name="M:NHCustomProviders.ConfigurationHelper.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)">
-            <summary>Gets a boolean value from the configuration options.</summary>
-            <param name="config">The list of configuration parameters.</param>
-            <param name="propertyName">Name of the property to get.</param>
-            <param name="defaultValue">Value to return if the property is not set.</param>
-            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
-        </member>
-        <member name="M:NHCustomProviders.ConfigurationHelper.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32,System.Int32,System.Int32)">
-            <summary>Gets an integer value from the configuration options.</summary>
-            <param name="config">The list of configuration parameters.</param>
-            <param name="propertyName">Name of the property to get.</param>
-            <param name="defaultValue">Value to return if the property is not set.</param>
-            <param name="minValueAllowed">The min value allowed.</param>
-            <param name="maxValueAllowed">The max value allowed.</param>
-            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
-        </member>
-        <member name="M:NHCustomProviders.ConfigurationHelper.GetString(System.Collections.Specialized.NameValueCollection,System.String,System.String)">
-            <summary>Gets a string value from the configuration options.</summary>
-            <param name="config">The list of configuration parameters.</param>
-            <param name="propertyName">Name of the property to get.</param>
-            <param name="defaultValue">Value to return if the property is not set.</param>
-            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
-        </member>
-        <member name="M:NHCustomProviders.ConfigurationHelper.GetEnum(System.Collections.Specialized.NameValueCollection,System.String,System.Type,System.Int32)">
-            <summary>Gets an enum value from the configuration options.</summary>
-            <param name="config">The list of configuration parameters.</param>
-            <param name="propertyName">Name of the property to get.</param>
-            <param name="enumType">the type of the enum we're retrieving.</param>
-            <param name="defaultValue">Value to return if the property is not set.</param>
-            <returns>The value of the property in the configuration parameters, or the defaultValue if the property is not set.</returns>
-        </member>
-        <member name="T:NHCustomProviders.BasicUser">
-            <summary>Class with the basic details of an user for the Role provider.</summary>
-        </member>
-        <member name="M:NHCustomProviders.BasicUser.#ctor">
-            <summary>Initializes a new instance of the BasicUser class.</summary>
-        </member>
-        <member name="M:NHCustomProviders.BasicUser.Equals(System.Object)">
-            <summary>Determines whether the specified System.Object is equal to the current System.Object</summary>
-            <param name="obj">The object to compare with the current object.</param>
-            <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        </member>
-        <member name="M:NHCustomProviders.BasicUser.GetHashCode">
-            <summary>Serves as a hash function for a particular type. GetHashCode is suitable for use in hashing algorithms and data structures like a hash table.</summary>
-            <returns>A hash code for the current object.</returns>
-        </member>
-        <member name="M:NHCustomProviders.BasicUser.op_Equality(NHCustomProviders.BasicUser,NHCustomProviders.BasicUser)">
-            <summary>Implements the operator ==.</summary>
-            <param name="obj1">The first object to compare.</param>
-            <param name="obj2">The second object to compare.</param>
-            <returns>The result of the operator.</returns>
-        </member>
-        <member name="M:NHCustomProviders.BasicUser.op_Inequality(NHCustomProviders.BasicUser,NHCustomProviders.BasicUser)">
-            <summary>Implements the operator !=.</summary>
-            <param name="obj1">The first object to compare.</param>
-            <param name="obj2">The second object to compare.</param>
-            <returns>The result of the operator.</returns>
-        </member>
-        <member name="M:NHCustomProviders.BasicUser.ToString">
-            <summary>Returns a string that represents the current object.</summary>
-            <returns>A string that represents the current object.</returns>
-        </member>
-        <member name="P:NHCustomProviders.BasicUser.UserId">
-            <summary>Gets or sets the identifier for the user.</summary>
-        </member>
-        <member name="P:NHCustomProviders.BasicUser.UserName">
-            <summary>Gets or sets the logon name of the user.</summary>
-        </member>
-        <member name="P:NHCustomProviders.BasicUser.Roles">
-            <summary>Gets or sets the roles for this user.</summary>
         </member>
     </members>
 </doc>
