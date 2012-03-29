@@ -528,11 +528,11 @@ namespace Explora_Precios.Web.Controllers
 		{
 			try
 			{
-				var ProductObj = _productRepository.Get(_id.ProductId());
+				var ProductObj = _productRepository.Get(_id.CryptProductId());
 				var FBclient = new Facebook.FacebookClient();
 				FBclient.AccessToken = CurrentUser.facebookToken;
 				var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
-										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, _id);
+										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, Server.UrlEncode(_id));
 
 				var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
 				var parameters = new Dictionary<string, object>
@@ -570,7 +570,7 @@ namespace Explora_Precios.Web.Controllers
 			var GroupModel = new GroupViewModel();
 			TryUpdateModel(GroupModel);
 
-			var ProductObj = _productRepository.Get(GroupModel.Product.ProductId());
+			var ProductObj = _productRepository.Get(GroupModel.Product.CryptProductId());
 			if (GroupModel.DoPublish)
 			{
 				var FBclient = new Facebook.FacebookClient();
@@ -613,6 +613,19 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new { result = "success", msg = "", groupSize = ProductObj.groups.Count });
 		}
 
+		public ActionResult GetGroupManager(int toPage)
+		{
+			var GroupsList = _groupRepository.GetByUser(CurrentUser).OrderByDescending(group => group.created).Select(group => new GroupViewModel
+			{
+				CreatedDate = group.created,
+				ProductName = group.product.name,
+				Product = group.product.Id.CryptProductId()
+			});
+
+			ViewData.Model = GroupsList;
+			return Json(new { html = this.RenderViewToString("PartialViews/GroupManager", ViewData) });
+		}
+
 		public ActionResult SetRate(string _product, int _value)
 		{
 			try
@@ -645,7 +658,7 @@ namespace Explora_Precios.Web.Controllers
 			try
 			{
 				var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
-				var productObj = _productRepository.Get(_valId.ProductId());
+				var productObj = _productRepository.Get(_valId.CryptProductId());
 				var productVMObj = productVM.LoadModel(productObj, false);
 				productVMObj.group.Grouped = productObj.groups.Count == 0 || CurrentUser == null ? GroupDisplay.Create : productObj.groups.Where(x => x.user == CurrentUser).Count() > 0 ? GroupDisplay.InGroup : GroupDisplay.IncludeMe;
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);

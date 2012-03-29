@@ -14,7 +14,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
             return text.Length >= lenght ? text.Substring(0, lenght) + "..." : text;
         }
 
-        public static int ProductId(this string Id)
+        public static int CryptProductId(this string Id)
         {
             var productId = 0;
             if (!int.TryParse(Id, out productId))
@@ -24,11 +24,23 @@ namespace Explora_Precios.Web.Controllers.Helpers
             return productId;
         }
 
-        public static string DecryptString(this string Product)
+		public static string CryptProductId(this int Id)
+		{
+			return Id.ToString().EncryptString();			
+		}
+
+		public static string EncryptString(this string val)
+		{
+			var key = System.Configuration.ConfigurationManager.AppSettings["PublicKey"];
+			var encryptedValue = IdEncrypter.EncryptStringAES(val, key);
+			return encryptedValue;
+		}
+
+        public static string DecryptString(this string val)
         {
             var key = System.Configuration.ConfigurationManager.AppSettings["PublicKey"];
-            var Id = IdEncrypter.DecryptStringAES(Product, key);
-            return Id;
+            var decryptedValue = IdEncrypter.DecryptStringAES(val, key);
+			return decryptedValue;
         }
 
         public static string ToArrayString(this List<int> list)

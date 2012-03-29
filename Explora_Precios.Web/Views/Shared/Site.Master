@@ -149,7 +149,7 @@
 				<div class="will_login <%= isLoggedIn ? "hideme" : "" %>" style="float:left;"><a class="register" href="javascript:void(0)">Registrarse</a> / <a class="login" href="javascript:void(0)">Iniciar</a></div>
 				<div style="float:right;">/ <a href="/Contact">Contáctenos</a></div>
 				<div class="will_login facebook hand <%= isLoggedIn ? "hideme" : "" %>"><img src="../../Content/Images/facebook_login_button.gif" onclick="authorizeFacebook(); return false;" /></div>
-				<div class="will_login hand groups <%= isLoggedIn ? "" : "hideme" %>">Ud. esta en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
+				<div class="will_login hand groups <%= isLoggedIn ? "" : "hideme" %>">Estoy en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
 			</div>
 			<div class="searchbox">
 				<input type="text" id="search_text" class="searchbox_textbox" value="<%= ViewData["search_text"] %>" />
@@ -287,6 +287,24 @@
 	</script>
 	
 	<script type="text/javascript">
+		var groupManagerPage = 0;
+		$(".groups").simpletip({
+			content: '',
+			fixed: true,
+			position: ["-1200", "-5"],
+			onBeforeShow: function () {
+				var simpleTip = this;
+				$.get('<%= Url.Action("GetGroupManager", "Home") %>', { toPage: 0 }, function (data) {
+					simpleTip.update(data.html);
+				});
+			},
+			onBeforeHide: function () {
+				groupManagerPage = 0;
+			}
+		});
+		$(".groupItem").live('click', function () {
+			LoadProductDetail($(this).prev().val(), '0');
+		});
 		$(".disclaimer").simpletip({
 			content: '<img src="../../Content/Images/information3-sc49.png" width="14px" height="14px" style="position:left;"/> Los precios mostrados son obtenidos de las páginas web de cada establecimiento comercial, por lo que sugerimos revisar la página del proveedor para verificar la vigencia del precio ofrecido. <br/><br/>Las ofertas y promociones presentadas en esta página pueden haber variado, sugerimos revisar la página web del comercio provedor del producto.',
 			fixed: true,
@@ -297,7 +315,7 @@
 		$(".notification").simpletip({
 			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
 			fixed: true,
-			position: ["-1300", "20"],
+			position: ["-1270", "0"],
 			showEffect: 'slide',
 			hideEffect: 'fade'
 		});

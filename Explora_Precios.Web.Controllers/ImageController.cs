@@ -30,7 +30,7 @@ namespace Explora_Precios.Web.Controllers
 
         public ActionResult Index(string id)
         {
-            var productObj = _productRepository.Get(id.ProductId());
+            var productObj = _productRepository.Get(id.CryptProductId());
             var productVM = new ProductViewModel { productImage = productObj.image.imageObj, productName = productObj.name };
             return View(productVM);
         }

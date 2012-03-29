@@ -40,7 +40,7 @@ div.anythingSlider-metallic .start-stop:hover, div.anythingSlider-metallic .star
 
 /* Navigation Arrows */
 div.anythingSlider-metallic .arrow {
-	top: 50%;
+	top: 40%;
 	position: absolute;
 	display: block;
 	z-index: 100;

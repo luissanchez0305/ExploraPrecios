@@ -1,8 +1,13 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<List<Explora_Precios.Web.Controllers.ViewModels.GroupViewModel>>" %>
-    
-	<h2>Estos son sus grupos</h2>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<Explora_Precios.Web.Controllers.ViewModels.GroupViewModel>>" %>
+<%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
+
+	<h2>Mis grupos</h2>
 	<ul class="groupList">
 	<% foreach (var group in Model) { %>
-		<li><input type="hidden" value="<%= group.Product %>" /><a href="javascript:void(0)" class="groupItem"><%= group.ProductName %></a></li>
+		<li>
+			<input type="hidden" value="<%= group.Product %>" /> 
+			<a href="javascript:void(0)" class="groupItem"><%= group.ProductName.Shorten(38) %></a> 
+			<label style="float:right;"><%= group.CreatedDate.ToShortDateString() %></label>
+		</li>
 	<% } %>
 	</ul>

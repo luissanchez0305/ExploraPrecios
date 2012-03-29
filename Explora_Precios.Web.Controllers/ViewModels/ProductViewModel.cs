@@ -17,6 +17,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
         public string Product { get; set; }
 		public string ProductName { get; set; }
         public bool IsFacebooked { get; set; }
+		public DateTime CreatedDate { get; set; }
 	}
 
 	public class ProductClientViewModel {
