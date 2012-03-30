@@ -315,6 +315,7 @@
 		$(".notification").simpletip({
 			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
 			fixed: true,
+			shadow: true,
 			position: ["-1270", "0"],
 			showEffect: 'slide',
 			hideEffect: 'fade'

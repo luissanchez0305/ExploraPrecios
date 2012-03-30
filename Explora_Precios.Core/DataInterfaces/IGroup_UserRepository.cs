@@ -10,5 +10,6 @@ namespace Explora_Precios.Core.DataInterfaces
     {
         IList<Group_User> GetByUser(User user);
         void Update(Group_User user);
+		IEnumerable<Group_User> GetLatest();
     }
 }

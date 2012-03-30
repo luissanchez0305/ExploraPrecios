@@ -39,7 +39,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
         public IEnumerable<BannerProduct> HighlightProducts { get; set; }
         public IEnumerable<BannerProduct> OfferProducts { get; set; }
         public IEnumerable<BannerProduct> NewProducts { get; set; }
-
+		public IEnumerable<GroupViewModel> GroupedProducts { get; set; }
     }
 
     public class BannerProduct

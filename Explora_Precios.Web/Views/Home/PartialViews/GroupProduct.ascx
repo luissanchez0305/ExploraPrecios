@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Explora_Precios.Web.Controllers.ViewModels.GroupViewModel>" %>
     
 <form id="GroupForm" style="background-color:#F6F5EA;">
-    <%= Html.Hidden("Product", ViewData["product"])%>
+    <%= Html.Hidden("ProductId", ViewData["product"])%>
     <% if (Model.IsFacebooked)
        { %>
     <label class="WhenOffer">Envialo a Facebook</label><div class="questionMark" style="position:relative; float:right;"></div>&nbsp;<%= Html.CheckBox("DoPublish", Model.DoPublish)%><br />

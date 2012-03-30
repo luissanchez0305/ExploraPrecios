@@ -124,24 +124,56 @@ namespace Explora_Precios.Web.Controllers
 			var IntroModel = new IntroViewModel();
 			IntroModel.TickerList = result;
 
-            //Productos de las lista de destacados, en ofertas y nuevos
-            if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
-            {
+			//Productos de las lista de destacados, en ofertas y nuevos
+			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
+			{
 				var RawLists = LoadBannerLists();
 
-                // Rellenamos el modelo con bannerproduct models vacios
+				// Rellenamos el modelo con bannerproduct models vacios
 				IntroModel.HighlightProducts = LoadBannerProductModelList(RawLists[0]); // Highlighted
 				IntroModel.OfferProducts = LoadBannerProductModelList(RawLists[1]); // Offers
 				IntroModel.NewProducts = LoadBannerProductModelList(RawLists[2]); // News
-            }
-            else
-            {
-                // Rellenamos el modelo con bannerproduct models vacios
-                IntroModel.HighlightProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("HighlightProducts"));
-                IntroModel.OfferProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("OfferProducts"));
-                IntroModel.NewProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("NewProducts"));
-            }
+				// Llenar el listado de grupos se hace aparte por los datos desplegados, no es igual a los otros banners
+				var GroupedProductsVM = LoadGroupedBannerList();
+				IntroModel.GroupedProducts = GroupedProductsVM;
+			}
+			else
+			{
+				// Rellenamos el modelo con bannerproduct models vacios
+				IntroModel.HighlightProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("HighlightProducts"));
+				IntroModel.OfferProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("OfferProducts"));
+				IntroModel.NewProducts = LoadBannerProductModelList((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("NewProducts"));
+				IntroModel.GroupedProducts = LoadGroupedBannerList((IEnumerable<Group_User>)System.Web.HttpRuntime.Cache.Get("GroupedProducts"));
+			}
 			return View(IntroModel);
+		}
+
+		private IEnumerable<GroupViewModel> LoadGroupedBannerList(IEnumerable<Group_User> GroupUserList)
+		{
+			return GroupUserList.Take(5).Select(group => LoadGroupViewModel(group, true)).Concat(GroupUserList.Skip(5).Select(group => LoadGroupViewModel(group, false)));
+		}
+
+		private IEnumerable<GroupViewModel> LoadGroupedBannerList()
+		{
+			var RawGroupedProducts = _groupRepository.GetLatest();
+
+			System.Web.HttpRuntime.Cache.Insert("GroupedProducts", RawGroupedProducts,
+				null,
+				DateTime.Now.AddHours(2),
+				System.Web.Caching.Cache.NoSlidingExpiration);
+
+			return LoadGroupedBannerList(RawGroupedProducts);
+		}
+
+		private GroupViewModel LoadGroupViewModel(Group_User group, bool loadImage)
+		{
+			return new GroupViewModel
+			{
+				CreatedDate = group.created,
+				Product = group.product.Id.CryptProductId(),
+				ProductName = group.product.name,
+				Image = loadImage ? group.product.image.imageObj : null
+			};
 		}
 
 		private List<IEnumerable<Client_Product>> LoadBannerLists()
@@ -180,57 +212,68 @@ namespace Explora_Precios.Web.Controllers
 			return lists;
 		}
 
-        private IEnumerable<BannerProduct> LoadBannerProductModelList(IEnumerable<Client_Product> cpList)
-        {
-            return cpList.Take(5).Select(cp => LoadBannerProduct(cp, true)).Concat(cpList.Skip(5).Select(cp => LoadBannerProduct(cp, false)));
-        }
+		private IEnumerable<BannerProduct> LoadBannerProductModelList(IEnumerable<Client_Product> cpList)
+		{
+			return cpList.Take(5).Select(cp => LoadBannerProduct(cp, true)).Concat(cpList.Skip(5).Select(cp => LoadBannerProduct(cp, false)));
+		}
 
-        private BannerProduct LoadBannerProduct(Client_Product cp, bool loadImage)
-        {
-            return new BannerProduct()
-            {
-                ProductId = cp.product.Id,
-                Name = cp.product.name,
-                Client = cp.client.name,
-                Image = loadImage ? cp.product.image.imageObj : null,
-                ClientId = cp.client.Id,
-                Price = cp.specialPrice
-            };
-        }
+		private BannerProduct LoadBannerProduct(Client_Product cp, bool loadImage)
+		{
+			return new BannerProduct()
+			{
+				ProductId = cp.product.Id,
+				Name = cp.product.name,
+				Client = cp.client.name,
+				Image = loadImage ? cp.product.image.imageObj : null,
+				ClientId = cp.client.Id,
+				Price = cp.specialPrice
+			};
+		}
 
 		public ActionResult PageBanner(int toPage, string banner)
 		{
 			var pageSize = 5;
 			var lists = new List<IEnumerable<Client_Product>>();
+			IEnumerable<Group_User> grouped;
 			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
 			{
 				lists = LoadBannerLists();
+				grouped = _groupRepository.GetLatest();
 			}
-			else {
-
+			else
+			{
 				lists.Add((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("HighlightProducts"));
 				lists.Add((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("OfferProducts"));
 				lists.Add((IEnumerable<Client_Product>)System.Web.HttpRuntime.Cache.Get("NewProducts"));
+				grouped = (IEnumerable<Group_User>)System.Web.HttpRuntime.Cache.Get("GroupedProducts");
 			}
 
 			var guids = new List<string>();
-			IEnumerable<Client_Product> list;
+			IEnumerable<int> ids;
+			var listCount = 0;
 			switch (banner)
 			{
 				case "Highlighted":
-					list = lists[0];
+					listCount = lists[0].Count();
+					ids = lists[0].Select(cp => cp.product.Id);
 					break;
 				case "Offers":
-					list = lists[1];
+					listCount = lists[1].Count();
+					ids = lists[1].Select(cp => cp.product.Id);
+					break;
+				case "News":
+					listCount = lists[2].Count();
+					ids = lists[2].Select(cp => cp.product.Id);
 					break;
 				default:
-					list = lists[2];
+					listCount = grouped.Count();
+					ids = grouped.Select(g => g.product.Id);
 					break;
 			}
-			var pageItemsCount = toPage * pageSize < list.Count() ? pageSize : pageSize - ((toPage * pageSize) - list.Count());
+			var pageItemsCount = toPage * pageSize < listCount ? pageSize : pageSize - ((toPage * pageSize) - listCount);
 			for (int i = 0; i < pageItemsCount; i++)
 			{
-				guids.Add(CommonUtilities.CacheImage(_productRepository.Get(list.ElementAt(i + ((toPage - 1) * pageSize)).product.Id).image.imageObj));
+				guids.Add(CommonUtilities.CacheImage(_productRepository.Get(ids.ElementAt(i + ((toPage - 1) * pageSize))).image.imageObj));
 			}
 
 			return Json(new { guids = string.Join(",", guids.ToArray()), count = pageItemsCount });

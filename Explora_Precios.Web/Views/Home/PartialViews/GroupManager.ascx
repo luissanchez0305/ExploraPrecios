@@ -3,6 +3,10 @@
 
 	<h2>Mis grupos</h2>
 	<ul class="groupList">
+		<li>
+			<label>Producto</label>
+			<label style="float:right;">Creado</label>
+		</li>
 	<% foreach (var group in Model) { %>
 		<li>
 			<input type="hidden" value="<%= group.Product %>" /> 

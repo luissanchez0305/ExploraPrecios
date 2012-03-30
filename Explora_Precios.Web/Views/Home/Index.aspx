@@ -81,6 +81,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			LoadSlider('MediumBanner', false);
 			LoadSlider('OffersBanner', false);
 			LoadSlider('NewProductsBanner', false);
+			LoadSlider('GroupedBanner', false);
 			$('.start-stop').hide();
 			$('.thumbNav').hide();
 			$("ul#TickerBanner").webTicker();
@@ -415,7 +416,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</div>
 	<!-- Define slider dimensions here -->
 	<style type="text/css"> 
-		#OffersBanner, #NewProductsBanner {
+		#GroupedBanner, #OffersBanner, #NewProductsBanner {
 		  width: 700px;
 		  height: 120px;
 		  list-style: none;
@@ -477,6 +478,48 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</ul>
 		</div>       
 		<%} %> 
+		<% if (Model.GroupedProducts.Count() > 0)
+		   {  %>
+		<div id="Grouped" class="section">
+			<input type="hidden" id="grouped_page" value="1" />
+			<input type="hidden" id="grouped_max" value="<%= (int)(Model.GroupedProducts.Count() / 5) + 1 %>" />
+			<label class="sectiontitle" style="color:#C80F02">Productos en grupos</label>
+			<ul id="GroupedBanner">
+				<%  var index = 0;
+					var page = 0;
+					var indexItem = 1;
+					var isLiOpen = false;
+					foreach (var group in Model.GroupedProducts)
+					{
+						page = index % 5 == 0 ? page + 1 : page + 0;
+						if (!isLiOpen)
+						{
+							isLiOpen = true;%>
+					<li>
+				<% } %>
+					<input type="hidden" value="<%= group.Product %>" />
+					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
+						<img id="Grouped_<%= page %>_<%= indexItem %>"
+							<% if (group.Image != null)
+						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(group.Image) %>" <% } %>
+						   alt="image" />
+						
+						<div class="title"><%= group.ProductName.Shorten(15)%></div>
+						<div class="client">De hace <%= Math.Abs(group.CreatedDate.Subtract(DateTime.Now).Days) %> dias</div>
+					</div> 
+					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.GroupedProducts.Count() - 1 == index)
+					   {%>
+					</li>
+					<%  isLiOpen = false;
+					   } %>     
+				<%  
+						index++;
+						indexItem = index % 5 == 0 ? 1 : indexItem + 1;
+					}
+				%>
+			</ul>
+		</div>       
+		<%} %> 		
 		<% if (Model.OfferProducts.Count() > 0)
 		   {  %>
 		<div id="Offers" class="section">

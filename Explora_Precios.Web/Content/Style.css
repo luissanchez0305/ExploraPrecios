@@ -32,6 +32,7 @@ img { border: 0; }
 .loginbox .facebook { position:absolute; top: 23px; }
 .loginbox.home .facebook { left: 26px; }
 .loginbox.home .groups { position:absolute; top: 23px; float:right; }
+.loginbox.home .groups .tooltip {  }
 .loginbox.home .groups .tooltip h2 { font-size:14px; font-weight: bold; }
 .loginbox.home .groups .tooltip ul { background-color: White; border-radius:10px; border-color: #CE8036; padding:5px 10px 5px 10px; list-style:none; width:280px; }
 
@@ -246,6 +247,16 @@ label .itemModified { font-weight:bold; }
 label .itemModified .deleted { color: Red; }
 label .itemModified .changed { color: Blue; }
 label .itemModified .new { color: Green; }
+
+.shadow {
+	-moz-box-shadow:    3px 3px 5px 6px #777;
+	-webkit-box-shadow: 3px 3px 5px 6px #777;
+	box-shadow:         3px 3px 5px 6px #777;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#777')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#777');
+}
 /* ======================= Product Details =============== */
 #FloatingPanel { width: 490px; }
 .details #BreadCrums { margin-top: 5px; display:table; height:10px; width:110%; }
@@ -344,6 +355,7 @@ label .itemModified .new { color: Green; }
 #ProductDisplayPanel .section img { padding-left: 15px; width:120px; height:80px; position:absolute; z-index:199; }
 #ProductDisplayPanel .section div.itemprice { background: rgba(250, 252, 22, 0.6); color: #C80F02; font-family: 'verdana'; font-size: 14px; font-weight: bold; float:right; top:85px; position:relative; z-index:200; }
 #ProductDisplayPanel .section div.client { background: rgba(250, 252, 22, 0.6); color: #2C7C7C; font-family: 'verdana'; font-size: 12px; font-weight: bold; float:right; left:0px; top:85px; position:relative; z-index:200; }
+#ProductDisplayPanel .section div.created { background: rgba(250, 252, 22, 0.6); color: #2C7C7C; font-family: 'verdana'; font-size: 10px; font-weight: bold; float:right; left:0px; top:85px; position:relative; z-index:200; }
 
 #ProductDisplayPanel .highlighted { border:1px solid black; border-radius:5px; height:200px; width:750px; margin-bottom:20px; }
 #ProductDisplayPanel .highlighted label.sectiontitle { color: #354359; font-family: 'verdana'; font-size: 20px; font-weight: bold; padding-left: 10px; }

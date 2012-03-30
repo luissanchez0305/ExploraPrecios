@@ -7,12 +7,12 @@ using SharpArch.Core.DomainModel;
 
 namespace Explora_Precios.Core
 {
-    [DebuggerDisplay("{product.name} - {user.email}")]
-    public class Group_User : Entity
-    {
-        [DomainSignature]
-        public virtual Product product { get; set; }
-        public virtual User user { get; set; }
-        public virtual DateTime created { get; set; }
-    }
+	[DebuggerDisplay("{product.name} - {user.email}")]
+	public class Group_User : Entity
+	{
+		[DomainSignature]
+		public virtual Product product { get; set; }
+		public virtual User user { get; set; }
+		public virtual DateTime created { get; set; }
+	}
 }

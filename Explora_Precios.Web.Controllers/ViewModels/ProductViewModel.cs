@@ -16,8 +16,14 @@ namespace Explora_Precios.Web.Controllers.ViewModels
         public bool DoPublish { get; set; }
         public string Product { get; set; }
 		public string ProductName { get; set; }
+		public byte[] Image { get; set; }
         public bool IsFacebooked { get; set; }
 		public DateTime CreatedDate { get; set; }
+	}
+
+	public class GroupManagerViewModel
+	{
+		public IEnumerable<GroupViewModel> GroupsViewModel { get; set; }
 	}
 
 	public class ProductClientViewModel {
