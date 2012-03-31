@@ -202,7 +202,9 @@ namespace Explora_Precios.Web.Controllers
 		{
 			var pageSize = 5;
 			var lists = new List<IEnumerable<Client_Product>>();
-			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
+			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null ||
+				System.Web.HttpRuntime.Cache.Get("OfferProducts") == null ||
+				System.Web.HttpRuntime.Cache.Get("NewProducts") == null)
 			{
 				lists = LoadBannerLists();
 			}
