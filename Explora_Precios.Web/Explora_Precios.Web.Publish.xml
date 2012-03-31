@@ -700,9 +700,9 @@
     <file relUrl="Content/fsmenu/listmenu_h.css" publishTime="12/06/2006 23:56:40" />
     <file relUrl="Content/Images/banner/thumb.png" publishTime="01/27/2012 05:39:24" />
     <file relUrl="Content/Images/ui-icons_454545_256x240.png" publishTime="12/07/2011 15:38:00" />
-    <file relUrl="Views/Home/PartialViews/GroupProduct.ascx" publishTime="03/23/2012 00:33:54" />
+    <file relUrl="Views/Home/PartialViews/GroupProduct.ascx" publishTime="03/30/2012 20:38:41" />
     <file relUrl="Content/Images/banner_sample1.jpg" publishTime="07/27/2011 14:57:56" />
-    <file relUrl="bin/Explora_Precios.Web.Controllers.dll" publishTime="03/29/2012 04:24:37" />
+    <file relUrl="bin/Explora_Precios.Web.Controllers.dll" publishTime="03/31/2012 14:04:18" />
     <file relUrl="Views/ProductManager/PartialViews/ProductList.ascx" publishTime="11/16/2010 01:57:28" />
     <file relUrl="Content/Images/slidebox_thumb.png" publishTime="07/25/2010 07:13:34" />
     <file relUrl="bin/Explora_Precios.Web.pdb" publishTime="03/29/2012 17:22:00" />
@@ -750,9 +750,9 @@
     <file relUrl="Content/resume_homepage_images/but1.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/resume_homepage_images/add_card.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/Images/banner/facetwit_prev.png" publishTime="01/27/2012 18:32:20" />
-    <file relUrl="Content/resume_homepage_images/go.jpg" publishTime="11/11/2011 16:29:16" />
+    <file relUrl="Content/fsmenu/listmenu_v.css" publishTime="01/02/2009 18:05:02" />
     <file relUrl="Content/Images/Questionmark.png" publishTime="01/10/2012 11:52:26" />
-    <file relUrl="bin/Explora_Precios.ApplicationServices.dll" publishTime="03/29/2012 04:09:34" />
+    <file relUrl="bin/Explora_Precios.ApplicationServices.dll" publishTime="03/30/2012 20:45:39" />
     <file relUrl="Content/Images/close.png" publishTime="05/26/2010 18:24:12" />
     <file relUrl="Content/resume_homepage_images/pic4.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Scripts/jquery.easing.1.3.js" publishTime="07/05/2010 02:23:36" />
@@ -763,7 +763,8 @@
     <file relUrl="Content/Images/banner/416_p1_s_1.jpg" publishTime="01/27/2012 05:14:14" />
     <file relUrl="Content/html/follow.html" publishTime="01/06/2012 17:30:32" />
     <file relUrl="Views/Home/PartialViews/LeftMenu.ascx" publishTime="02/01/2012 01:40:44" />
-    <file relUrl="bin/NHCustomProviders.dll" publishTime="03/29/2012 04:09:30" />
+    <file relUrl="bin/NHCustomProviders.dll" publishTime="03/30/2012 20:38:43" />
+    <file relUrl="bin/NHCustomProviders.xml" publishTime="03/30/2012 20:38:43" />
     <file relUrl="bin/MvcContrib.dll" publishTime="06/03/2010 21:02:12" />
     <file relUrl="Views/Account/Register.ascx" publishTime="03/27/2012 15:15:37" />
     <file relUrl="Content/resume_homepage_images/logo.jpg" publishTime="11/11/2011 16:29:16" />
@@ -791,7 +792,7 @@
     <file relUrl="Content/Images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="12/02/2010 16:49:26" />
     <file relUrl="Content/Images/banner/waterdrops-blue.jpg" publishTime="01/27/2012 04:49:48" />
     <file relUrl="channel.html" publishTime="02/26/2012 15:41:00" />
-    <file relUrl="cv/index.htm" publishTime="03/18/2012 23:42:37" />
+    <file relUrl="cv/index.htm" publishTime="03/30/2012 20:38:42" />
     <file relUrl="bin/Iesi.Collections.dll" publishTime="05/29/2010 03:14:04" />
     <file relUrl="bin/Castle.Windsor.dll" publishTime="06/03/2010 20:49:16" />
     <file relUrl="Content/Images/cell_bg.png" publishTime="12/16/2010 02:28:00" />
@@ -801,7 +802,7 @@
     <file relUrl="Content/Images/banner/home-image-1.png" publishTime="01/27/2012 05:46:16" />
     <file relUrl="Content/Images/banner/Fiesta10.jpg" publishTime="01/27/2012 05:21:24" />
     <file relUrl="Content/resume_homepage_images/pim2.jpg" publishTime="11/11/2011 16:29:16" />
-    <file relUrl="bin/Explora_Precios.Web.Controllers.pdb" publishTime="03/29/2012 04:24:35" />
+    <file relUrl="bin/Explora_Precios.Web.Controllers.pdb" publishTime="03/31/2012 14:04:18" />
     <file relUrl="Content/resume_homepage_images/browse.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/Images/ui-bg_glass_75_dadada_1x400.png" publishTime="12/02/2010 16:49:26" />
     <file relUrl="Views/Web.config" publishTime="10/28/2009 14:40:32" />
@@ -812,10 +813,10 @@
     <file relUrl="Content/Images/pause_icon.png" publishTime="09/12/2011 15:26:56" />
     <file relUrl="Content/resume_homepage_images/news_events.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Global.asax" publishTime="12/05/2009 06:31:42" />
-    <file relUrl="bin/Explora_Precios.Web.dll" publishTime="03/29/2012 17:22:03" />
+    <file relUrl="bin/Explora_Precios.Web.dll" publishTime="03/31/2012 15:17:11" />
     <file relUrl="Content/Images/recorte_grande.png" publishTime="05/10/2010 01:46:02" />
     <file relUrl="Content/Images/rating/cancel-off.png" publishTime="11/24/2011 00:55:52" />
-    <file relUrl="Views/Home/Index.aspx" publishTime="03/27/2012 13:12:25" />
+    <file relUrl="Views/Home/Index.aspx" publishTime="03/30/2012 20:38:41" />
     <file relUrl="Content/Images/sharp_arch.jpg" publishTime="10/28/2009 14:40:32" />
     <file relUrl="Content/Images/logo_modificado.png" publishTime="02/16/2011 09:36:18" />
     <file relUrl="Scripts/Unused/jquery-ui-1.8.min.js" publishTime="05/22/2010 18:52:40" />
@@ -825,10 +826,11 @@
     <file relUrl="Content/Images/jAlert/info.gif" publishTime="03/23/2012 02:24:58" />
     <file relUrl="Views/Home/PartialViews/GroupManager.ascx" publishTime="03/29/2012 02:58:05" />
     <file relUrl="bin/SharpArch.Data.dll" publishTime="06/03/2010 21:04:52" />
-    <file relUrl="bin/Explora_Precios.Data.dll" publishTime="03/29/2012 04:09:32" />
+    <file relUrl="bin/Explora_Precios.Data.dll" publishTime="03/30/2012 20:45:37" />
     <file relUrl="Scripts/jquery.hoverIntent.minified.js" publishTime="01/25/2012 07:34:44" />
     <file relUrl="Content/resume_homepage_images/subscribe_news.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/resume_homepage_images/17.jpg" publishTime="11/11/2011 16:29:16" />
+    <file relUrl="Content/Images/warning_icon.png" publishTime="03/31/2012 14:52:10" />
     <file relUrl="bin/NHibernate.dll" publishTime="06/03/2010 16:40:10" />
     <file relUrl="bin/SharpArch.Core.NHibernateValidator.dll" publishTime="06/03/2010 21:04:54" />
     <file relUrl="Views/ProductManager/MngProductByReference.aspx" publishTime="07/05/2011 18:29:50" />
@@ -849,8 +851,8 @@
     <file relUrl="bin/Facebook.xml" publishTime="02/23/2012 18:18:02" />
     <file relUrl="Content/banner/colorbox.css" publishTime="01/17/2012 10:37:48" />
     <file relUrl="Content/Images/banner/media.746.jpg" publishTime="01/27/2012 05:42:16" />
-    <file relUrl="Content/Style.css" publishTime="03/29/2012 03:01:10" />
-    <file relUrl="Scripts/jquery.simpletip-1.3.1.min.js" publishTime="07/26/2011 15:50:52" />
+    <file relUrl="Content/Style.css" publishTime="03/30/2012 20:38:40" />
+    <file relUrl="Scripts/jquery.simpletip-1.3.1.min.js" publishTime="03/30/2012 20:38:41" />
     <file relUrl="Content/Images/slidebox_previous.png" publishTime="07/25/2010 06:39:10" />
     <file relUrl="Content/Images/rating/face-d.png" publishTime="11/24/2011 00:55:52" />
     <file relUrl="Content/Images/banner_sample4.png" publishTime="07/27/2011 14:41:08" />
@@ -885,7 +887,7 @@
     <file relUrl="Content/Images/banner/canexel_beauty_740x300.jpg" publishTime="01/27/2012 05:39:36" />
     <file relUrl="Content/Images/new.png" publishTime="09/18/2011 14:39:36" />
     <file relUrl="Content/resume_homepage_images/header-03.jpg" publishTime="11/11/2011 16:29:16" />
-    <file relUrl="Views/Shared/Site.Master" publishTime="03/29/2012 02:41:17" />
+    <file relUrl="Views/Shared/Site.Master" publishTime="03/30/2012 20:38:42" />
     <file relUrl="bin/System.Web.Abstractions.dll" publishTime="11/04/2010 20:53:32" />
     <file relUrl="Content/resume_homepage_images/featured_prod.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/resume_homepage_images/header-02.jpg" publishTime="11/11/2011 16:29:16" />
@@ -899,7 +901,6 @@
     <file relUrl="Scripts/jquery-1.6.4.min.js" publishTime="10/09/2011 22:59:16" />
     <file relUrl="Scripts/MicrosoftAjax.js" publishTime="10/28/2009 14:40:32" />
     <file relUrl="Content/resume_homepage_images/but2.jpg" publishTime="11/11/2011 16:29:16" />
-    <file relUrl="Content/fsmenu/listmenu_v.css" publishTime="01/02/2009 18:05:02" />
     <file relUrl="Content/Site.css" publishTime="01/13/2009 20:18:40" />
     <file relUrl="bin/SharpArch.Core.dll" publishTime="06/03/2010 21:04:46" />
     <file relUrl="Views/ProductManager/MngProductsLocal.aspx" publishTime="09/16/2011 14:14:50" />
@@ -908,6 +909,8 @@
     <file relUrl="Scripts/Explora_Precios.js" publishTime="02/21/2012 00:19:44" />
     <file relUrl="Content/banner/theme-metallic.css" publishTime="03/28/2012 22:21:02" />
     <file relUrl="bin/NHCustomProviders.xml" publishTime="03/29/2012 04:09:30" />
+    <file relUrl="Content/banner/theme-metallic.css" publishTime="03/30/2012 20:38:40" />
+    <file relUrl="bin/Explora_Precios.Web.pdb" publishTime="03/31/2012 15:17:10" />
     <file relUrl="Content/Images/ui-bg_glass_65_ffffff_1x400.png" publishTime="12/02/2010 16:49:26" />
     <file relUrl="Views/ProductManager/Catalogs/SubCategoryForm.ascx" publishTime="07/07/2011 12:38:38" />
     <file relUrl="Content/Images/banner/1 (1).jpg" publishTime="01/27/2012 05:28:32" />
@@ -917,15 +920,15 @@
     <file relUrl="Content/Images/banner/loading_background.png" publishTime="01/17/2012 09:57:50" />
     <file relUrl="Scripts/jquery.webticker.1.3.js" publishTime="01/25/2012 04:12:18" />
     <file relUrl="Views/Shared/ShowImage.ascx" publishTime="03/10/2010 03:45:56" />
-    <file relUrl="bin/Explora_Precios.Core.pdb" publishTime="03/29/2012 04:09:29" />
+    <file relUrl="bin/Explora_Precios.Core.pdb" publishTime="03/30/2012 20:45:33" />
     <file relUrl="Content/Images/ui-icons_2e83ff_256x240.png" publishTime="12/07/2011 15:37:58" />
     <file relUrl="Content/Images/banner/040710a.jpg" publishTime="01/27/2012 04:31:24" />
     <file relUrl="Views/ProductManager/PartialViews/ClientPriceForm.ascx" publishTime="01/31/2012 09:18:54" />
-    <file relUrl="Error.aspx" publishTime="01/11/2012 13:17:30" />
+    <file relUrl="Error.aspx" publishTime="03/31/2012 15:16:25" />
     <file relUrl="Content/Images/calendar.gif" publishTime="12/07/2011 15:37:52" />
     <file relUrl="Content/resume_homepage_images/more.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Scripts/jquery.alerts.js" publishTime="03/23/2012 02:24:58" />
-    <file relUrl="bin/Explora_Precios.Data.pdb" publishTime="03/29/2012 04:09:31" />
+    <file relUrl="bin/Explora_Precios.Data.pdb" publishTime="03/30/2012 20:45:37" />
     <file relUrl="Content/resume_homepage_images/banner.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Scripts/banner/jquery.mobile-1.0rc2.customized.min.js" publishTime="11/10/2011 10:23:02" />
     <file relUrl="Content/resume_homepage_images/pim1.jpg" publishTime="11/11/2011 16:29:16" />
@@ -944,6 +947,7 @@
     <file relUrl="Views/Services/Index.aspx" publishTime="12/13/2011 11:36:36" />
     <file relUrl="Content/resume_homepage_images/top_popelar.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/dropdownmenu.css" publishTime="05/24/2010 08:00:56" />
+    <file relUrl="Content/resume_homepage_images/go.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/Images/ui-bg_flat_75_ffffff_40x100.png" publishTime="12/02/2010 16:49:26" />
     <file relUrl="Content/resume_homepage_images/header-04.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="bin/log4net.dll" publishTime="05/29/2010 02:49:22" />
@@ -964,7 +968,7 @@
     <file relUrl="Content/resume_homepage_images/pic2.jpg" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/Images/banner/1.jpg" publishTime="01/27/2012 05:13:54" />
     <file relUrl="Content/Images/banner/puzzel.jpg" publishTime="01/27/2012 05:39:42" />
-    <file relUrl="bin/Explora_Precios.Core.dll" publishTime="03/29/2012 04:09:29" />
+    <file relUrl="bin/Explora_Precios.Core.dll" publishTime="03/30/2012 20:45:33" />
     <file relUrl="Content/Images/ui-bg_flat_0_aaaaaa_40x100.png" publishTime="12/02/2010 16:49:26" />
     <file relUrl="bin/Microsoft.Practices.ServiceLocation.dll" publishTime="09/12/2008 20:37:00" />
     <file relUrl="Content/fsmenu/divmenu.css" publishTime="02/01/2005 17:52:08" />
@@ -979,12 +983,12 @@
     <file relUrl="Content/Images/rating/star-off.png" publishTime="11/24/2011 00:55:52" />
     <file relUrl="Content/Images/brochures/brochure_oferta1.jpg" publishTime="01/20/2012 13:11:32" />
     <file relUrl="Content/jquery-ui.css" publishTime="05/22/2010 18:54:56" />
-    <file relUrl="bin/NHCustomProviders.pdb" publishTime="03/29/2012 04:09:30" />
+    <file relUrl="bin/NHCustomProviders.pdb" publishTime="03/30/2012 20:38:43" />
     <file relUrl="Views/Home/PartialViews/ProductTicker.ascx" publishTime="01/28/2012 13:48:46" />
     <file relUrl="Content/Images/cmn_attention_icon01.gif" publishTime="09/01/2011 18:39:22" />
     <file relUrl="Content/Images/banner/arrows-metallic.png" publishTime="01/15/2012 03:16:26" />
     <file relUrl="Views/Home/Products.aspx" publishTime="03/23/2012 00:33:54" />
-    <file relUrl="Web.config" publishTime="03/29/2012 04:09:43" />
+    <file relUrl="Web.config" publishTime="03/31/2012 14:14:15" />
     <file relUrl="Content/Images/banner/temp.zip" publishTime="01/28/2012 06:23:18" />
     <file relUrl="Views/Home/PartialViews/ProductsArea.ascx" publishTime="01/25/2012 03:50:58" />
     <file relUrl="Scripts/Unused/jquery-1.3.2.js" publishTime="10/28/2009 14:40:32" />
@@ -999,7 +1003,7 @@
     <file relUrl="Views/ProductManager/Catalogs/ProductTypeForm.ascx" publishTime="07/29/2011 15:39:56" />
     <file relUrl="Content/Images/facebook_login_button.gif" publishTime="03/01/2012 11:19:08" />
     <file relUrl="Scripts/jquery.raty.min.js" publishTime="11/24/2011 00:57:44" />
-    <file relUrl="bin/Explora_Precios.ApplicationServices.pdb" publishTime="03/29/2012 04:09:33" />
+    <file relUrl="bin/Explora_Precios.ApplicationServices.pdb" publishTime="03/30/2012 20:45:39" />
     <file relUrl="Content/Images/jAlert/important.gif" publishTime="03/23/2012 02:24:58" />
     <file relUrl="Content/resume_homepage_images/spacer.gif" publishTime="11/11/2011 16:29:16" />
     <file relUrl="Content/Images/banner/marketchanneloptions.png" publishTime="01/27/2012 18:43:20" />

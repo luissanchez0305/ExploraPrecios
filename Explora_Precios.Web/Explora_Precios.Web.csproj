@@ -219,6 +219,7 @@
     <Content Include="Content\html\changeemail.html" />
     <Content Include="Content\html\follow.html" />
     <Content Include="Content\html\forgot.html" />
+    <Content Include="Content\Images\warning_icon.png" />
     <Content Include="Content\Images\banner\040710a.jpg" />
     <Content Include="Content\Images\banner\1 %281%29.jpg" />
     <Content Include="Content\Images\banner\1.jpg" />
