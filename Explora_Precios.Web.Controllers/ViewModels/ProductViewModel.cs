@@ -24,6 +24,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 	public class GroupManagerViewModel
 	{
 		public IEnumerable<GroupViewModel> GroupsViewModel { get; set; }
+		public int TotalPage { get; set; }
 	}
 
 	public class ProductClientViewModel {

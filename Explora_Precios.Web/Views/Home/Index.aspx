@@ -491,12 +491,14 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					var isLiOpen = false;
 					foreach (var group in Model.GroupedProducts)
 					{
+						var created = DateTime.Now.Subtract(group.CreatedDate);
 						page = index % 5 == 0 ? page + 1 : page + 0;
 						if (!isLiOpen)
 						{
 							isLiOpen = true;%>
 					<li>
 				<% } %>
+					<input type="hidden" value="0" />
 					<input type="hidden" value="<%= group.Product %>" />
 					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
 						<img id="Grouped_<%= page %>_<%= indexItem %>"
@@ -505,7 +507,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						   alt="image" />
 						
 						<div class="title"><%= group.ProductName.Shorten(15)%></div>
-						<div class="client">De hace <%= Math.Abs(group.CreatedDate.Subtract(DateTime.Now).Days) %> dias</div>
+						<div class="groupsize">Con <%= group.GroupSize %> persona<%= group.GroupSize > 1 ? "s" : "" %></div>
+						<div class="client"><%= created.GroupCreated() %></div>
 					</div> 
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.GroupedProducts.Count() - 1 == index)
 					   {%>
@@ -608,7 +611,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</div>
 	<script type="text/javascript">
 		$('div.section [id$=Banner] div.item, div.highlighted [id$=Banner] div.item').live('click', function () {
-			LoadProductDetail($(this).prev().val(), $(this).prev().prev().val());
+				LoadProductDetail($(this).prev().val(), $(this).prev().prev().val());
 		});
 	</script>
 

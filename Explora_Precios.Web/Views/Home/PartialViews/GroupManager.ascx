@@ -1,17 +1,10 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<Explora_Precios.Web.Controllers.ViewModels.GroupViewModel>>" %>
-<%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Explora_Precios.Web.Controllers.ViewModels.GroupManagerViewModel>" %>
+
 
 	<h2>Mis grupos</h2>
-	<ul class="groupList">
-		<li>
-			<label>Producto</label>
-			<label style="float:right;">Creado</label>
-		</li>
-	<% foreach (var group in Model) { %>
-		<li>
-			<input type="hidden" value="<%= group.Product %>" /> 
-			<a href="javascript:void(0)" class="groupItem"><%= group.ProductName.Shorten(38) %></a> 
-			<label style="float:right;"><%= group.CreatedDate.ToShortDateString() %></label>
-		</li>
-	<% } %>
-	</ul>
+	<div id="GroupManagerList">
+		<% Html.RenderPartial("PartialViews/GroupManagerList", Model.GroupsViewModel); %>
+	</div>
+	<input type="hidden" id="groupManagerCurrentPage" value="0" />
+	<%= Html.Hidden("groupManagerTotalPage", Model.TotalPage) %>
+	<div class="nav"><a class="back" href="javascript:void(0);" style="display:none;"><</a>&nbsp;&nbsp;&nbsp;<a class="forward" href="javascript:void(0);">></a></div>

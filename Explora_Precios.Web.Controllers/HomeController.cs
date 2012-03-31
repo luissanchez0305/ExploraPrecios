@@ -172,7 +172,8 @@ namespace Explora_Precios.Web.Controllers
 				CreatedDate = group.created,
 				Product = group.product.Id.CryptProductId(),
 				ProductName = group.product.name,
-				Image = loadImage ? group.product.image.imageObj : null
+				Image = loadImage ? group.product.image.imageObj : null,
+				GroupSize = group.product.groups.Count()
 			};
 		}
 
@@ -656,7 +657,7 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new { result = "success", msg = "", groupSize = ProductObj.groups.Count });
 		}
 
-		public ActionResult GetGroupManager(int toPage)
+		public ActionResult GetGroupManager()
 		{
 			var GroupsList = _groupRepository.GetByUser(CurrentUser).OrderByDescending(group => group.created).Select(group => new GroupViewModel
 			{
@@ -664,9 +665,29 @@ namespace Explora_Precios.Web.Controllers
 				ProductName = group.product.name,
 				Product = group.product.Id.CryptProductId()
 			});
+			var GroupManagerVM = new GroupManagerViewModel { TotalPage = (int)(GroupsList.Count() / 5) };
 
-			ViewData.Model = GroupsList;
+			GroupManagerVM.GroupsViewModel = GroupsList.Take(5);
+			ViewData.Model = GroupManagerVM;
 			return Json(new { html = this.RenderViewToString("PartialViews/GroupManager", ViewData) });
+		}
+
+		public ActionResult GetGroupManagerList(int _toPage)
+		{
+			var GroupsList = _groupRepository.GetByUser(CurrentUser).OrderByDescending(group => group.created).Select(group => new GroupViewModel
+			{
+				CreatedDate = group.created,
+				ProductName = group.product.name,
+				Product = group.product.Id.CryptProductId()
+			});
+			var TotalPage = (int)(GroupsList.Count() / 5);
+			for (int i = 0; i < _toPage - 1; i++)
+			{
+				GroupsList = GroupsList.Skip(5);
+			}
+
+			ViewData.Model = GroupsList.Take(5); ;
+			return Json(new { html = this.RenderViewToString("PartialViews/GroupManagerList", ViewData), totalPage = TotalPage });
 		}
 
 		public ActionResult SetRate(string _product, int _value)

@@ -287,20 +287,43 @@
 	</script>
 	
 	<script type="text/javascript">
-		var groupManagerPage = 0;
 		$(".groups").simpletip({
 			content: '',
 			fixed: true,
 			position: ["-1200", "-5"],
 			onBeforeShow: function () {
 				var simpleTip = this;
-				$.get('<%= Url.Action("GetGroupManager", "Home") %>', { toPage: 0 }, function (data) {
+				$.get('<%= Url.Action("GetGroupManager", "Home") %>', function (data) {
 					simpleTip.update(data.html);
 				});
 			},
 			onBeforeHide: function () {
 				groupManagerPage = 0;
 			}
+		});
+		$("div.groups div.tooltip div.nav").live('click', function () {
+			var $this = $(this);
+			var limitPage = 0;
+			var _toPage = 0;
+			alert($this.attr('class'));
+			if ($this.hasClass('forward')) {
+				_toPage = parseInt($('.groupManagerCurrentPage').val()) + 1;
+				if (_toPage == parseInt($('.groupManagerTotalPage').val())) {
+					$this.hide();
+					$('.back').show();
+				}
+			}
+			else {
+				_toPage = parseInt($('.groupManagerCurrentPage').val()) - 1;
+				if (_toPage == 0) {
+					$this.hide();
+					$('.forward').show();
+				}
+			}
+
+			$.get('<%= Url.Action("GetGroupManagerList","Home") %>', { toPage: _toPage }, function (data) {
+				$("#GroupManagerList").html(data.html);
+			});
 		});
 		$(".groupItem").live('click', function () {
 			LoadProductDetail($(this).prev().val(), '0');

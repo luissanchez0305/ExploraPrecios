@@ -9,6 +9,26 @@ namespace Explora_Precios.Web.Controllers.Helpers
 {
     public static class PageHtmlHelper
     {
+		public static string GroupCreated(this TimeSpan diff)
+		{
+			if (diff.TotalDays > 365)
+				return "Creado hace mas de 1 año";
+			else if (diff.TotalDays > 31)
+				return "Creado hace " + ((int)(diff.TotalDays / 31)).ToString() + " mes";
+			else if (diff.TotalDays > 1 && diff.TotalDays < 2)
+				return "Creado hace 1 dia";
+			else if (diff.TotalDays > 1)
+				return "Creado hace " + (diff.Days).ToString() + " dias";
+			else if (diff.TotalHours > 1 && diff.TotalHours < 2)
+				return "Creado hace " + diff.Hours.ToString() + " hora";
+			else if (diff.TotalHours > 1)
+				return "Creado hace " + diff.Hours.ToString() + " horas";
+			else if (diff.TotalMinutes > 1)
+				return "Creado hace " + diff.Minutes.ToString() + " minutos";
+			else
+				return "Recien creado";
+		}
+
         public static string Shorten(this string text, int lenght)
         {
             return text.Length >= lenght ? text.Substring(0, lenght) + "..." : text;
