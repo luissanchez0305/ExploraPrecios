@@ -310,7 +310,7 @@ namespace Explora_Precios.Web.Controllers
 			}
 			else
 			{
-				homeModel = LoadHomeModel(display[0], int.Parse(display[1]));
+				homeModel = LoadHomeModel(display[0]);
 			}
 
 			var data = filterData.Split(',');
@@ -765,11 +765,11 @@ namespace Explora_Precios.Web.Controllers
 			}
 		}
 
-		public ActionResult Search(string s, int d)
+		public ActionResult Search(string s)
 		{
-			var homeViewModel = LoadHomeModel(s, d);
+			var homeViewModel = LoadHomeModel(s);
 			LoadCounterValues();
-			return View("Index", homeViewModel);
+			return View(homeViewModel);
 		}
 
 		private void LoadCounterValues()
@@ -868,14 +868,14 @@ namespace Explora_Precios.Web.Controllers
 		/// <param name="s">search text</param>
 		/// <param name="d">current department id</param>
 		/// <returns>Homeviewmodel</returns>
-		private HomeViewModel LoadHomeModel(string s, int d)
+		private HomeViewModel LoadHomeModel(string s)
 		{
 			ViewData["search_text"] = s;
 			var homeViewModel = new HomeViewModel();
-			var departament_Obj = new DepartmentRepository().Get(d);
-			homeViewModel = LoadPrimaryHomeViewModel(departament_Obj);
+			//var departament_Obj = new DepartmentRepository().Get(d);
+			//homeViewModel = LoadPrimaryHomeViewModel(departament_Obj);
 			homeViewModel = LoadProductsOnModel(homeViewModel, _productRepository.GetbySearchText(s, IsActivated.Yes).ToList());
-			homeViewModel.catalog = departament_Obj.FromLevelsToCatalog();
+			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();
 			homeViewModel.isSearch = true;
 			return homeViewModel;
 		}

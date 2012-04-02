@@ -128,62 +128,62 @@ function runDropDownAjax(source_singular, source_plural, target_singular, target
 /* Ready general */
 $(document).ready(function () {
 
-    $(".logo").click(function () {
-        window.location.href = "/Home";
-    });
+	$(".logo").click(function () {
+		window.location.href = "/Home";
+	});
 
-    $("#pageContentManagement a").live("mouseover", function () { $(this).addClass("hoverMe"); })
+	$("#pageContentManagement a").live("mouseover", function () { $(this).addClass("hoverMe"); })
     .live("mouseout", function () { $(this).removeClass("hoverMe"); });
 
-    $(".searchbox_btn").click(function () {
-        var search_txt = $(".searchbox_textbox").val();
-        var department_Id = $("#departmentId").val();
-        window.location.href = "/Home/Search?s=" + search_txt + "&d=" + department_Id;
-    });
+	$(".searchbox_btn").click(function () {
+		var search_txt = $(".searchbox_textbox").val();
+		var department_Id = $("#departmentId").hasClass('department') ? $("#departmentId").val() : 1;
+		window.location.href = "/Home/Search?s=" + search_txt;
+	});
 
-    $("#search_text").bind("keydown", function (event) {
-        if (event.which == 13) {
-            $(this).next().click();
-        }
-    });
+	$("#search_text").bind("keydown", function (event) {
+		if (event.which == 13) {
+			$(this).next().click();
+		}
+	});
 
-    $(".CBupdate").change(function () {
-        if ($(this).val() == "on") {
-            $(this).next().val("True");
-        }
-        else {
-            $(this).next().val("False");
-        }
-    });
+	$(".CBupdate").change(function () {
+		if ($(this).val() == "on") {
+			$(this).next().val("True");
+		}
+		else {
+			$(this).next().val("False");
+		}
+	});
 
-    $(".ddlqualitychange").change(function () {
-        $(this).next().val($(this).val());
-        if ($(this).val() == "new") {
-            $(this).next().val("");
-        }
-    });
+	$(".ddlqualitychange").change(function () {
+		$(this).next().val($(this).val());
+		if ($(this).val() == "new") {
+			$(this).next().val("");
+		}
+	});
 
-    $("#addQuality").live("click", function () {
-        var qName = $("#qualityName").val();
-        var qVal = $("#qualityValue").val();
-        $("#qualityName").val("");
-        $("#qualityValue").val("");
-        if (qName.length > 1 && qVal.length > 1) {
-            $("#noQualities").remove();
-            var rowcount = $("#tableQualities tr").length;
-            /*$.ajax({                
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: "FindQualityName?v=" + val,
-            data: "{}",
-            dataType: "json",
-            success: function(data){
-            data.qId
-            }
-            });*/
+	$("#addQuality").live("click", function () {
+		var qName = $("#qualityName").val();
+		var qVal = $("#qualityValue").val();
+		$("#qualityName").val("");
+		$("#qualityValue").val("");
+		if (qName.length > 1 && qVal.length > 1) {
+			$("#noQualities").remove();
+			var rowcount = $("#tableQualities tr").length;
+			/*$.ajax({                
+			type: "GET",
+			contentType: "application/json; charset=utf-8",
+			url: "FindQualityName?v=" + val,
+			data: "{}",
+			dataType: "json",
+			success: function(data){
+			data.qId
+			}
+			});*/
 
-            // Nuevo row de caracteristica
-            $("#tableQualities").find("tbody")
+			// Nuevo row de caracteristica
+			$("#tableQualities").find("tbody")
             .append($("<tr>")
                 .append($("<td>")
                     .append($("<input>")
@@ -222,21 +222,21 @@ $(document).ready(function () {
                     )
                 )
             );
-        }
-    });
+		}
+	});
 
-    $("#assignClientPrice").live("click", function () {
-        var clientId = $("#Clients").val();
-        var clientName = $("#Clients option:selected").text()
-        var price = $("#clientPrice").val();
-        var url = $("#clientProductUrl").val();
-        var reference = $("#clientProductReference").val();
-        $("#clientPrice").val("");
-        $("#clientProductUrl").val("");
-        $("#clientProductReference").val("");
-        if (price.length > 0) {
-            var rowcount = $("#clientPriceTable tr").length - 2;
-            $("#clientPriceTable").find("tbody")
+	$("#assignClientPrice").live("click", function () {
+		var clientId = $("#Clients").val();
+		var clientName = $("#Clients option:selected").text()
+		var price = $("#clientPrice").val();
+		var url = $("#clientProductUrl").val();
+		var reference = $("#clientProductReference").val();
+		$("#clientPrice").val("");
+		$("#clientProductUrl").val("");
+		$("#clientProductReference").val("");
+		if (price.length > 0) {
+			var rowcount = $("#clientPriceTable tr").length - 2;
+			$("#clientPriceTable").find("tbody")
                 .append($("<tr>")
                     .append($("<td>")
                         .append($("<input>")
@@ -289,8 +289,8 @@ $(document).ready(function () {
                         )
                     )
                 )
-        }
-    });
+		}
+	});
 });    
 
     function LoadProductAjax(url, ref)

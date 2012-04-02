@@ -424,6 +424,7 @@
     <Content Include="Views\Account\Register.ascx" />
     <Content Include="Views\Brochures\Index.aspx" />
     <Content Include="Views\Contact\Index.aspx" />
+    <Content Include="Views\Home\Search.aspx" />
     <Content Include="Views\Home\PartialViews\BannerProduct.ascx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Home\PartialViews\GroupManagerList.ascx" />

@@ -4,6 +4,7 @@ $(document).ready(function(){
     $(".department").val(<%= Model.departmentId %>);
 });
 </script>
+	<% if (Model.categories.Count > 0) { %>
     <h3>Catalogo de <%= Model.departmentTitle %></h3>
         <%= Html.Hidden("departmentId", Model.departmentId, new { @class = "department" })%>
     <div class="suckerdiv">
@@ -35,6 +36,7 @@ $(document).ready(function(){
        } %>
         </ul>
     </div>
+	<% } %>
 <%--    <h3>
         <a href="#">Section 2</a></h3>
     <div>
@@ -44,10 +46,14 @@ $(document).ready(function(){
             tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna.
         </p>
     </div>--%>
-    <%  // obtenemos el menor nivel del catalogo
-        var catalogLevel = Model.catalog.categoryId == 0 ? 0 : Model.catalog.subCategoryId == 0 ? 1 : Model.catalog.productTypeId == 0 ? 2 : 3;
-        // obtenemos el id del menor nivel del catalogo
-        var catalogLevelId = Model.catalog.categoryId == 0 ? Model.catalog.departmentId : Model.catalog.subCategoryId == 0 ? Model.catalog.categoryId : Model.catalog.productTypeId == 0 ? Model.catalog.subCategoryId : Model.catalog.productTypeId;
+    <%  int catalogLevel = 0, catalogLevelId = 0;
+		if (Model.catalog != null)
+		{
+			// obtenemos el menor nivel del catalogo
+			catalogLevel = Model.catalog.categoryId == 0 ? 0 : Model.catalog.subCategoryId == 0 ? 1 : Model.catalog.productTypeId == 0 ? 2 : 3;
+			// obtenemos el id del menor nivel del catalogo
+			catalogLevelId = Model.catalog.categoryId == 0 ? Model.catalog.departmentId : Model.catalog.subCategoryId == 0 ? Model.catalog.categoryId : Model.catalog.productTypeId == 0 ? Model.catalog.subCategoryId : Model.catalog.productTypeId;
+		}
         var filterItems = Explora_Precios.Web.Controllers.Helpers.CatalogHelper.FilterLoad(Model.allProducts, Model.isSearch, Model.isSearch ? ViewData["search_text"].ToString() + "," + Model.departmentId.ToString() : catalogLevel.ToString() + "," + catalogLevelId.ToString());%>
 <div <%= (filterItems.Count > 1 || !string.IsNullOrEmpty(Model.filterBackUrl) ? "class=\"separator\"" : "") %>>
     <%if(!string.IsNullOrEmpty(Model.filterBackUrl)){ %>
