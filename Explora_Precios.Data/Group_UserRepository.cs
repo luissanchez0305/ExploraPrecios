@@ -28,7 +28,7 @@ namespace Explora_Precios.Data
 		public IEnumerable<Group_User> GetLatest()
 		{
 			return NHibernateSession.Current.CreateCriteria(typeof(Group_User))
-				.Add(Expression.Ge("created", DateTime.Now.AddMonths(-3))).AddOrder(Order.Desc("created"))
+				.Add(Expression.Ge("created", DateTime.Now.AddDays(-30))).AddOrder(Order.Desc("created"))
 				.List<Group_User>().AsEnumerable().Distinct(new Group_UserEqualityComparer());
 
 		}

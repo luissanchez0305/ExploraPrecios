@@ -487,7 +487,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		<div id="Grouped" class="section">
 			<input type="hidden" id="grouped_page" value="1" />
 			<input type="hidden" id="grouped_max" value="<%= (int)(Model.GroupedProducts.Count() / 5) + 1 %>" />
-			<label class="sectiontitle" style="color:#C80F02">Productos en grupos</label>
+			<label class="sectiontitle" style="color:#C80F02">Productos en grupos</label><img class="new" src="/Content/Images/nuevo-icon.gif" alt="nuevo" />
 			<ul id="GroupedBanner">
 				<%  var index = 0;
 					var page = 0;
@@ -505,7 +505,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<input type="hidden" value="0" />
 					<input type="hidden" value="<%= group.ProductId %>" />
 					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
-						<img id="Grouped_<%= page %>_<%= indexItem %>"
+						<img class="item" id="Grouped_<%= page %>_<%= indexItem %>"
 							<% if (group.Image != null)
 						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(group.Image) %>" <% } %>
 						   alt="image" />
@@ -552,7 +552,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
-						<img id="Offers_<%= page %>_<%= indexItem %>"                        
+						<img class="item" id="Offers_<%= page %>_<%= indexItem %>"                        
 						<% if (product.Image != null)
 						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
 						   alt="image" />                        
@@ -595,7 +595,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
-						<img id="News_<%= page %>_<%= indexItem %>"
+						<img class="item" id="News_<%= page %>_<%= indexItem %>"
 						<% if (product.Image != null)
 							{ %> src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
 						 alt="image" />
