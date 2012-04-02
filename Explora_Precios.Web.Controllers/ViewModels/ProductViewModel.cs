@@ -14,7 +14,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
         public int GroupSize { get; set; }
         public GroupDisplay Grouped { get; set; }
         public bool DoPublish { get; set; }
-        public string Product { get; set; }
+        public string ProductId { get; set; }
 		public string ProductName { get; set; }
 		public byte[] Image { get; set; }
         public bool IsFacebooked { get; set; }

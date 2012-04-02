@@ -120,13 +120,13 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		});
 
 		$('.loginbox a, .register').live('click', function () {
-			var goAjax = true;
+
+			var goAjax = false;
 			var $this = $(this);
 			var url = '';
 			var _redirect = ''
 			$('.LoginLoading').show();
 
-			//            alert($this.attr('class'));
 			if ($this.attr('class') == 'login') {
 				$(".ui-dialog-titlebar").hide();
 				$("#FloatingPanel").bind("clickoutside", function (event) {
@@ -134,16 +134,19 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					$(this).dialog("close");
 				});
 				url = '<%= Url.Action("Login", "Account") %>';
+				goAjax = true;
 			}
 			else if ($this.attr('class') == 'register' || $this.attr('class') == 'profile') {
 				$(".ui-dialog-titlebar").show();
 				$("#FloatingPanel").unbind("clickoutside");
 				$("#FloatingPanel").dialog("option", "title", 'Llene el formulario para registrarse en ExploraPrecios.com');
 				url = '<%= Url.Action("Register", "Account") %>';
+				goAjax = true;
 			}
 			else if ($this.attr('class') == 'logout') {
 				goAjax = false;
 				window.location = '<%= Url.Action("Logout", "Account") %>';
+				goAjax = true;
 			}
 			else if ($this.attr('class') == 'forgot') {
 				$(".ui-dialog-titlebar").hide();
@@ -152,8 +155,9 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					$(this).dialog("close");
 				});
 				url = '<%= Url.Action("Forgot", "Account") %>';
-			  }
-			  _redirect = $('#Redirect').val();
+				goAjax = true;
+			}
+			_redirect = $('#Redirect').val();
 
 			if (goAjax) {
 				$.blockUI({ message: '<h4>Un momento por favor...</h4>' });
@@ -499,7 +503,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					<li>
 				<% } %>
 					<input type="hidden" value="0" />
-					<input type="hidden" value="<%= group.Product %>" />
+					<input type="hidden" value="<%= group.ProductId %>" />
 					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
 						<img id="Grouped_<%= page %>_<%= indexItem %>"
 							<% if (group.Image != null)

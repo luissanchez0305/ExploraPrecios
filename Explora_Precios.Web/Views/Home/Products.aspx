@@ -31,7 +31,7 @@ ExploraPrecios.com
                 $(this).dialog("close");
             });
 
-            $(".gridItem, .gridItem_v").live('click', function () {
+               $(".gridItem, .gridItem_v").live('click', function () {
                 LoadProductDetail($(this).prev().val(), '0');
             });
         });

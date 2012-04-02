@@ -125,7 +125,10 @@ namespace Explora_Precios.Web.Controllers
 			IntroModel.TickerList = result;
 
 			//Productos de las lista de destacados, en ofertas y nuevos
-			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null)
+			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null ||
+				System.Web.HttpRuntime.Cache.Get("OfferProducts") == null ||
+				System.Web.HttpRuntime.Cache.Get("NewProducts") == null ||
+				System.Web.HttpRuntime.Cache.Get("GroupedProducts") == null)
 			{
 				var RawLists = LoadBannerLists();
 
@@ -170,7 +173,7 @@ namespace Explora_Precios.Web.Controllers
 			return new GroupViewModel
 			{
 				CreatedDate = group.created,
-				Product = group.product.Id.CryptProductId(),
+				ProductId = group.product.Id.CryptProductId(),
 				ProductName = group.product.name,
 				Image = loadImage ? group.product.image.imageObj : null,
 				GroupSize = group.product.groups.Count()
@@ -238,7 +241,8 @@ namespace Explora_Precios.Web.Controllers
 			IEnumerable<Group_User> grouped;
 			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null ||
 				System.Web.HttpRuntime.Cache.Get("OfferProducts") == null ||
-				System.Web.HttpRuntime.Cache.Get("NewProducts") == null)
+				System.Web.HttpRuntime.Cache.Get("NewProducts") == null ||
+				System.Web.HttpRuntime.Cache.Get("GroupedProducts") == null)
 			{
 				lists = LoadBannerLists();
 				grouped = _groupRepository.GetLatest();
@@ -616,13 +620,13 @@ namespace Explora_Precios.Web.Controllers
 			var GroupModel = new GroupViewModel();
 			TryUpdateModel(GroupModel);
 
-			var ProductObj = _productRepository.Get(GroupModel.Product.CryptProductId());
+			var ProductObj = _productRepository.Get(GroupModel.ProductId.CryptProductId());
 			if (GroupModel.DoPublish)
 			{
 				var FBclient = new Facebook.FacebookClient();
 				FBclient.AccessToken = CurrentUser.facebookToken;
 				var msg = string.Format("He creado un grupo de compra de \"{0}\" en www.ExploraPrecios.com. Ven, registrate y entra al grupo para recibir grandes descuentos! "+
-										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, GroupModel.Product);
+										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, Server.UrlEncode(GroupModel.ProductId));
 				var description = string.Join(", ", ProductObj.clients.Select(client => client.name).ToArray());
 
 				var parameters = new Dictionary<string, object>
@@ -634,7 +638,7 @@ namespace Explora_Precios.Web.Controllers
 					{"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
 					{"name", ProductObj.name},
 					{"picture", ProductObj.image.url},
-					{"link", string.Format("http://www.exploraprecios.com?i={0}", GroupModel.Product)}
+					{"link", string.Format("http://www.exploraprecios.com?i={0}", Server.UrlEncode(GroupModel.ProductId))}
 				};
 				try
 				{
@@ -649,29 +653,37 @@ namespace Explora_Precios.Web.Controllers
 				}
 			}
 
+			var dbModified = false;
 			if (ProductObj.groups.Count == 0 || ProductObj.groups.SingleOrDefault(group => group.user == CurrentUser) == null)
 			{
 				var newGroup_User = new Group_User { user = CurrentUser, product = ProductObj, created = DateTime.Now };
 				_groupRepository.Update(newGroup_User);
 				ProductObj.groups.Add(newGroup_User);
+				dbModified = true;
 			}
 
-			return Json(new { result = "success", msg = "", groupSize = ProductObj.groups.Count });
+			return Json(new { result = "success", msg = "", groupSize = ProductObj.groups.Count, showWarning = dbModified });
 		}
 
 		public ActionResult GetGroupManager()
 		{
-			var GroupsList = _groupRepository.GetByUser(CurrentUser).OrderByDescending(group => group.created).Select(group => new GroupViewModel
+			if (CurrentUser != null)
 			{
-				CreatedDate = group.created,
-				ProductName = group.product.name,
-				Product = group.product.Id.CryptProductId()
-			});
-			var GroupManagerVM = new GroupManagerViewModel { TotalPage = (int)(GroupsList.Count() / 5) };
+				var GroupsList = _groupRepository.GetByUser(CurrentUser).OrderByDescending(group => group.created).Select(group => new GroupViewModel
+				{
+					CreatedDate = group.created,
+					ProductName = group.product.name,
+					ProductId = group.product.Id.CryptProductId()
+				});
+				var GroupManagerVM = new GroupManagerViewModel { TotalPage = (int)(GroupsList.Count() / 5) };
 
-			GroupManagerVM.GroupsViewModel = GroupsList.Take(5);
-			ViewData.Model = GroupManagerVM;
-			return Json(new { html = this.RenderViewToString("PartialViews/GroupManager", ViewData) });
+				GroupManagerVM.GroupsViewModel = GroupsList.Take(5);
+				ViewData.Model = GroupManagerVM;
+				return Json(new { html = this.RenderViewToString("PartialViews/GroupManager", ViewData) });
+			}
+			else
+				return Json(new { html = "Por favor regístrese o ingrese antes de utilizar grupos de compra" });
+
 		}
 
 		public ActionResult GetGroupManagerList(int _toPage)
@@ -680,16 +692,21 @@ namespace Explora_Precios.Web.Controllers
 			{
 				CreatedDate = group.created,
 				ProductName = group.product.name,
-				Product = group.product.Id.CryptProductId()
+				ProductId = group.product.Id.CryptProductId()
 			});
-			var TotalPage = (int)(GroupsList.Count() / 5);
-			for (int i = 0; i < _toPage - 1; i++)
+			if (GroupsList.Count() > 0)
 			{
-				GroupsList = GroupsList.Skip(5);
-			}
+				var TotalPage = (int)(GroupsList.Count() / 5);
+				for (int i = 0; i < _toPage; i++)
+				{
+					GroupsList = GroupsList.Skip(5);
+				}
 
-			ViewData.Model = GroupsList.Take(5); ;
-			return Json(new { html = this.RenderViewToString("PartialViews/GroupManagerList", ViewData), totalPage = TotalPage });
+				ViewData.Model = GroupsList.Take(5); ;
+				return Json(new { html = this.RenderViewToString("PartialViews/GroupManagerList", ViewData), totalPage = TotalPage });
+			}
+			else
+				return Json(new { html = "No ha creado o no ha ingresado a ningún grupo aún. Qué esperas? Crea un grupo y empieza a ahorrar!", totalPage = 0 });
 		}
 
 		public ActionResult SetRate(string _product, int _value)

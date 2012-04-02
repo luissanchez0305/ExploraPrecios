@@ -8,7 +8,7 @@
 		</li>
 	<% foreach (var group in Model) { %>
 		<li>
-			<input type="hidden" value="<%= group.Product %>" /> 
+			<input type="hidden" value="<%= group.ProductId %>" /> 
 			<a href="javascript:void(0)" class="groupItem"><%= group.ProductName.Shorten(38) %></a> 
 			<label style="float:right;"><%= group.CreatedDate.ToShortDateString() %></label>
 		</li>

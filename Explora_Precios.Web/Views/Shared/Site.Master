@@ -287,45 +287,49 @@
 	</script>
 	
 	<script type="text/javascript">
+		var groupShowing = false;
 		$(".groups").simpletip({
 			content: '',
 			fixed: true,
-			position: ["-1200", "-5"],
-			onBeforeShow: function () {
-				var simpleTip = this;
-				$.get('<%= Url.Action("GetGroupManager", "Home") %>', function (data) {
-					simpleTip.update(data.html);
-				});
+			position: ["-1200", "-10"],
+			onShow: function () {
+				$("#groupLoading").show();	
+				if (!groupShowing) {
+					var simpleTip = this;
+					$.get('<%= Url.Action("GetGroupManager", "Home") %>', function (data) {
+						simpleTip.update(data.html);
+						$("#groupLoading").hide();
+					});
+					groupShowing = true;
+				}
 			},
-			onBeforeHide: function () {
-				groupManagerPage = 0;
-			}
+			onHide: function () { groupShowing = false; },
+			content: '<img src="/Content/Images/ajax-loader.gif" width="20px" height="20px" style="position:left;"/>'
 		});
 		$("div.groups div.tooltip div.nav").live('click', function () {
+			$("#groupLoading").show();
 			var $this = $(this);
-			var limitPage = 0;
-			var _toPage = 0;
-			alert($this.attr('class'));
+			var limit = 0;
+			var toPage = 0;
 			if ($this.hasClass('forward')) {
-				_toPage = parseInt($('.groupManagerCurrentPage').val()) + 1;
-				if (_toPage == parseInt($('.groupManagerTotalPage').val())) {
-					$this.hide();
-					$('.back').show();
-				}
+				toPage = parseInt($('#groupManagerCurrentPage').val()) + 1;
+				limit = parseInt($('#groupManagerTotalPage').val());
+				$('.back').show();
 			}
 			else {
-				_toPage = parseInt($('.groupManagerCurrentPage').val()) - 1;
-				if (_toPage == 0) {
-					$this.hide();
-					$('.forward').show();
-				}
+				toPage = parseInt($('#groupManagerCurrentPage').val()) - 1;
+				$('.forward').show();
 			}
-
-			$.get('<%= Url.Action("GetGroupManagerList","Home") %>', { toPage: _toPage }, function (data) {
+			$.get('<%= Url.Action("GetGroupManagerList","Home") %>', { _toPage: toPage }, function (data) {
 				$("#GroupManagerList").html(data.html);
+				$("#groupManagerCurrentPage").val(toPage);
+				$("#groupLoading").hide();
+				if (toPage == limit) {
+					$this.hide();
+				}
 			});
 		});
-		$(".groupItem").live('click', function () {
+		$("li a.groupItem").live('click', function () {
 			LoadProductDetail($(this).prev().val(), '0');
 		});
 		$(".disclaimer").simpletip({
@@ -336,10 +340,10 @@
 			hideEffect: 'fade'
 		});
 		$(".notification").simpletip({
-			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
+			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td><img src="../../Content/Images/people.png" alt="pregunta" width="20px" height="20px"/></td><td>Podrás crear grupos de compra de los productos que te interesaría recibir grandes descuentos y ofertas en las tiendas en que los venden</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
 			fixed: true,
 			shadow: true,
-			position: ["-1270", "0"],
+			position: ["-1370", "0"],
 			showEffect: 'slide',
 			hideEffect: 'fade'
 		});

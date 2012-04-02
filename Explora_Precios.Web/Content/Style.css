@@ -32,9 +32,9 @@ img { border: 0; }
 .loginbox .facebook { position:absolute; top: 23px; }
 .loginbox.home .facebook { left: 26px; }
 .loginbox.home .groups { position:absolute; top: 23px; float:right; }
-.loginbox.home .groups .tooltip {  }
+.loginbox.home .groups .tooltip { height: 165px; width: 320px;  }
 .loginbox.home .groups .tooltip h2 { font-size:14px; font-weight: bold; }
-.loginbox.home .groups .tooltip ul { background-color: White; border-radius:10px; border-color: #CE8036; padding:5px 10px 5px 10px; list-style:none; width:280px; }
+.loginbox.home .groups .tooltip ul { background-color: White; border-radius:10px; border-color: #CE8036; padding:5px 10px 5px 10px; list-style:none; height:100px; }
 
 .searchbox {position:absolute; top: 90px; right:15px; padding: 6px; color:black; vertical-align: middle; }
 .searchbox label { font-weight:bold; }
