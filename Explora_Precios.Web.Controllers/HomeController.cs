@@ -95,19 +95,31 @@ namespace Explora_Precios.Web.Controllers
 			var result = new List<string>();
 
 			var SubCats = ConfigurationManager.AppSettings["TickerSubCategories"].Split(',').RandomizeList<string>();
-			var ProdutTypes = ConfigurationManager.AppSettings["TickerProductTypes"].Split(',').RandomizeList<string>();
 
-			foreach (var subCat in SubCats)
+			if (System.Web.HttpRuntime.Cache.Get("SubCategorySpinnerList") == null)
 			{
-				var subCatObj = _subCatRepository.Get(int.Parse(subCat)).FromLevelsToCatalog();
-				var productList =  _productRepository.GetbySubCategory(int.Parse(subCat)).Select(product => product.clients.OrderBy(client => client.price).First());
-				if (productList.Count() > 0)
+				foreach (var subCat in SubCats)
 				{
-					var price = productList.OrderBy(product => product.price).First().price;
-					var li = "<li><span>" + subCatObj.subCategoryName + "</span><a href=\"/Home/Products/?catlev=2&id=" + subCat + "\" title=\"" + subCatObj.departmentName + " - " + subCatObj.categoryName + " - " + subCatObj.subCategoryName + "\" >desde $" + String.Format("{0:0.00}", price) + "</a></li>";
-					result.Add(li);
+					var subCatObj = _subCatRepository.Get(int.Parse(subCat)).FromLevelsToCatalog();
+					var productList = _productRepository.GetbySubCategory(int.Parse(subCat)).Select(product => product.clients.OrderBy(client => client.price).First());
+					if (productList.Count() > 0)
+					{
+						var price = productList.OrderBy(product => product.price).First().price;
+						var li = "<li><span>" + subCatObj.subCategoryName + "</span><a href=\"/Home/Products/?catlev=2&id=" + subCat + "\" title=\"" + subCatObj.departmentName + " - " + subCatObj.categoryName + " - " + subCatObj.subCategoryName + "\" >desde $" + String.Format("{0:0.00}", price) + "</a></li>";
+						result.Add(li);
+					}
 				}
+				System.Web.HttpRuntime.Cache.Insert("SubCategorySpinnerList", result,
+					null,
+					DateTime.Now.AddHours(23),
+					System.Web.Caching.Cache.NoSlidingExpiration);
 			}
+			else
+			{
+				result = (List<string>)System.Web.HttpRuntime.Cache.Get("SubCategorySpinnerList");
+			}
+
+			var ProdutTypes = ConfigurationManager.AppSettings["TickerProductTypes"].Split(',').RandomizeList<string>();
 
 			foreach (var prodType in ProdutTypes)
 			{
@@ -840,24 +852,35 @@ namespace Explora_Precios.Web.Controllers
 					homeModel.catalog = prodTypeObj.FromLevelsToCatalog();
 					break;
 			}
-
 			var products = new List<Explora_Precios.Core.Product>();
-			switch (catalog)
+			if (System.Web.HttpRuntime.Cache.Get("CurrentProducts_" + catLev + "_" + id) == null)
 			{
-				case Catalog.Types.Department:
-					products = _productRepository.GetbyDepartment((int)id); // TODO: Refactor de optimizacion
-					break;
-				case Catalog.Types.Category:
-					products = _productRepository.GetbyCategory((int)id);
-					break;
-				case Catalog.Types.SubCategory:
-					products = _productRepository.GetbySubCategory((int)id);
-					break;
-				case Catalog.Types.ProductType:
-					products = _productRepository.GetbyProductType((int)id);
-					break;
+				switch (catalog)
+				{
+					case Catalog.Types.Department:
+						products = _productRepository.GetbyDepartment((int)id); // TODO: Refactor de optimizacion
+						break;
+					case Catalog.Types.Category:
+						products = _productRepository.GetbyCategory((int)id);
+						break;
+					case Catalog.Types.SubCategory:
+						products = _productRepository.GetbySubCategory((int)id);
+						break;
+					case Catalog.Types.ProductType:
+						products = _productRepository.GetbyProductType((int)id);
+						break;
+				}
+				products = products.Where(x => x.clients.Any(y => y.isActive)).ToList(); // TODO: Refactor de optimizacion
+
+				System.Web.HttpRuntime.Cache.Insert("CurrentProducts_" + catLev + "_" + id, products,
+					null,
+					DateTime.Now.AddHours(12),
+					System.Web.Caching.Cache.NoSlidingExpiration);
 			}
-			products = products.Where(x => x.clients.Any(y => y.isActive)).ToList(); // TODO: Refactor de optimizacion
+			else
+			{
+				products = (List<Explora_Precios.Core.Product>)System.Web.HttpRuntime.Cache.Get("CurrentProducts_" + catLev + "_" + id);
+			}
 			homeModel = LoadProductsOnModel(homeModel, products);
 			return homeModel;
 		}
