@@ -8,16 +8,16 @@ using Explora_Precios.Data;
 
 namespace Explora_Precios.Web.Controllers.ViewModels
 {
-    public enum GroupDisplay { InGroup, Create, IncludeMe }
+	public enum GroupDisplay { InGroup, Create, IncludeMe }
 
 	public class GroupViewModel {
-        public int GroupSize { get; set; }
-        public GroupDisplay Grouped { get; set; }
-        public bool DoPublish { get; set; }
-        public string ProductId { get; set; }
+		public int GroupSize { get; set; }
+		public GroupDisplay Grouped { get; set; }
+		public bool DoPublish { get; set; }
+		public string ProductId { get; set; }
 		public string ProductName { get; set; }
 		public byte[] Image { get; set; }
-        public bool IsFacebooked { get; set; }
+		public bool IsFacebooked { get; set; }
 		public DateTime CreatedDate { get; set; }
 	}
 
@@ -71,7 +71,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public int catalogId { get; set; }
 		public string rating { get; set; }
 		public GroupViewModel group { get; set; }
-        public bool isLiked { get;set; }
+		public bool isLiked { get;set; }
 
 		public ProductViewModel LoadModel(Product prod, bool resume)
 		{
@@ -80,7 +80,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 			   prod.clients.Where(client => client.isActive && client.specialPrice > 0).OrderBy(orderPrice => orderPrice.specialPrice).First().specialPrice : cpOrderedPriceList.First();
 			var highestPrice = prod.clients.Count > 1 ? cpOrderedPriceList.Last() : lowestPrice;
 			var maxQualityLength = 35;
-			
+
 			this.productBrand = prod.brand.name;
 			this.productBrandId = prod.brand.Id;
 			this.clientList = prod.clients.Where(cp => cp.isActive).Select(w => new ClientViewModel()
@@ -117,8 +117,8 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 
 			var Ratings = prod.ratings.Where(up => up.Type == User_Product.RelationType.Rating);
 			this.rating = !resume && Ratings.Count() > 0 ? Ratings.Average(rat => rat.value).ToString("0.##") : "0";
-            this.group = new GroupViewModel { GroupSize = prod.groups.Count };
-            this.isLiked = prod.ratings.SingleOrDefault(up => up.Type == User_Product.RelationType.Liked) != null;
+			this.group = new GroupViewModel { GroupSize = prod.groups.Count };
+			this.isLiked = prod.ratings.SingleOrDefault(up => up.Type == User_Product.RelationType.Liked) != null;
 			return this;
 		}
 

@@ -19,5 +19,9 @@ namespace Explora_Precios.Core.DataInterfaces
         List<Product> GetbyProductType(int ProductTypeId); 
         IList<Product> GetbySearchText(string Text);
         IList<Product> GetbySearchText(string Text, IsActivated IsActivated);
+		float GetbyDepartmentMaxPrice(int departmentId);
+		float GetbyCategoryMaxPrice(int categoryId);
+		float GetbySubCategoryMaxPrice(int subCategoryId);
+		float GetbyProductTypeMaxPrice(int productTypeId);
     }
 }

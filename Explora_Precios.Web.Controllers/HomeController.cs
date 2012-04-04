@@ -829,58 +829,64 @@ namespace Explora_Precios.Web.Controllers
 			switch (catLev)
 			{
 				case 0:
-					var depObj = new DepartmentRepository().Get((int)id);
+					var depObj = new DepartmentRepository().Get(id);
 					homeModel = LoadPrimaryHomeViewModel(depObj);
 					homeModel.catalog = depObj.FromLevelsToCatalog();
 					break;
 				case 1:
-					var catObj = _catRepository.Get((int)id);
+					var catObj = _catRepository.Get(id);
 					catalog = Catalog.Types.Category;
 					homeModel = LoadPrimaryHomeViewModel(catObj.department);
 					homeModel.catalog = catObj.FromLevelsToCatalog();
 					break;
 				case 2:
-					var subCatObj = _subCatRepository.Get((int)id);
+					var subCatObj = _subCatRepository.Get(id);
 					catalog = Catalog.Types.SubCategory;
 					homeModel = LoadPrimaryHomeViewModel(subCatObj.category.department);
 					homeModel.catalog = subCatObj.FromLevelsToCatalog();
 					break;
 				case 3:
-					var prodTypeObj = _productTypeRepository.Get((int)id);
+					var prodTypeObj = _productTypeRepository.Get(id);
 					catalog = Catalog.Types.ProductType;
 					homeModel = LoadPrimaryHomeViewModel(prodTypeObj.subCategory.category.department);
 					homeModel.catalog = prodTypeObj.FromLevelsToCatalog();
 					break;
 			}
 			var products = new List<Explora_Precios.Core.Product>();
-			if (System.Web.HttpRuntime.Cache.Get("CurrentProducts_" + catLev + "_" + id) == null)
+			switch (catalog)
 			{
-				switch (catalog)
-				{
-					case Catalog.Types.Department:
-						products = _productRepository.GetbyDepartment((int)id); // TODO: Refactor de optimizacion
-						break;
-					case Catalog.Types.Category:
-						products = _productRepository.GetbyCategory((int)id);
-						break;
-					case Catalog.Types.SubCategory:
-						products = _productRepository.GetbySubCategory((int)id);
-						break;
-					case Catalog.Types.ProductType:
-						products = _productRepository.GetbyProductType((int)id);
-						break;
-				}
-				products = products.Where(x => x.clients.Any(y => y.isActive)).ToList(); // TODO: Refactor de optimizacion
+				case Catalog.Types.Department:
+					products = _productRepository.GetbyDepartment(id);
+					homeModel.MaxPrice = _productRepository.GetbyDepartmentMaxPrice(id);
+					break;
+				case Catalog.Types.Category:
+					products = _productRepository.GetbyCategory(id);
+					homeModel.MaxPrice = _productRepository.GetbyCategoryMaxPrice(id);
+					break;
+				case Catalog.Types.SubCategory:
+					products = _productRepository.GetbySubCategory(id);
+					homeModel.MaxPrice = _productRepository.GetbySubCategoryMaxPrice(id);
+					break;
+				case Catalog.Types.ProductType:
+					products = _productRepository.GetbyProductType(id);
+					homeModel.MaxPrice = _productRepository.GetbyProductTypeMaxPrice(id);
+					break;
+			}
 
-				System.Web.HttpRuntime.Cache.Insert("CurrentProducts_" + catLev + "_" + id, products,
-					null,
-					DateTime.Now.AddHours(12),
-					System.Web.Caching.Cache.NoSlidingExpiration);
-			}
-			else
-			{
-				products = (List<Explora_Precios.Core.Product>)System.Web.HttpRuntime.Cache.Get("CurrentProducts_" + catLev + "_" + id);
-			}
+			//if (System.Web.HttpRuntime.Cache.Get("ActiveProducts_" + id) == null)
+			//{
+			//    //products = products.Where(x => x.clients.Any(y => y.isActive)).ToList();
+
+			//    System.Web.HttpRuntime.Cache.Insert("ActiveProducts_" + id, products,
+			//        null,
+			//        DateTime.Now.AddHours(2),
+			//        System.Web.Caching.Cache.NoSlidingExpiration);
+			//}
+			//else
+			//{
+			//    products = (List<Product>)System.Web.HttpRuntime.Cache.Get("ActiveProducts_" + id);
+			//}
+
 			homeModel = LoadProductsOnModel(homeModel, products);
 			return homeModel;
 		}
@@ -895,9 +901,9 @@ namespace Explora_Precios.Web.Controllers
 		{
 			ViewData["search_text"] = s;
 			var homeViewModel = new HomeViewModel();
-			//var departament_Obj = new DepartmentRepository().Get(d);
-			//homeViewModel = LoadPrimaryHomeViewModel(departament_Obj);
-			homeViewModel = LoadProductsOnModel(homeViewModel, _productRepository.GetbySearchText(s, IsActivated.Yes).ToList());
+			var products = _productRepository.GetbySearchText(s, IsActivated.Yes).ToList();
+			homeViewModel.MaxPrice = products.Last().clients.OrderByDescending(c => c.price).First().price;
+			homeViewModel = LoadProductsOnModel(homeViewModel, products);
 			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();
 			homeViewModel.isSearch = true;
 			return homeViewModel;
@@ -931,10 +937,10 @@ namespace Explora_Precios.Web.Controllers
 		{
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
-			var productsOrdered = products.OrderBy(p => p.clients.OrderBy(c => c.price).First().price);
-			homeViewModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(productsOrdered.AsEnumerable(), currentPage, defaultPageSize);
+			//var productsOrdered = products.OrderBy(p => p.clients.OrderBy(c => c.price).First().price);
+			homeViewModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.AsEnumerable(), currentPage, defaultPageSize);
 			homeViewModel.productsListViewModel.productsList = homeViewModel.productsListViewModel.products.Select(p => productVM.LoadModel(p, true));
-			homeViewModel.allProducts = productsOrdered.ToList();
+			homeViewModel.allProducts = products;
 			return homeViewModel;
 		}
 	}

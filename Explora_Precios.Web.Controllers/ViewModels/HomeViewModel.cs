@@ -23,6 +23,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
         public IList<CategoryViewModel> categories { get; set; }
         public ProductsListViewModel productsListViewModel { get; set; }
         public IList<Product> allProducts { get; set; }
+		public float MaxPrice { get; set; }
     }
 
     public class IntroViewModel

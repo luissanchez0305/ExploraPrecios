@@ -9,163 +9,238 @@ using NHibernate.Criterion;
 
 namespace Explora_Precios.Data
 {
-    public class ProductRepository : Repository<Product>, IProductRepository
-    {
-        public Product GetbyReference(string reference)
-        {
-            var productsList = GetbyReference(reference, Precision.High);
-            return productsList.Count > 0 ? productsList[0] : null;
-        }
+	public class ProductRepository : Repository<Product>, IProductRepository
+	{
+		public Product GetbyReference(string reference)
+		{
+			var productsList = GetbyReference(reference, Precision.High);
+			return productsList.Count > 0 ? productsList[0] : null;
+		}
 
-        /// <summary>
-        /// Get the product by it's reference
-        /// </summary>
-        /// <param name="reference">reference string to look for</param>
-        /// <param name="precision">the precision that it's going to look for (high - equal, medium - partition of reference in 1 stage, low - anyone that can find)</param>
-        /// <returns></returns>
-        public IList<Product> GetbyReference(string reference, Precision precision)
-        {
-            reference = reference.Replace("/", "").Replace("-", "").Replace(" ", "");
-            var productsResponse = NHibernateSession.Current.CreateCriteria(typeof(Product))
-                .Add(Expression.Like("productReference", reference, precision == Precision.High ? MatchMode.Exact : MatchMode.Anywhere))
-                .List<Product>().ToList();
+		/// <summary>
+		/// Get the product by it's reference
+		/// </summary>
+		/// <param name="reference">reference string to look for</param>
+		/// <param name="precision">the precision that it's going to look for (high - equal, medium - partition of reference in 1 stage, low - anyone that can find)</param>
+		/// <returns></returns>
+		public IList<Product> GetbyReference(string reference, Precision precision)
+		{
+			reference = reference.Replace("/", "").Replace("-", "").Replace(" ", "");
+			var productsResponse = NHibernateSession.Current.CreateCriteria(typeof(Product))
+				.Add(Expression.Like("productReference", reference, precision == Precision.High ? MatchMode.Exact : MatchMode.Anywhere))
+				.List<Product>().ToList();
 
-            if (precision == Precision.Medium || precision == Precision.Low)
-            {
-                var productsResponseReverse = NHibernateSession.Current.CreateCriteria(typeof(Product))
-                    //.Add(Expression.Sql("'" + reference + "' LIKE '%' + productReference + '%'"))
-                    .Add(Expression.And(Expression.Sql("'" + reference + "' LIKE '%' + productReference + '%'"), Expression.Not(Expression.In("Id", productsResponse.Select(x => x.Id).ToArray()))))
-                    .List<Product>().ToList();
+			if (precision == Precision.Medium || precision == Precision.Low)
+			{
+				var productsResponseReverse = NHibernateSession.Current.CreateCriteria(typeof(Product))
+					//.Add(Expression.Sql("'" + reference + "' LIKE '%' + productReference + '%'"))
+					.Add(Expression.And(Expression.Sql("'" + reference + "' LIKE '%' + productReference + '%'"), Expression.Not(Expression.In("Id", productsResponse.Select(x => x.Id).ToArray()))))
+					.List<Product>().ToList();
 
-                productsResponse.AddRange(productsResponseReverse);
-            }
+				productsResponse.AddRange(productsResponseReverse);
+			}
 
-            if (precision == Precision.Low && productsResponse.Count > 0)
-            {
-                productsResponse = FindDinamicModifiedReference(reference).ToList();
-            }
+			if (precision == Precision.Low && productsResponse.Count > 0)
+			{
+				productsResponse = FindDinamicModifiedReference(reference).ToList();
+			}
 
-            return productsResponse;
-        }
+			return productsResponse;
+		}
 
-        private IList<Product> FindDinamicModifiedReference(string reference)
-        {
-            for (int i = reference.Length - 1; i > reference.Length - 4; i--)
-            {
-                var productsResponse = NHibernateSession.Current.CreateCriteria(typeof(Product))
-                .Add(Expression.Eq("productReference", reference.Substring(0, i)))
-                .List<Product>();
-                if (productsResponse != null) return productsResponse;
-            }
-            return null;
-        }
+		private IList<Product> FindDinamicModifiedReference(string reference)
+		{
+			for (int i = reference.Length - 1; i > reference.Length - 4; i--)
+			{
+				var productsResponse = NHibernateSession.Current.CreateCriteria(typeof(Product))
+				.Add(Expression.Eq("productReference", reference.Substring(0, i)))
+				.List<Product>();
+				if (productsResponse != null) return productsResponse;
+			}
+			return null;
+		}
 
-        public List<Product> GetbyProductType(int productTypeId)
-        {
-            var producttypeList = new List<int>();
-            producttypeList.Add(productTypeId);
-            return GetData(null, null, producttypeList.AsEnumerable());
-        }
+		public List<Product> GetbyProductType(int productTypeId)
+		{
+			var producttypeList = new List<int>();
+			producttypeList.Add(productTypeId);
+			return GetData(null, null, producttypeList.AsEnumerable());
+		}
 
-        public List<Product> GetbySubCategory(int subCategoryId)
-        {
-            var subcategories = new SubCategoryRepository().Get(subCategoryId);
-            var producttypes = subcategories.productTypes.Select(x => x.Id);
-            var subcategoryList = new List<int>();
-            subcategoryList.Add(subCategoryId);
-            return GetData(null, subcategoryList.AsEnumerable(), producttypes);
-        }
+		public float GetbyProductTypeMaxPrice(int productTypeId)
+		{
+			var producttypeList = new List<int>();
+			producttypeList.Add(productTypeId);
+			return GetDataMax(null, null, producttypeList.AsEnumerable());
+		}
 
-        public List<Product> GetbyCategory(int categoryId)
-        {
-            var categories = new CategoryRepository().Get(categoryId);
-            var subcategories = categories.subCategories.Select(x => x.Id);
-            var producttypes = categories.subCategories.SelectMany(x => x.productTypes).Select(y => y.Id);
-            var categoryList = new List<int>();
-            categoryList.Add(categoryId);
-            return GetData(categoryList.AsEnumerable(), subcategories, producttypes);
-        }
 
-        public List<Product> GetbyDepartment(int departmentId)
-        { 
-            var department = new DepartmentRepository().Get(departmentId);
-            var categories = department.categories.Select(x => x.Id);   
-            var subcategories = department.categories.SelectMany(x => x.subCategories).Select(y => y.Id).Distinct();
-            var producttypes = department.categories.SelectMany(x => x.subCategories).SelectMany(y => y.productTypes).Select(z => z.Id).Distinct();
+		public List<Product> GetbySubCategory(int subCategoryId)
+		{
+			var subcategories = new SubCategoryRepository().Get(subCategoryId);
+			var producttypes = subcategories.productTypes.Select(x => x.Id);
+			var subcategoryList = new List<int>();
+			subcategoryList.Add(subCategoryId);
+			return GetData(null, subcategoryList.AsEnumerable(), producttypes);
+		}
 
-            return GetData(categories, subcategories, producttypes);;
-        }
+		public float GetbySubCategoryMaxPrice(int subCategoryId)
+		{
+			var subcategories = new SubCategoryRepository().Get(subCategoryId);
+			var producttypes = subcategories.productTypes.Select(x => x.Id);
+			var subcategoryList = new List<int>();
+			subcategoryList.Add(subCategoryId);
+			return GetDataMax(null, subcategoryList.AsEnumerable(), producttypes);
+		}
+		public List<Product> GetbyCategory(int categoryId)
+		{
+			var categories = new CategoryRepository().Get(categoryId);
+			var subcategories = categories.subCategories.Select(x => x.Id);
+			var producttypes = categories.subCategories.SelectMany(x => x.productTypes).Select(y => y.Id);
+			var categoryList = new List<int>();
+			categoryList.Add(categoryId);
+			return GetData(categoryList.AsEnumerable(), subcategories, producttypes);
+		}
 
-        public IList<Product> GetbySearchText(string text)
-        {
-            return GetbySearchText(text, IsActivated.NoMatter);
-        }
+		public float GetbyCategoryMaxPrice(int categoryId)
+		{
+			var categories = new CategoryRepository().Get(categoryId);
+			var subcategories = categories.subCategories.Select(x => x.Id);
+			var producttypes = categories.subCategories.SelectMany(x => x.productTypes).Select(y => y.Id);
+			var categoryList = new List<int>();
+			categoryList.Add(categoryId);
+			return GetDataMax(categoryList.AsEnumerable(), subcategories, producttypes);
+		}
 
-        public IList<Product> GetbySearchText(string text, IsActivated isActivated)
-        {
-            var result = NHibernateSession.Current.CreateCriteria(typeof(Product))
-                             .Add(Expression.Like("name", text, MatchMode.Anywhere).IgnoreCase())
-                             .List<Product>().ToList();
+		public List<Product> GetbyDepartment(int departmentId)
+		{ 
+			var department = new DepartmentRepository().Get(departmentId);
+			var categories = department.categories.Select(x => x.Id);   
+			var subcategories = department.categories.SelectMany(x => x.subCategories).Select(y => y.Id).Distinct();
+			var producttypes = department.categories.SelectMany(x => x.subCategories).SelectMany(y => y.productTypes).Select(z => z.Id).Distinct();
 
-            // Search by brand name
-            result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product))
-                .CreateCriteria("brand","b")
-                             .Add(Expression.Like("b.name", text, MatchMode.Anywhere).IgnoreCase())
-                             .List<Product>().ToList());
+			return GetData(categories, subcategories, producttypes);
+		}
 
-            // Search by client name
-            result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product))
-                .CreateCriteria("clients", "c")
-                .CreateCriteria("client", "c1")
-                             .Add(Expression.Like("c1.name", text, MatchMode.Anywhere).IgnoreCase())
-                             .List<Product>().ToList());
+		public float GetbyDepartmentMaxPrice(int departmentId)
+		{
+			var department = new DepartmentRepository().Get(departmentId);
+			var categories = department.categories.Select(x => x.Id);
+			var subcategories = department.categories.SelectMany(x => x.subCategories).Select(y => y.Id).Distinct();
+			var producttypes = department.categories.SelectMany(x => x.subCategories).SelectMany(y => y.productTypes).Select(z => z.Id).Distinct();
 
-            // Search by product qualities
-            result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product_Quality))
-                             .Add(Expression.Like("value", text, MatchMode.Anywhere).IgnoreCase())
-                             .List<Product_Quality>().Select(x => x.product));
+			return GetDataMax(categories, subcategories, producttypes);
+		}
 
-            // Take out all the products with no clients activated
-            if (isActivated != IsActivated.NoMatter)
-            {
-                result = (from products in result
-                          where products.clients.Where(client => isActivated == IsActivated.Yes ? client.isActive : !client.isActive).Count() > 0
-                          select products).ToList();
-                          
-            }
-            return result.Distinct().ToList();
-        }
+		public IList<Product> GetbySearchText(string text)
+		{
+			return GetbySearchText(text, IsActivated.NoMatter);
+		}
 
-        private List<Product> GetData(IEnumerable<int> categories, IEnumerable<int> subcategories, IEnumerable<int> producttypes)
-        {
-            var response = new List<Product>();
+		public IList<Product> GetbySearchText(string text, IsActivated isActivated)
+		{
+			var result = NHibernateSession.Current.CreateCriteria(typeof(Product))
+							 .Add(Expression.Like("name", text, MatchMode.Anywhere).IgnoreCase())
+							 .List<Product>().ToList();
 
-            if (producttypes != null)
-            {
-                response.AddRange(GetCatalogData(3, producttypes));
+			// Search by brand name
+			result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product))
+				.CreateCriteria("brand","b")
+							 .Add(Expression.Like("b.name", text, MatchMode.Anywhere).IgnoreCase())
+							 .List<Product>().ToList());
 
-                if (subcategories != null)
-                {
-                    response.AddRange(GetCatalogData(2, subcategories));
+			// Search by client name
+			result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product))
+				.CreateCriteria("clients", "c")
+				.CreateCriteria("client", "c1")
+							 .Add(Expression.Like("c1.name", text, MatchMode.Anywhere).IgnoreCase())
+							 .List<Product>().ToList());
 
-                    if (categories != null)
-                    {
-                        response.AddRange(GetCatalogData(1, categories));
-                    }
-                }
-            }
-            return response;
-        }
+			// Search by product qualities
+			result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product_Quality))
+							 .Add(Expression.Like("value", text, MatchMode.Anywhere).IgnoreCase())
+							 .List<Product_Quality>().Select(x => x.product));
 
-        private IEnumerable<Product> GetCatalogData(int level, IEnumerable<int> catalog_Ids)
-        {
-            var producList = NHibernateSession.Current.CreateCriteria(typeof(Product))
-                             .Add(Expression.And(Expression.Eq("level_Id", level),
-                             Expression.In("catalog_Id", catalog_Ids.ToArray())))
-                             .List<Product>();
+			// Take out all the products with no clients activated
+			if (isActivated != IsActivated.NoMatter)
+			{
+				result = (from products in result
+						  where products.clients.Where(client => isActivated == IsActivated.Yes ? client.isActive : !client.isActive).Count() > 0
+						  select products).ToList();
+						  
+			}
+			return result.Distinct().OrderBy(p => p.clients.Select(c => c.price).First()).ToList();
+		}
 
-            // Quita todos los productos que tengan el despliegue de sus clientes asignados desactivados
-            return producList;//.Where(x => x.clients.Any(y => y.isActive)).ToList();
-        }
-    }
+		private List<Product> GetData(IEnumerable<int> categories, IEnumerable<int> subcategories, IEnumerable<int> producttypes)
+		{
+			var response = new List<Product>();
+
+			if (producttypes != null)
+			{
+				response.AddRange(GetCatalogData(3, producttypes));
+
+				if (subcategories != null)
+				{
+					response.AddRange(GetCatalogData(2, subcategories));
+
+					if (categories != null)
+					{
+						response.AddRange(GetCatalogData(1, categories));
+					}
+				}
+			}
+			return response;
+		}
+
+		private float GetDataMax(IEnumerable<int> categories, IEnumerable<int> subCategories, IEnumerable<int> productTypes)
+		{
+			var response = new List<Product>();
+
+			float result = 0;
+			if (productTypes != null)
+			{
+				var ptDataResult = GetCatalogDataMax(3, productTypes);
+				result = ptDataResult > result ? ptDataResult : result;
+
+				if (subCategories != null)
+				{
+					var scDataResult = GetCatalogDataMax(2, subCategories);
+					result = scDataResult > result ? scDataResult : result;
+
+					if (categories != null)
+					{
+						var cDataResult = GetCatalogDataMax(1, categories);
+						result = cDataResult > result ? cDataResult : result;
+					}
+				}
+			}
+			return result;
+		}
+
+		private IEnumerable<Product> GetCatalogData(int level, IEnumerable<int> catalog_Ids)
+		{
+			var producList = GetProductListCriteria(level, catalog_Ids)
+							.AddOrder(new Order("c.price", true))
+							.List<Product>();
+
+			return producList;
+		}
+
+		private float GetCatalogDataMax(int level, IEnumerable<int> catalog_Ids)
+		{
+			var result = GetProductListCriteria(level, catalog_Ids)
+							.SetProjection(Projections.GroupProperty("c.price"))
+							.SetProjection(Projections.Max("c.price"))
+							.UniqueResult();
+			return float.Parse((result ?? 0).ToString());
+		}
+
+		private NHibernate.ICriteria GetProductListCriteria(int level, IEnumerable<int> catalog_Ids)
+		{
+			return NHibernateSession.Current.CreateCriteria(typeof(Product), "p")
+								.Add(Expression.And(Expression.Eq("level_Id", level), Expression.In("catalog_Id", catalog_Ids.ToArray())))
+								.CreateCriteria("p.clients", "c").Add(Expression.Eq("c.isActive", true));
+		}
+	}
 }
