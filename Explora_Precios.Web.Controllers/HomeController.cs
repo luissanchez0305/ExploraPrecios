@@ -330,24 +330,31 @@ namespace Explora_Precios.Web.Controllers
 			// or brand (f == b)
 			var currentPage = page.HasValue ? page.Value - 1 : 0;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
+			IEnumerable<Product> products;
 			if (f == "p")
-				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(homeModel.allProducts
-					.Where(x => x.clients
-						.Where(y => y.price >= int.Parse(data[0]) && 
-							y.price <= int.Parse(data[1]))
-						.Count() > 0), currentPage, defaultPageSize);
+			{
+				products = homeModel.allProducts
+					   .Where(x => x.clients
+						   .Where(y => y.price >= int.Parse(data[0]) &&
+							   y.price <= int.Parse(data[1]))
+						   .Count() > 0);
+				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products, currentPage, defaultPageSize);;
+			}
 			else if (f == "b")
 			{
-				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(homeModel.allProducts.Where(x => x.brand.name == filterData), currentPage, defaultPageSize);
+				products = homeModel.allProducts.Where(x => x.brand.name == filterData);
+				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products, currentPage, defaultPageSize); ;
 			}
 			else
 			{
-				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(homeModel.allProducts.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0), currentPage, defaultPageSize);
+				products = homeModel.allProducts.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0);
+				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products, currentPage, defaultPageSize);
 			}
-
+			homeModel.MaxPrice = products.Count() > 0 ? products.Last().clients.Last().price : 0;
+			homeModel.allProducts = products.ToList();
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			homeModel.productsListViewModel.productsList = homeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
-			homeModel.filterBackUrl = s == 0 ? "/?catlev=" + display[0] + "&id=" + display[1] : "/Home/Search?s=" + display[0] + "&d=" + display[1];
+			homeModel.filterBackUrl = s == 0 ? "/Home/Products?catlev=" + display[0] + "&id=" + display[1] : "/Home/Search?s=" + display[0] + "&d=" + display[1];
 
 			LoadCounterValues();
 			return View("Products",homeModel);
