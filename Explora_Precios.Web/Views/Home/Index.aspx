@@ -76,8 +76,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				LoadProductDetail(val, "0");
 			});
 
-			//LoadSlider('MegaBanner', true);
-			$('.pix_diapo').diapo({ time: 30000 });
+			$('.pix_diapo').diapo({ time: 30000, loader: 'none' });
 			LoadSlider('MediumBanner', false);
 			LoadSlider('OffersBanner', false);
 			LoadSlider('NewProductsBanner', false);
@@ -280,23 +279,22 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		<div style="overflow:hidden; width:745px; margin: 10px 0px 10px 0px;"> 
 			<div id="MegaBanner" class="pix_diapo">
 				<div>
-					<img src="/Content/images/banner/Crowd1.jpg">
+					<img src="/Content/images/banner/feedback-2.jpg">
 					<div class="elemHover fadeIn" style="left:10px; top:25px; bottom:auto; padding-top:10px; width:auto;">
 						<div style="font-size:30px; font-weight:bold; left:20px; top:0px; position:relative; color:white; color:#F8EA9B; text-shadow: 0 0 5px #D57B5F;">
-							Ya todos lo saben!!
+							Crea tu grupo ya!!
 						</div>
 					</div>
 					<div class="elemHover fromTop fadeIn" style="left:90px; top:80px; bottom:auto; padding-top:10px; width:430px; ">
 						<div style="font-size:20px; font-weight:bold; left:200px; top:0px; position:relative; color:#F3F1F1; text-shadow: 0 0 5px #0D0D00;">
-							Ha llegado la solución que esperabas para ahorrar comprando lo que de verdad buscas
+							Al compartir lo que quieres comprar con tus amigos puedes ganar ofertas y promociones
 						</div>
 					</div>
 					<div class="elemHover caption fromLeft" style="bottom:40px; width:auto; -webkit-border-top-right-radius: 6px; -webkit-border-bottom-right-radius: 6px; -moz-border-radius-topright: 6px; -moz-border-radius-bottomright: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">
 						<label style="color:Red">
 							ExploraPrecios.com
 						</label>
-						&nbsp;te premite explorar los productos de la tienda de tu preferencia desde tu computadora. Sin levantar el telefono, sin salir de casa u oficina y con las <b>ofertas</b> del momento.
-					</div>
+						&nbsp;te premite compartir eso que quieres comprar y crear <b>Grupos de Compras</b>. Con estos <i>grupos</i> le dices a las tiendas que tu y otras personas quieren comprarlo también. Así creas la posibilidad que te ofrezcan grandes <b>rebajas y promociones.</b></div>
 				</div>
 				<div>
 					<img src="/Content/images/banner/Luminesque_clinic_erina_beauty.jpg">
