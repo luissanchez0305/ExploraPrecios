@@ -54,11 +54,12 @@ $(document).ready(function(){
 			// obtenemos el id del menor nivel del catalogo
 			catalogLevelId = Model.catalog.categoryId == 0 ? Model.catalog.departmentId : Model.catalog.subCategoryId == 0 ? Model.catalog.categoryId : Model.catalog.productTypeId == 0 ? Model.catalog.subCategoryId : Model.catalog.productTypeId;
 		}
-        var filterItems = Explora_Precios.Web.Controllers.Helpers.CatalogHelper.FilterLoad(Model.allProducts, Model.isSearch, Model.isSearch ? ViewData["search_text"].ToString() + "," + Model.departmentId.ToString() : catalogLevel.ToString() + "," + catalogLevelId.ToString(), Model.MaxPrice);%>
+        var filterItems = Explora_Precios.Web.Controllers.Helpers.CatalogHelper.FilterLoad(Model.allProducts, Model.isSearch, Model.isSearch ? ViewData["search_text"].ToString() + "," + Model.departmentId.ToString() : catalogLevel.ToString() + "," + catalogLevelId.ToString(), Model.MaxPrice, Model.filterType);%>
 <div <%= (filterItems.Count > 1 || !string.IsNullOrEmpty(Model.filterBackUrl) ? "class=\"separator\"" : "") %>>
     <%if(!string.IsNullOrEmpty(Model.filterBackUrl)){ %>
     <h4>
-        <a href="<%= Model.filterBackUrl %>">Deshacer filtro</a><%--<img src="../../content/images/close.png" alt="close"/>--%></h4>
+        <a href="<%= Model.filterBackUrl %>">Deshacer filtro</a><%--<img src="../../content/images/close.png" alt="close"/>--%>
+	</h4>
     <%} %>
     <% foreach (var filter in filterItems)
        {%>

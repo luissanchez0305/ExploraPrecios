@@ -330,26 +330,37 @@ namespace Explora_Precios.Web.Controllers
 			// or brand (f == b)
 			var currentPage = page.HasValue ? page.Value - 1 : 0;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
-			IEnumerable<Product> products;
-			if (f == "p")
+			IEnumerable<Product> products = homeModel.allProducts;
+
+			// Filtrar por precios o oferta
+			if (f.Contains("p"))
 			{
-				products = homeModel.allProducts
+				products = products
 					   .Where(x => x.clients
 						   .Where(y => y.price >= int.Parse(data[0]) &&
 							   y.price <= int.Parse(data[1]))
 						   .Count() > 0);
-				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products, currentPage, defaultPageSize);;
 			}
-			else if (f == "b")
+
+			// Filtrar por oferta
+			if (f.Contains("o"))
 			{
-				products = homeModel.allProducts.Where(x => x.brand.name == filterData);
-				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products, currentPage, defaultPageSize); ;
+				products = products.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0);
 			}
-			else
+			// Filtrar por marca
+			if (f.Contains("b"))
 			{
-				products = homeModel.allProducts.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0);
-				homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products, currentPage, defaultPageSize);
-			}
+				products = products.Where(x => x.brand.name == filterData);
+			};
+
+			homeModel.filterType =	(f.Contains("p") && f.Contains("b")) ? HomeViewModel.FilterType.PriceBrand : 
+									(f.Contains("o") && f.Contains("b")) ? HomeViewModel.FilterType.SaleBrand : 
+									(f.Contains("o")) ? HomeViewModel.FilterType.Sale :
+									(f.Contains("p")) ? HomeViewModel.FilterType.Price :
+									(f.Contains("b")) ? HomeViewModel.FilterType.Brand : 
+									HomeViewModel.FilterType.None;
+			
+			homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(p => p.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
 			homeModel.MaxPrice = products.Count() > 0 ? products.Last().clients.Last().price : 0;
 			homeModel.allProducts = products.ToList();
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);

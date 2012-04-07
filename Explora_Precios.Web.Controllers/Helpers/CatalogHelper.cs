@@ -199,7 +199,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			return result;
 		}
 
-		public static List<FilterViewModel> FilterLoad(IList<Product> products, bool isSearch, string val, float maxPrice) {
+		public static List<FilterViewModel> FilterLoad(IList<Product> products, bool isSearch, string val, float maxPrice, HomeViewModel.FilterType filterType) {
 			var result = new List<FilterViewModel>();
 			if (products.Count > 1)
 			{
@@ -211,78 +211,10 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				var price = 0;
 				for (int i = 0; i < 5; i++)
 				{
-
 					rangesListFinal.Add(new KeyValuePair<int, int>(price, price + diff5Max));
 					price = price + diff5Max + 1;
 				}
-
-				// obtener la lista de diferencias entre cada precio (precio[1] - precio[0])
-				//int priceIndex = 1;
-				//foreach (var price in pricesList)
-				//{
-				//    differencesList.Add(price - pricesList.ElementAt(priceIndex - 1));
-				//    priceIndex++;
-				//}
-				//// obtener promedio de diferencias
-				//var sumDifferences = differencesList.Average().RoundToInteger();
-
-				//var lowestPrice = pricesList.First();
-				//var bigestPrice = pricesList.Last();
-
-				//var rangesList = new List<KeyValuePair<int, int>>();
-				//var rangesListFinal = new List<KeyValuePair<int, int>>();
-				//// obtener lista de rango de precios
-				//var incValue = lowestPrice.RoundToInteger() + sumDifferences;
-				//rangesList.Add(new KeyValuePair<int, int>(0, incValue));
-				//// lista de rango de precios preliminar
-				//while (incValue < bigestPrice && sumDifferences != 0)
-				//{
-				//    rangesList.Add(new KeyValuePair<int, int>(incValue + 1, incValue + sumDifferences));
-				//    incValue += sumDifferences;
-				//}
-
-				//// remover todos los rangos que no regresan ningun producto
-				////rangesList.RemoveAll(x => pricesList.Where(y => y >= x.Key && y <= x.Value).Count() == 0);
-
-				//// si la lista de rango supera los 5 rangos eliminar hasta que sea de ese tamaño o menor
-				//if (rangesList.Count >= 5)
-				//{
-				//    var lapse = rangesList.Count / 5;
-				//    var i = 0;
-				//    var currentRangeHigh=rangesList[i + lapse - 1].Value + 1;
-				//    rangesListFinal.Add(new KeyValuePair<int, int>(rangesList[0].Key, currentRangeHigh));
-
-				//    var nextRangeLow = currentRangeHigh + 1;
-				//    i += lapse;
-
-
-				//    while ((i + lapse - 1) < rangesList.Count)
-				//    {
-				//        currentRangeHigh = rangesList[i + lapse - 1].Value + 1;
-				//        rangesListFinal.Add(new KeyValuePair<int, int>(nextRangeLow, currentRangeHigh));
-				//        nextRangeLow = currentRangeHigh + 1;
-				//        i += lapse;
-				//    }
-
-				//    // hacer lista de rangos de precios de cantidad de elementos par
-				//    //if (rangesList.Count % 2 != 0)
-				//    //{
-				//    //    rangesList.Add(new KeyValuePair<int, int>(rangesList[rangesList.Count - 2].Key, rangesList[rangesList.Count - 1].Value));
-				//    //    rangesList.RemoveAt(rangesList.Count - 2);
-				//    //    rangesList.RemoveAt(rangesList.Count - 2);
-				//    //}
-
-				//    //while (rangesList.Count > 5)
-				//    //{
-				//    //    for (int i = 0; i < (rangesList.Count / 2) - 1; i++)
-				//    //    {
-				//    //        rangesList.Add(new KeyValuePair<int, int>(rangesList[0].Key, rangesList[1].Value));
-				//    //        rangesList.RemoveAt(0);
-				//    //        rangesList.RemoveAt(0);
-				//    //    }
-				//    //}
-				//}
-
+				
 				// crear parametro de listado de productos
 				var valSplitted = val.Split(',');
 				var productParameter = "&currentDisplay=" + valSplitted[0] + "," + valSplitted[1] + "&s=" + (isSearch ? "1" : "0");
@@ -296,11 +228,11 @@ namespace Explora_Precios.Web.Controllers.Helpers
 						items = rangesListFinal.Select(x => new FilterItemViewModel()
 						{
 							name = "De $" + x.Key.ToString("#,0.00") + " a $" + x.Value.ToString("#,0.00"),
-							url = "/Home/Filter?f=p&filterData=" + x.Key.ToString() + "," + x.Value.ToString() + productParameter
+							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Brand ? "p,b" : "p") + "&filterData=" + x.Key.ToString() + "," + x.Value.ToString() + (filterType == HomeViewModel.FilterType.Brand ? "p,b" : "") + productParameter
 						}).ToList()
 					});
 					result[0].items[0].name = result[0].items[0].name.Replace("0.00", "0.01");
-					result[0].items.Insert(0, new FilterItemViewModel() { name = "Ofertas", url = "/Home/Filter?f=o&filterData=" + productParameter });
+					result[0].items.Insert(0, new FilterItemViewModel() { name = "Ofertas", url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Brand ? "o,b" : "o") + "&filterData=" + productParameter });
 				}
 
 				// crear lista de filtros por marcas
@@ -312,7 +244,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 						items = brandsList.Select(x => new FilterItemViewModel()
 						{
 							name = x,
-							url = "/Home/Filter?f=b&filterData=" + x + productParameter
+							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Price ? "p,b" : filterType == HomeViewModel.FilterType.Sale ? "o,b" : "b") + "&filterData=" + x + productParameter
 						}).ToList()
 					});
 				}
