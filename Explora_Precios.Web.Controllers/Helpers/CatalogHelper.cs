@@ -199,16 +199,16 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			return result;
 		}
 
-		public static List<FilterViewModel> FilterLoad(IList<Product> products, bool isSearch, string val, float maxPrice, HomeViewModel.FilterType filterType) {
+		public static List<FilterViewModel> FilterLoad(IList<Product> products, bool isSearch, string val, float minPrice, float maxPrice, HomeViewModel.FilterType filterType, string currentFilter) {
 			var result = new List<FilterViewModel>();
 			if (products.Count > 1)
 			{
 				// obtener la lista de marcas
 				var brandsList = products.Select(x => x.brand.name).OrderBy(y => y).Distinct().ToList();
 
-				var diff5Max = (int)(maxPrice / 5);
+				var diff5Max = (int)((maxPrice - minPrice) / 5);
 				var rangesListFinal = new List<KeyValuePair<int, int>>();
-				var price = 0;
+				var price = (int)minPrice;
 				for (int i = 0; i < 5; i++)
 				{
 					rangesListFinal.Add(new KeyValuePair<int, int>(price, price + diff5Max));
@@ -228,11 +228,11 @@ namespace Explora_Precios.Web.Controllers.Helpers
 						items = rangesListFinal.Select(x => new FilterItemViewModel()
 						{
 							name = "De $" + x.Key.ToString("#,0.00") + " a $" + x.Value.ToString("#,0.00"),
-							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Brand ? "p,b" : "p") + "&filterData=" + x.Key.ToString() + "," + x.Value.ToString() + (filterType == HomeViewModel.FilterType.Brand ? "p,b" : "") + productParameter
+							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.PriceBrand ? "p,b" : "p") + "&filterData=" + x.Key.ToString() + "," + x.Value.ToString() + (filterType == HomeViewModel.FilterType.PriceBrand ? "," + currentFilter.Split(',')[2] : currentFilter) + productParameter
 						}).ToList()
 					});
-					result[0].items[0].name = result[0].items[0].name.Replace("0.00", "0.01");
-					result[0].items.Insert(0, new FilterItemViewModel() { name = "Ofertas", url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Brand ? "o,b" : "o") + "&filterData=" + productParameter });
+					result[0].items[0].name = result[0].items[0].name.Replace(".00", ".01");
+					result[0].items.Insert(0, new FilterItemViewModel() { name = "Ofertas", url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Brand || filterType == HomeViewModel.FilterType.SaleBrand ? "o,b" : "o") + "&filterData=" + (filterType == HomeViewModel.FilterType.Brand || filterType == HomeViewModel.FilterType.SaleBrand ? "," + currentFilter : "") + productParameter });
 				}
 
 				// crear lista de filtros por marcas
@@ -244,7 +244,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 						items = brandsList.Select(x => new FilterItemViewModel()
 						{
 							name = x,
-							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Price ? "p,b" : filterType == HomeViewModel.FilterType.Sale ? "o,b" : "b") + "&filterData=" + x + productParameter
+							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Price ? "p,b" : filterType == HomeViewModel.FilterType.Sale ? "o,b" : "b") + "&filterData=" + (filterType == HomeViewModel.FilterType.Price ? currentFilter + "," : "") + x + productParameter
 						}).ToList()
 					});
 				}

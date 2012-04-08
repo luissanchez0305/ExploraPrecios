@@ -350,7 +350,7 @@ namespace Explora_Precios.Web.Controllers
 			// Filtrar por marca
 			if (f.Contains("b"))
 			{
-				products = products.Where(x => x.brand.name == filterData);
+				products = products.Where(x => x.brand.name == (f.Contains("p") ? data[2] : filterData));
 			};
 
 			homeModel.filterType =	(f.Contains("p") && f.Contains("b")) ? HomeViewModel.FilterType.PriceBrand : 
@@ -361,11 +361,13 @@ namespace Explora_Precios.Web.Controllers
 									HomeViewModel.FilterType.None;
 			
 			homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(p => p.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
-			homeModel.MaxPrice = products.Count() > 0 ? products.Last().clients.Last().price : 0;
+			homeModel.MinPrice = products.Count() > 0 ? data.Length > 1 ? float.Parse(data[0]) : products.First().clients.First().price : 0;
+			homeModel.MaxPrice = products.Count() > 0 ? data.Length > 1 ? float.Parse(data[1]) : products.Last().clients.Last().price : 0;
+			homeModel.currentFilter = filterData;
 			homeModel.allProducts = products.ToList();
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			homeModel.productsListViewModel.productsList = homeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
-			homeModel.filterBackUrl = s == 0 ? "/Home/Products?catlev=" + display[0] + "&id=" + display[1] : "/Home/Search?s=" + display[0] + "&d=" + display[1];
+			homeModel.filterBackUrl = "currentDisplay=" + display[0] + "," + display[1];
 
 			LoadCounterValues();
 			return View("Products",homeModel);
