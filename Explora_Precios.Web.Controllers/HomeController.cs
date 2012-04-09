@@ -784,8 +784,9 @@ namespace Explora_Precios.Web.Controllers
 			}
 		}
 
-		public ActionResult Search(string s)
+		public ActionResult Search(string s, int? page)
 		{
+			currentPage = page - 1 ?? 0;
 			var homeViewModel = LoadHomeModel(s);
 			LoadCounterValues();
 			return View(homeViewModel);
@@ -901,10 +902,10 @@ namespace Explora_Precios.Web.Controllers
 			var products = _productRepository.GetbySearchText(s, IsActivated.Yes).ToList();
 			homeViewModel.Filter.CurrentMinPrice = products.First().clients.OrderBy(c => c.price).First().price.ExactMinValue();
 			homeViewModel.Filter.CurrentMaxPrice = products.Last().clients.OrderByDescending(c => c.price).First().price;
-			homeViewModel.LoadFilters();
 			homeViewModel = LoadProductsOnModel(homeViewModel, products);
 			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();
 			homeViewModel.isSearch = true;
+			homeViewModel.LoadFilters();
 			return homeViewModel;
 		}
 
