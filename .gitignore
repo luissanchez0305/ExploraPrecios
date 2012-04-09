@@ -47,3 +47,7 @@ Explora_Precios.Core/bin/*
 Explora_Precios.Core/obj/*
 NHCustomProviders/bin/*
 NHCustomProviders/obj/*
+
+# Specific Files #
+##################
+Explora_Precios.Web/Explora_Precios.Web.Publish.xml
