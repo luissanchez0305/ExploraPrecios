@@ -236,7 +236,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				if (rangesList.Count > 0)
 				{
 					var brandFilter = "";
-					if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand)
+					if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Brand)
 						brandFilter = "&b=" + HomeModel.Filter.CurrentBrand;
 
 					HomeModel.Filter.FilterPrices = rangesList.Select(range => new FilterItemViewModel
@@ -276,7 +276,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			{
 				HomeModel.Filter.UndoPriceFilter = new FilterItemViewModel
 				{
-					Name = HomeModel.Filter.CurrentMinPrice.Money() + " - " + HomeModel.Filter.CurrentMaxPrice.Money(),
+					Name = ((float)(HomeModel.Filter.CurrentMinPrice + 0.01)).Money() + " - " + HomeModel.Filter.CurrentMaxPrice.Money(),
 					Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand ?
 						"/Home/Filter?b=" + HomeModel.Filter.CurrentBrand + FilterDefaultParameters :
 						"/Home/Products?" + ProductsDefaultParameters
