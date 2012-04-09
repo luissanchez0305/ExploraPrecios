@@ -330,31 +330,41 @@ $(document).ready(function () {
                 }
             }
         });
-    } 
-    function SaveProductAjax()
-    {    
-        $("#loading_image").css("display","inline");
-        $.ajax({
-            data: $("#mngProductForm").serialize(),
-            dataType: "json",
-            url: "/ProductManager/DoCreateProduct",
-            type: "POST",
-            error: function() {
-                alert("ajax error");
-                $("#success").css("display","none");
-                $("#loading_image").css("display","none");   
-            },            
-            success: function(jObject) {
-                if(jObject.result == "fail") {
-                    alert("error");
-                    $("#success").css("display","none");
-                    $("#loading_image").css("display","none");   
-                }
-                else {
-                    $("#productContainer").html(jObject.html);
-                    $("#success").css("display","inline");
-                    $("#loading_image").css("display","none");   
-                }
-            }
-        });
+    }
+    function SaveProductAjax() {
+    	$("#loading_image").css("display", "inline");
+    	$.ajax({
+    		data: $("#mngProductForm").serialize(),
+    		dataType: "json",
+    		url: "/ProductManager/DoCreateProduct",
+    		type: "POST",
+    		error: function () {
+    			alert("ajax error");
+    			$("#success").css("display", "none");
+    			$("#loading_image").css("display", "none");
+    		},
+    		success: function (jObject) {
+    			if (jObject.result == "fail") {
+    				alert("error");
+    				$("#success").css("display", "none");
+    				$("#loading_image").css("display", "none");
+    			}
+    			else {
+    				$("#productContainer").html(jObject.html);
+    				$("#success").css("display", "inline");
+    				$("#loading_image").css("display", "none");
+    			}
+    		}
+    	});
+    }
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.search);
+        if (results == null)
+            return "";
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
     }

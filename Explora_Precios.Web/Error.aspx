@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="Explora_Precios.ApplicationServices" %>
 <%
-	var email = new EmailServices("info@exploraprecios.com", "Error", "Error YA!");
+	var email = new EmailServices("info@exploraprecios.com", "Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"], "Error en " + Request.QueryString["aspxerrorpath"]);
 	try
 	{
 		email.Send();

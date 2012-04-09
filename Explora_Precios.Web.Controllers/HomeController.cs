@@ -900,8 +900,8 @@ namespace Explora_Precios.Web.Controllers
 			ViewData["search_text"] = s;
 			var homeViewModel = new HomeViewModel();
 			var products = _productRepository.GetbySearchText(s, IsActivated.Yes).ToList();
-			homeViewModel.Filter.CurrentMinPrice = products.First().clients.OrderBy(c => c.price).First().price.ExactMinValue();
-			homeViewModel.Filter.CurrentMaxPrice = products.Last().clients.OrderByDescending(c => c.price).First().price;
+			homeViewModel.Filter.CurrentMinPrice = products.Count > 0 ? products.First().clients.OrderBy(c => c.price).First().price.ExactMinValue() : 0;
+			homeViewModel.Filter.CurrentMaxPrice = products.Count > 0 ? products.Last().clients.OrderByDescending(c => c.price).First().price : 0;
 			homeViewModel = LoadProductsOnModel(homeViewModel, products);
 			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();
 			homeViewModel.isSearch = true;

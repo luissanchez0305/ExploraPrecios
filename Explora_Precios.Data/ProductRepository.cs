@@ -139,27 +139,18 @@ namespace Explora_Precios.Data
 
 		public IList<Product> GetbySearchText(string text, IsActivated isActivated)
 		{
-			var result = NHibernateSession.Current.CreateCriteria(typeof(Product))
-							 .Add(Expression.Like("name", text, MatchMode.Anywhere).IgnoreCase())
-							 .List<Product>().ToList();
-
-			// Search by brand name
-			result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product))
-				.CreateCriteria("brand","b")
-							 .Add(Expression.Like("b.name", text, MatchMode.Anywhere).IgnoreCase())
-							 .List<Product>().ToList());
-
-			// Search by client name
-			result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product))
-				.CreateCriteria("clients", "c")
-				.CreateCriteria("client", "c1")
-							 .Add(Expression.Like("c1.name", text, MatchMode.Anywhere).IgnoreCase())
-							 .List<Product>().ToList());
-
-			// Search by product qualities
-			result.AddRange(NHibernateSession.Current.CreateCriteria(typeof(Product_Quality))
-							 .Add(Expression.Like("value", text, MatchMode.Anywhere).IgnoreCase())
-							 .List<Product_Quality>().Select(x => x.product));
+			IList<Product> result = NHibernateSession.Current.CreateCriteria(typeof(Product), "p")
+							.CreateAlias("qualities", "q")
+							.CreateAlias("brand", "b")
+							.CreateCriteria("clients", "c")
+							.CreateAlias("client", "c1")
+							.Add(Expression.Disjunction()
+								.Add(Expression.Like("p.name", text, MatchMode.Anywhere).IgnoreCase())
+								.Add(Expression.Like("b.name", text, MatchMode.Anywhere).IgnoreCase()) // Search by brand name
+								.Add(Expression.Like("c1.name", text, MatchMode.Anywhere).IgnoreCase()) // Search by client name
+								.Add(Expression.Like("q.value", text, MatchMode.Anywhere).IgnoreCase()) // Search by product qualities
+								)
+							.List<Product>();
 
 			// Take out all the products with no clients activated
 			if (isActivated != IsActivated.NoMatter)
