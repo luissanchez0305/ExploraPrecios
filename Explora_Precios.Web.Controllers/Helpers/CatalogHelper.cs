@@ -228,7 +228,8 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				for (int i = 0; i < interval; i++)
 				{
 					if (i == 0) price = (float)(price + 0.01);
-					rangesList.Add(new KeyValuePair<float, float>(price, price + diffMax - (float)0.01));
+					rangesList.Add(new KeyValuePair<float, float>(price, (price + diffMax) > HomeModel.Filter.CurrentMaxPrice ? HomeModel.Filter.CurrentMaxPrice : price + diffMax - (float)0.01));
+
 					price = price + diffMax;
 				}
 
