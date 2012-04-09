@@ -67,11 +67,11 @@ namespace Explora_Precios.Data
 			return GetData(null, null, producttypeList.AsEnumerable());
 		}
 
-		public float GetbyProductTypeMaxPrice(int productTypeId)
+		public EdgePrices GetbyProductTypeEdgePrices(int productTypeId)
 		{
 			var producttypeList = new List<int>();
 			producttypeList.Add(productTypeId);
-			return GetDataMax(null, null, producttypeList.AsEnumerable());
+			return GetDataEdge(null, null, producttypeList.AsEnumerable());
 		}
 
 
@@ -84,13 +84,13 @@ namespace Explora_Precios.Data
 			return GetData(null, subcategoryList.AsEnumerable(), producttypes);
 		}
 
-		public float GetbySubCategoryMaxPrice(int subCategoryId)
+		public EdgePrices GetbySubCategoryEdgePrices(int subCategoryId)
 		{
 			var subcategories = new SubCategoryRepository().Get(subCategoryId);
 			var producttypes = subcategories.productTypes.Select(x => x.Id);
 			var subcategoryList = new List<int>();
 			subcategoryList.Add(subCategoryId);
-			return GetDataMax(null, subcategoryList.AsEnumerable(), producttypes);
+			return GetDataEdge(null, subcategoryList.AsEnumerable(), producttypes);
 		}
 		public List<Product> GetbyCategory(int categoryId)
 		{
@@ -102,14 +102,14 @@ namespace Explora_Precios.Data
 			return GetData(categoryList.AsEnumerable(), subcategories, producttypes);
 		}
 
-		public float GetbyCategoryMaxPrice(int categoryId)
+		public EdgePrices GetbyCategoryEdgePrices(int categoryId)
 		{
 			var categories = new CategoryRepository().Get(categoryId);
 			var subcategories = categories.subCategories.Select(x => x.Id);
 			var producttypes = categories.subCategories.SelectMany(x => x.productTypes).Select(y => y.Id);
 			var categoryList = new List<int>();
 			categoryList.Add(categoryId);
-			return GetDataMax(categoryList.AsEnumerable(), subcategories, producttypes);
+			return GetDataEdge(categoryList.AsEnumerable(), subcategories, producttypes);
 		}
 
 		public List<Product> GetbyDepartment(int departmentId)
@@ -122,14 +122,14 @@ namespace Explora_Precios.Data
 			return GetData(categories, subcategories, producttypes);
 		}
 
-		public float GetbyDepartmentMaxPrice(int departmentId)
+		public EdgePrices GetbyDepartmentEdgePrices(int departmentId)
 		{
 			var department = new DepartmentRepository().Get(departmentId);
 			var categories = department.categories.Select(x => x.Id);
 			var subcategories = department.categories.SelectMany(x => x.subCategories).Select(y => y.Id).Distinct();
 			var producttypes = department.categories.SelectMany(x => x.subCategories).SelectMany(y => y.productTypes).Select(z => z.Id).Distinct();
 
-			return GetDataMax(categories, subcategories, producttypes);
+			return GetDataEdge(categories, subcategories, producttypes);
 		}
 
 		public IList<Product> GetbySearchText(string text)
@@ -193,29 +193,33 @@ namespace Explora_Precios.Data
 			return response;
 		}
 
-		private float GetDataMax(IEnumerable<int> categories, IEnumerable<int> subCategories, IEnumerable<int> productTypes)
+		private EdgePrices GetDataEdge(IEnumerable<int> categories, IEnumerable<int> subCategories, IEnumerable<int> productTypes)
 		{
 			var response = new List<Product>();
 
-			float result = 0;
+			float resultMin = 0;
+			float resultMax = 0;
 			if (productTypes != null)
 			{
-				var ptDataResult = GetCatalogDataMax(3, productTypes);
-				result = ptDataResult > result ? ptDataResult : result;
+				var ptDataResult = GetCatalogDataEdge(3, productTypes);
+				resultMin = ptDataResult.Min;
+				resultMax = ptDataResult.Max;
 
 				if (subCategories != null)
 				{
-					var scDataResult = GetCatalogDataMax(2, subCategories);
-					result = scDataResult > result ? scDataResult : result;
+					var scDataResult = GetCatalogDataEdge(2, subCategories);
+					resultMin = scDataResult.Min < resultMin ? scDataResult.Min : resultMin;
+					resultMax = scDataResult.Max > resultMax ? scDataResult.Max : resultMax;
 
 					if (categories != null)
 					{
-						var cDataResult = GetCatalogDataMax(1, categories);
-						result = cDataResult > result ? cDataResult : result;
+						var cDataResult = GetCatalogDataEdge(1, categories);
+						resultMin = cDataResult.Min < resultMin ? cDataResult.Min : resultMin;
+						resultMax = cDataResult.Max > resultMax ? cDataResult.Max : resultMax;
 					}
 				}
 			}
-			return result;
+			return new EdgePrices { Min = resultMin, Max = resultMax };
 		}
 
 		private IEnumerable<Product> GetCatalogData(int level, IEnumerable<int> catalog_Ids)
@@ -227,13 +231,17 @@ namespace Explora_Precios.Data
 			return producList;
 		}
 
-		private float GetCatalogDataMax(int level, IEnumerable<int> catalog_Ids)
+		private EdgePrices GetCatalogDataEdge(int level, IEnumerable<int> catalog_Ids)
 		{
-			var result = GetProductListCriteria(level, catalog_Ids)
+			var resultMin = GetProductListCriteria(level, catalog_Ids)
+							.SetProjection(Projections.GroupProperty("c.price"))
+							.SetProjection(Projections.Min("c.price"))
+							.UniqueResult();
+			var resultMax = GetProductListCriteria(level, catalog_Ids)
 							.SetProjection(Projections.GroupProperty("c.price"))
 							.SetProjection(Projections.Max("c.price"))
 							.UniqueResult();
-			return float.Parse((result ?? 0).ToString());
+			return new EdgePrices { Min = float.Parse((resultMin ?? 0).ToString()), Max = float.Parse((resultMax ?? 0).ToString()) };
 		}
 
 		private NHibernate.ICriteria GetProductListCriteria(int level, IEnumerable<int> catalog_Ids)

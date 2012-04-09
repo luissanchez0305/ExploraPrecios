@@ -8,28 +8,30 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 {
 	public class HomeViewModel
 	{
-		public enum FilterType { None, Sale, Price, Brand, SaleBrand, PriceBrand }
+		public HomeViewModel(int CatalogLevel, int CatalogId)
+		{
+			productsListViewModel = new ProductsListViewModel();
+			categories = new List<CategoryViewModel>();
+			isSearch = false;
+			Filter = new FilterViewModel(CatalogLevel, CatalogId);
+		}
 
 		public HomeViewModel()
 		{
 			productsListViewModel = new ProductsListViewModel();
 			categories = new List<CategoryViewModel>();
 			isSearch = false;
-			filterType = FilterType.None;
+			Filter = new FilterViewModel();
 		}
 
 		public CatalogViewModel catalog { get; set; }
 		public bool isSearch { get; set; }
-		public string filterBackUrl { get; set; }
 		public string departmentTitle { get; set; }
 		public int departmentId { get; set; }
 		public IList<CategoryViewModel> categories { get; set; }
 		public ProductsListViewModel productsListViewModel { get; set; }
 		public IList<Product> allProducts { get; set; }
-		public float MinPrice { get; set; }
-		public float MaxPrice { get; set; }
-		public FilterType filterType { get; set; }
-		public string currentFilter { get; set; }
+		public FilterViewModel Filter { get; set; }
 	}
 
 	public class IntroViewModel

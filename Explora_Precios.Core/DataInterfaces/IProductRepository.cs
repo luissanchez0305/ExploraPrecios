@@ -9,6 +9,7 @@ namespace Explora_Precios.Core.DataInterfaces
 {
     public enum Precision { High, Medium, Low }
     public enum IsActivated { NoMatter, Yes, No }
+	public class EdgePrices { public float Min { get; set; } public float Max { get; set; } }
     public interface IProductRepository : IRepository<Product>
     {
         Product GetbyReference(string Reference);
@@ -19,9 +20,9 @@ namespace Explora_Precios.Core.DataInterfaces
         List<Product> GetbyProductType(int ProductTypeId); 
         IList<Product> GetbySearchText(string Text);
         IList<Product> GetbySearchText(string Text, IsActivated IsActivated);
-		float GetbyDepartmentMaxPrice(int departmentId);
-		float GetbyCategoryMaxPrice(int categoryId);
-		float GetbySubCategoryMaxPrice(int subCategoryId);
-		float GetbyProductTypeMaxPrice(int productTypeId);
+	    EdgePrices GetbyDepartmentEdgePrices(int departmentId);
+		EdgePrices GetbyCategoryEdgePrices(int categoryId);
+		EdgePrices GetbySubCategoryEdgePrices(int subCategoryId);
+		EdgePrices GetbyProductTypeEdgePrices(int productTypeId);
     }
 }

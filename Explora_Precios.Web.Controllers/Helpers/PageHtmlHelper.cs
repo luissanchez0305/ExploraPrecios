@@ -90,6 +90,10 @@ namespace Explora_Precios.Web.Controllers.Helpers
             sb.Append("<input type=\"hidden\" name=\"captchaSign\"  id=\"captchaSign\" value=\"" + (randomSign == 0 ? "+" : "-") + "\"/></td></tr></table>");
             return sb.ToString();
         }
+		public static string Money(this float val)
+		{
+			return val.ToString("$#,000.00");
+		}
     }
 
     public static class IdEncrypter

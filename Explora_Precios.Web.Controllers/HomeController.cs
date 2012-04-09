@@ -305,72 +305,59 @@ namespace Explora_Precios.Web.Controllers
 			catLev = catLev ?? 0;
 			id = id ?? 1;
 			var homeModel = LoadHomeModel((int)catLev, (int)id);
-
+			homeModel.LoadFilters((int)catLev, (int)id);
 			LoadCounterValues();
 			return View(homeModel);
 		}
 
-		public ActionResult Filter(string f, string filterData, string currentDisplay, int s, int? page)
+		public ActionResult Filter(string p, string b, bool o, int cl, int ci, int? page)
 		{
-			var display = currentDisplay.Split(',');
-			HomeViewModel homeModel;
-			// check if the filter is being generated from a catalog click (s == 0)  
-			// or a search (s == 1)
-			if (s == 0)
-			{
-				homeModel = LoadHomeModel(int.Parse(display[0]), int.Parse(display[1]));
-			}
-			else
-			{
-				homeModel = LoadHomeModel(display[0]);
-			}
-
-			var data = filterData.Split(',');
 			// check if the data to filter the products is from price (f == p)
 			// or brand (f == b)
+			var HomeModel = LoadHomeModel(cl, ci);
 			var currentPage = page.HasValue ? page.Value - 1 : 0;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
-			IEnumerable<Product> products = homeModel.allProducts;
+			IEnumerable<Product> products = HomeModel.allProducts;
 
 			// Filtrar por precios o oferta
-			if (f.Contains("p"))
+			if (p != null)
 			{
+				var rangePrices = p.Split(',');
 				products = products
 					   .Where(x => x.clients
-						   .Where(y => y.price >= int.Parse(data[0]) &&
-							   y.price <= int.Parse(data[1]))
+						   .Where(y => y.price >= float.Parse(rangePrices[0]) &&
+							   y.price <= float.Parse(rangePrices[1]))
 						   .Count() > 0);
+				HomeModel.Filter.CurrentMinPrice = float.Parse(rangePrices[0]).ExactMinValue();
+				HomeModel.Filter.CurrentMaxPrice = float.Parse(rangePrices[1]);
 			}
 
 			// Filtrar por oferta
-			if (f.Contains("o"))
+			if (o)
 			{
 				products = products.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0);
 			}
 			// Filtrar por marca
-			if (f.Contains("b"))
+			if (b != null)
 			{
-				products = products.Where(x => x.brand.name == (f.Contains("p") ? data[2] : filterData));
+				products = products.Where(x => x.brand.name == (b));
+				HomeModel.Filter.CurrentBrand = b;
 			};
 
-			homeModel.filterType =	(f.Contains("p") && f.Contains("b")) ? HomeViewModel.FilterType.PriceBrand : 
-									(f.Contains("o") && f.Contains("b")) ? HomeViewModel.FilterType.SaleBrand : 
-									(f.Contains("o")) ? HomeViewModel.FilterType.Sale :
-									(f.Contains("p")) ? HomeViewModel.FilterType.Price :
-									(f.Contains("b")) ? HomeViewModel.FilterType.Brand : 
-									HomeViewModel.FilterType.None;
-			
-			homeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(p => p.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
-			homeModel.MinPrice = products.Count() > 0 ? data.Length > 1 ? float.Parse(data[0]) : products.First().clients.First().price : 0;
-			homeModel.MaxPrice = products.Count() > 0 ? data.Length > 1 ? float.Parse(data[1]) : products.Last().clients.Last().price : 0;
-			homeModel.currentFilter = filterData;
-			homeModel.allProducts = products.ToList();
-			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
-			homeModel.productsListViewModel.productsList = homeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
-			homeModel.filterBackUrl = "currentDisplay=" + display[0] + "," + display[1];
+			HomeModel.Filter.FilterType = (p != null && b != null) ? FilterViewModel.ItemFilterTypes.PriceBrand :
+									(o && b != null) ? FilterViewModel.ItemFilterTypes.SaleBrand :
+									(o) ? FilterViewModel.ItemFilterTypes.Sale :
+									(p != null) ? FilterViewModel.ItemFilterTypes.Price :
+									(b != null) ? FilterViewModel.ItemFilterTypes.Brand :
+									FilterViewModel.ItemFilterTypes.None;
 
+			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(product => product.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
+			HomeModel.allProducts = products.ToList();
+			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
+			HomeModel.productsListViewModel.productsList = HomeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
+			HomeModel.LoadFilters(cl, ci);
 			LoadCounterValues();
-			return View("Products",homeModel);
+			return View("Products", HomeModel);
 		}
 
 		public ActionResult GenerateBannerProduct(string side, int position, int id)
@@ -844,7 +831,7 @@ namespace Explora_Precios.Web.Controllers
 		/// <returns>Homeviewmodel</returns>
 		private HomeViewModel LoadHomeModel(int catLev, int id)
 		{
-			var homeModel = new HomeViewModel();
+			var homeModel = new HomeViewModel(catLev, id);
 			var catalog = Catalog.Types.Department;
 			switch (catLev)
 			{
@@ -873,39 +860,29 @@ namespace Explora_Precios.Web.Controllers
 					break;
 			}
 			var products = new List<Explora_Precios.Core.Product>();
+			EdgePrices EdgePrices;
 			switch (catalog)
 			{
 				case Catalog.Types.Department:
 					products = _productRepository.GetbyDepartment(id);
-					homeModel.MaxPrice = _productRepository.GetbyDepartmentMaxPrice(id);
+					EdgePrices = _productRepository.GetbyDepartmentEdgePrices(id);
 					break;
 				case Catalog.Types.Category:
 					products = _productRepository.GetbyCategory(id);
-					homeModel.MaxPrice = _productRepository.GetbyCategoryMaxPrice(id);
+					EdgePrices = _productRepository.GetbyCategoryEdgePrices(id);
 					break;
 				case Catalog.Types.SubCategory:
 					products = _productRepository.GetbySubCategory(id);
-					homeModel.MaxPrice = _productRepository.GetbySubCategoryMaxPrice(id);
+					EdgePrices = _productRepository.GetbySubCategoryEdgePrices(id);
 					break;
-				case Catalog.Types.ProductType:
+				default:
 					products = _productRepository.GetbyProductType(id);
-					homeModel.MaxPrice = _productRepository.GetbyProductTypeMaxPrice(id);
+					EdgePrices = _productRepository.GetbyProductTypeEdgePrices(id);
 					break;
 			}
 
-			//if (System.Web.HttpRuntime.Cache.Get("ActiveProducts_" + id) == null)
-			//{
-			//    //products = products.Where(x => x.clients.Any(y => y.isActive)).ToList();
-
-			//    System.Web.HttpRuntime.Cache.Insert("ActiveProducts_" + id, products,
-			//        null,
-			//        DateTime.Now.AddHours(2),
-			//        System.Web.Caching.Cache.NoSlidingExpiration);
-			//}
-			//else
-			//{
-			//    products = (List<Product>)System.Web.HttpRuntime.Cache.Get("ActiveProducts_" + id);
-			//}
+			homeModel.Filter.CurrentMinPrice = 0;
+			homeModel.Filter.CurrentMaxPrice = EdgePrices.Max;
 
 			homeModel = LoadProductsOnModel(homeModel, products);
 			return homeModel;
@@ -922,7 +899,9 @@ namespace Explora_Precios.Web.Controllers
 			ViewData["search_text"] = s;
 			var homeViewModel = new HomeViewModel();
 			var products = _productRepository.GetbySearchText(s, IsActivated.Yes).ToList();
-			homeViewModel.MaxPrice = products.Last().clients.OrderByDescending(c => c.price).First().price;
+			homeViewModel.Filter.CurrentMinPrice = products.First().clients.OrderBy(c => c.price).First().price.ExactMinValue();
+			homeViewModel.Filter.CurrentMaxPrice = products.Last().clients.OrderByDescending(c => c.price).First().price;
+			homeViewModel.LoadFilters();
 			homeViewModel = LoadProductsOnModel(homeViewModel, products);
 			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();
 			homeViewModel.isSearch = true;
@@ -931,7 +910,7 @@ namespace Explora_Precios.Web.Controllers
 
 		private HomeViewModel LoadPrimaryHomeViewModel(Department department)
 		{
-			var homeViewModel = new HomeViewModel();
+			var homeViewModel = new HomeViewModel(0, department.Id);
 			homeViewModel.departmentId = department.Id;
 			homeViewModel.departmentTitle = department.name;
 			homeViewModel.categories = department.categories.OrderBy(x => x.name).Select(x => new CategoryViewModel()

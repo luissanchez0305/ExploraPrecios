@@ -199,57 +199,129 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			return result;
 		}
 
-		public static List<FilterViewModel> FilterLoad(IList<Product> products, bool isSearch, string val, float minPrice, float maxPrice, HomeViewModel.FilterType filterType, string currentFilter) {
-			var result = new List<FilterViewModel>();
-			if (products.Count > 1)
-			{
-				// obtener la lista de marcas
-				var brandsList = products.Select(x => x.brand.name).OrderBy(y => y).Distinct().ToList();
+		public static void LoadFilters(this HomeViewModel HomeModel, int CatalogLevel = 0, int CatalogId = 1)
+		{
+			// crear parametro de listado de productos
+			var FilterDefaultParameters = "&o=false&cl=" + CatalogLevel + "&ci=" + CatalogId;
+			var ProductsDefaultParameters = "catLev=" + CatalogLevel + "&id=" + CatalogId;
+			// obtener la lista de marcas
+			var brandsList = HomeModel.allProducts.Select(x => x.brand.name).OrderBy(y => y).Distinct().ToList();
 
-				var diff5Max = (int)((maxPrice - minPrice) / 5);
-				var rangesListFinal = new List<KeyValuePair<int, int>>();
-				var price = (int)minPrice;
-				for (int i = 0; i < 5; i++)
+			if (HomeModel.allProducts.Count > 1)
+			{
+				int diffMax = 501, diffCurrent = 500;
+				var interval = 3;
+				while (diffMax > diffCurrent - 1)
 				{
-					rangesListFinal.Add(new KeyValuePair<int, int>(price, price + diff5Max));
-					price = price + diff5Max + 1;
+					diffMax = (int)((HomeModel.Filter.CurrentMaxPrice - HomeModel.Filter.CurrentMinPrice) / interval);
+					interval++;
+					if (interval > 10)
+					{
+						diffCurrent += 100;
+						diffMax = diffCurrent + 1;
+						interval = 3;
+					}
 				}
-				
-				// crear parametro de listado de productos
-				var valSplitted = val.Split(',');
-				var productParameter = "&currentDisplay=" + valSplitted[0] + "," + valSplitted[1] + "&s=" + (isSearch ? "1" : "0");
+				var rangesList = new List<KeyValuePair<float, float>>();
+				rangesList.Add(new KeyValuePair<float, float>(0, 0));
+				var price = HomeModel.Filter.CurrentMinPrice;
+				for (int i = 0; i < interval; i++)
+				{
+					if (i == 0) price = (float)(price + 0.01);
+					rangesList.Add(new KeyValuePair<float, float>(price, price + diffMax - (float)0.01));
+					price = price + diffMax;
+				}
 
 				// crear lista de filtros por precios
-				if (rangesListFinal.Count > 1)
+				if (rangesList.Count > 0)
 				{
-					result.Add(new FilterViewModel()
-					{
-						value = "Precios",
-						items = rangesListFinal.Select(x => new FilterItemViewModel()
-						{
-							name = "De $" + x.Key.ToString("#,0.00") + " a $" + x.Value.ToString("#,0.00"),
-							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.PriceBrand ? "p,b" : "p") + "&filterData=" + x.Key.ToString() + "," + x.Value.ToString() + (filterType == HomeViewModel.FilterType.PriceBrand ? "," + currentFilter.Split(',')[2] : currentFilter) + productParameter
-						}).ToList()
-					});
-					result[0].items[0].name = result[0].items[0].name.Replace(".00", ".01");
-					result[0].items.Insert(0, new FilterItemViewModel() { name = "Ofertas", url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Brand || filterType == HomeViewModel.FilterType.SaleBrand ? "o,b" : "o") + "&filterData=" + (filterType == HomeViewModel.FilterType.Brand || filterType == HomeViewModel.FilterType.SaleBrand ? "," + currentFilter : "") + productParameter });
-				}
+					var brandFilter = "";
+					if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand)
+						brandFilter = "&b=" + HomeModel.Filter.CurrentBrand;
 
-				// crear lista de filtros por marcas
-				if (brandsList.Count > 1)
-				{
-					result.Add(new FilterViewModel()
-					{
-						value = "Marcas",
-						items = brandsList.Select(x => new FilterItemViewModel()
-						{
-							name = x,
-							url = "/Home/Filter?f=" + (filterType == HomeViewModel.FilterType.Price ? "p,b" : filterType == HomeViewModel.FilterType.Sale ? "o,b" : "b") + "&filterData=" + (filterType == HomeViewModel.FilterType.Price ? currentFilter + "," : "") + x + productParameter
-						}).ToList()
-					});
+					HomeModel.Filter.FilterPrices = rangesList.Select(range => new FilterItemViewModel
+							{
+								Name = (range.Key == 0 && range.Value == 0) ?
+									"Ofertas" :
+									"De $" + range.Key.ToString("#,0.00") + " a $" + range.Value.ToString("#,0.00"),
+								Url = "/Home/Filter?" + ((range.Key == 0 && range.Value == 0) ?
+									"" : "p=" + range.Key + "," + range.Value) + brandFilter +
+									((range.Key == 0 && range.Value == 0) ?
+									FilterDefaultParameters.Replace("o=false", "o=true") :
+									FilterDefaultParameters)
+							});
 				}
 			}
-			return result;
+			// crear lista de filtros por marcas
+			if (brandsList.Count > 1)
+			{
+				var priceFilter = "";
+				if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Price)
+					priceFilter = "&p=" + HomeModel.Filter.CurrentMinPrice + "," + HomeModel.Filter.CurrentMaxPrice;
+				var saleFilter = "";
+				if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Sale)
+					saleFilter = FilterDefaultParameters.Replace("o=false", "o=true");
+				else
+					saleFilter = FilterDefaultParameters;
+				HomeModel.Filter.FilterBrands = brandsList.Select(brand => new FilterItemViewModel()
+					{
+						Name = brand,
+						Url = "/Home/Filter?b=" + brand + priceFilter + saleFilter
+					});
+			}
+
+			// crear "deshacer" filtros
+			// Price
+			if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Price || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand)
+			{
+				HomeModel.Filter.UndoPriceFilter = new FilterItemViewModel
+				{
+					Name = HomeModel.Filter.CurrentMinPrice.Money() + " - " + HomeModel.Filter.CurrentMaxPrice.Money(),
+					Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand ?
+						"/Home/Filter?b=" + HomeModel.Filter.CurrentBrand + FilterDefaultParameters :
+						"/Home/Products?" + ProductsDefaultParameters
+				};
+
+				if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand)
+					HomeModel.Filter.UndoBrandFilter = new FilterItemViewModel
+					{
+						Name = HomeModel.Filter.CurrentBrand,
+						Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand ?
+							"/Home/Filter?p=" + HomeModel.Filter.CurrentMinPrice.ExactMinValue() + "," + (int)HomeModel.Filter.CurrentMaxPrice + FilterDefaultParameters :
+							"/Home/Products?" + ProductsDefaultParameters
+					};
+			}
+
+			// Sale
+			if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Sale || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand)
+			{
+				HomeModel.Filter.UndoSaleFilter = new FilterItemViewModel
+				{
+					Name = "Solo Ofertas",
+					Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand ?
+						"/Home/Filter?b=" + HomeModel.Filter.CurrentBrand + FilterDefaultParameters :
+						"/Home/Products?" + ProductsDefaultParameters
+				};
+
+				if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand)
+					HomeModel.Filter.UndoBrandFilter = new FilterItemViewModel
+					{
+						Name = HomeModel.Filter.CurrentBrand,
+						Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand ?
+							"/Home/Filter?" + FilterDefaultParameters.Replace("o=false", "o=true") :
+							"/Home/Products?" + ProductsDefaultParameters
+					};
+			}
+
+			// Brand
+			if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Brand)
+			{
+				HomeModel.Filter.UndoBrandFilter = new FilterItemViewModel
+				{
+					Name = HomeModel.Filter.CurrentBrand,
+					Url = "/Home/Products?" + ProductsDefaultParameters
+				};
+			}
 		}
 
 		public static Object GetCatalogParent(int level_Id, int catalog_Id)
