@@ -995,22 +995,30 @@ namespace Explora_Precios.ApplicationServices
                         // recorremos las direcciones de direcciones y sacamos la informacion de todos los productos
                         foreach (var address in listAddresses)
                         {
-                            var product = GetYoyTecProduct(address, _catalog_addressObj.client, _catalog_addressObj.level_Id, _catalog_addressObj.catalog_Id);
+							try
+							{
+								var product = GetYoyTecProduct(address, _catalog_addressObj.client, _catalog_addressObj.level_Id, _catalog_addressObj.catalog_Id);
 
-                            if (product != null)
-                            {
-                                if (!string.IsNullOrEmpty(product.clients[0].productReference) && !productAddresses.Contains(product.clients[0].productReference))
-                                {
-                                    productReferences.Add(product.clients[0].productReference);
-                                    productAddresses.Add(product.clients[0].url);
-                                }
-                                else if (!string.IsNullOrEmpty(product.clients[0].url))
-                                {
-                                    goOn = false; break;
-                                }
+								if (product != null)
+								{
+									if (!string.IsNullOrEmpty(product.clients[0].productReference) && !productAddresses.Contains(product.clients[0].productReference))
+									{
+										productReferences.Add(product.clients[0].productReference);
+										productAddresses.Add(product.clients[0].url);
+									}
+									else if (!string.IsNullOrEmpty(product.clients[0].url))
+									{
+										goOn = false; break;
+									}
 
-                                productList.Add(product);
-                            }
+									productList.Add(product);
+									System.Threading.Thread.Sleep(10000);
+								}
+							}
+							catch (Exception e)
+							{
+								throw e;
+							}
                         }
                         
                         if (productsCount < pageLimit)
