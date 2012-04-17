@@ -215,6 +215,14 @@
     <Content Include="Content\banner\anythingslider.css" />
     <Content Include="Content\banner\colorbox.css" />
     <Content Include="Content\banner\diapo.css" />
+    <Content Include="Content\Images\banner\internet_explorer\borderBottomCenter.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderBottomLeft.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderBottomRight.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderMiddleLeft.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderMiddleRight.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderTopCenter.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderTopLeft.png" />
+    <Content Include="Content\Images\banner\internet_explorer\borderTopRight.png" />
     <Content Include="Content\banner\theme-metallic.css" />
     <Content Include="Content\html\changeemail.html" />
     <Content Include="Content\html\follow.html" />

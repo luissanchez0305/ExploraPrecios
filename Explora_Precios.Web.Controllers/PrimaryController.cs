@@ -25,8 +25,6 @@ namespace Explora_Precios.Web.Controllers
 			base.OnActionExecuting(filterContext);
 			ViewData["depList"] = new DepartmentRepository().GetAll();
 			var Name = "";
-			var userR = new UserRepository();
-			var user = userR.GetByEmail(null);
 			try
 			{
 				if (!string.IsNullOrEmpty(HttpContext.User.Identity.Name))
@@ -59,6 +57,16 @@ namespace Explora_Precios.Web.Controllers
 			}
 
 			ViewData["CurrentName"] = Name;
+		}
+
+		protected override void OnException(ExceptionContext filterContext)
+		{
+			base.OnException(filterContext);
+
+			var email = new Explora_Precios.ApplicationServices.EmailServices("info@exploraprecios.com",
+				"Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"] + " - " + filterContext.Exception.Source,
+				"Detalle: " + filterContext.Exception.StackTrace);
+			email.Send();
 		}
 
 		protected override void OnActionExecuted(ActionExecutedContext filterContext)

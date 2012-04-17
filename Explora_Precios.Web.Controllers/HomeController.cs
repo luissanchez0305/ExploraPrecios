@@ -312,8 +312,6 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult Filter(string p, string b, bool o, int cl, int ci, int? page)
 		{
-			// check if the data to filter the products is from price (f == p)
-			// or brand (f == b)
 			var HomeModel = LoadHomeModel(cl, ci);
 			var currentPage = page.HasValue ? page.Value - 1 : 0;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
@@ -324,10 +322,10 @@ namespace Explora_Precios.Web.Controllers
 			{
 				var rangePrices = p.Split(',');
 				products = products
-					   .Where(x => x.clients
-						   .Where(y => y.price >= float.Parse(rangePrices[0]) &&
-							   y.price <= float.Parse(rangePrices[1]))
-						   .Count() > 0);
+						.Where(x => x.clients
+							.Where(y => y.price >= float.Parse(rangePrices[0]) &&
+								y.price <= float.Parse(rangePrices[1]))
+							.Count() > 0);
 				HomeModel.Filter.CurrentMinPrice = float.Parse(rangePrices[0]).ExactMinValue();
 				HomeModel.Filter.CurrentMaxPrice = float.Parse(rangePrices[1]);
 			}

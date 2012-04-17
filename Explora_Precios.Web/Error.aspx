@@ -1,15 +1,15 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="Explora_Precios.ApplicationServices" %>
 <%
-	if (Request.QueryString["aspxerrorpath"].Length > 0)
-	{
-		var email = new EmailServices("info@exploraprecios.com", "Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"], "Error en " + Request.QueryString["aspxerrorpath"]);
-		try
-		{
-			email.Send();
-		}
-		catch { }
-	} %>
+	//if (Request.QueryString["aspxerrorpath"].Length > 0)
+	//{
+	//    var email = new EmailServices("info@exploraprecios.com", "Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"], "Error en " + Request.QueryString["aspxerrorpath"]);
+	//    try
+	//    {
+	//        email.Send();
+	//    }
+	//    catch { }
+	//} %>
 	<html>
 		<head>
 			<title>ExploraPrecios.com - Página de error</title>
