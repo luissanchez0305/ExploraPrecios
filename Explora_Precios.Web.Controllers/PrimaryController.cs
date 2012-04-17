@@ -25,6 +25,8 @@ namespace Explora_Precios.Web.Controllers
 			base.OnActionExecuting(filterContext);
 			ViewData["depList"] = new DepartmentRepository().GetAll();
 			var Name = "";
+			var userR = new UserRepository();
+			var user = userR.GetByEmail(null);
 			try
 			{
 				if (!string.IsNullOrEmpty(HttpContext.User.Identity.Name))

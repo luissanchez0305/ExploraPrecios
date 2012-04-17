@@ -120,6 +120,7 @@
     <Compile Include="ClientServices.cs" />
     <Compile Include="CommonUtilities.cs" />
     <Compile Include="EmailServices.cs" />
+    <Compile Include="ErrorHandler.cs" />
     <Compile Include="Interfaces\IClientServices.cs" />
     <Compile Include="NetCaptcha.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

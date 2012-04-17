@@ -63,6 +63,12 @@
 	function authorizeFacebook() {
 		FB.login(function (response) {
 			FB.api('/me', function (responseMe) {
+//				alert("accessToken: " + response.authResponse.accessToken +
+//				" email: " + responseMe.email +
+//				" first_name: " + responseMe.first_name +
+//				" last_name: " + responseMe.last_name +
+//				" gender: " + responseMe.gender + 
+//				" redirect: " + $('#Redirect').val());
 				$.ajax({
 					type: "GET",
 					url: '<%= Url.Action("FacebookRegister", "Account") %>',
@@ -98,7 +104,7 @@
 					}
 				});
 			});
-		}, { scope: 'email,publish_stream' });
+		}, { scope: 'email,publish_stream'} );
 	}
 </script>
 <%

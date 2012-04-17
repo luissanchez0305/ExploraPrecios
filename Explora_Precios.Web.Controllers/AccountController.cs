@@ -427,6 +427,7 @@ namespace Explora_Precios.Web.Controllers
 				Session[FbTokenKey] = _token;
 				Response.Cookies[FbTokenKey].Value = _token;
 				MembershipCreateStatus status = AccountMembership.CreateUser(_email, ConfigurationManager.AppSettings["fbPass"], _email);
+				System.Threading.Thread.Sleep(2000);
 				if (status == MembershipCreateStatus.DuplicateUserName)
 					existed = true;
 				var NewUser = UserRepository.GetByEmail(_email);
