@@ -63,10 +63,29 @@ namespace Explora_Precios.Web.Controllers
 		{
 			base.OnException(filterContext);
 
-			var email = new Explora_Precios.ApplicationServices.EmailServices("info@exploraprecios.com",
-				"Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"] + " - " + filterContext.Exception.Source,
-				"Detalle: " + filterContext.Exception.StackTrace);
-			email.Send();
+			Exception ex = filterContext.Exception;
+			bool goOn = true;
+			while (goOn && !ex.Source.Contains("Explora_Precios"))
+			{
+				if (ex.InnerException != null)
+					ex = ex.InnerException;
+				else
+				{
+					goOn = false;
+				}
+			}
+
+			if (goOn)
+			{
+				try
+				{
+					var email = new Explora_Precios.ApplicationServices.EmailServices("info@exploraprecios.com",
+						"(Primary) Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"] + " - " + ex.Source,
+						"Detalle: " + ex.StackTrace);
+					email.Send();
+				}
+				catch { }
+			}
 		}
 
 		protected override void OnActionExecuted(ActionExecutedContext filterContext)

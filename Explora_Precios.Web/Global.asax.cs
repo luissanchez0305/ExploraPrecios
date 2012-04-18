@@ -89,6 +89,28 @@ namespace Explora_Precios.Web
 			// Useful for debugging
 			Exception ex = Server.GetLastError();
 			ReflectionTypeLoadException reflectionTypeLoadException = ex as ReflectionTypeLoadException;
+			bool goOn = true;
+			while (goOn && !ex.Source.Contains("Explora_Precios"))
+			{
+				if (ex.InnerException != null)
+					ex = ex.InnerException;
+				else
+				{
+					goOn = false;
+				}
+			}
+
+			if (goOn)
+			{
+				try
+				{
+					var email = new Explora_Precios.ApplicationServices.EmailServices("info@exploraprecios.com",
+						"(Global) Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"] + " - " + ex.Source,
+						"Detalle: " + ex.StackTrace);
+					email.Send();
+				}
+				catch { }
+			}
 		}
 
 		private WebSessionStorage webSessionStorage;
