@@ -280,7 +280,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			<div id="MegaBanner" class="pix_diapo">
 				<div>
 					<img src="/Content/images/banner/feedback-2.jpg">
-					<div class="elemHover fadeIn" style="left:10px; top:25px; bottom:auto; padding-top:10px; width:auto;">
+					<div class="elemHover fadeIn" style="left:10px; top:25px; bottom:auto; padding-top:10px; width:270px;">
 						<div style="font-size:30px; font-weight:bold; left:20px; top:0px; position:relative; color:white; color:#F8EA9B; text-shadow: 0 0 5px #D57B5F;">
 							Crea tu grupo ya!!
 						</div>
@@ -298,7 +298,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				</div>
 				<div>
 					<img src="/Content/images/banner/Luminesque_clinic_erina_beauty.jpg">
-					<div class="elemHover fadeIn" style="left:10px; top:15px; bottom:auto; padding-top:10px; width:auto;">
+					<div class="elemHover fadeIn" style="left:10px; top:15px; bottom:auto; padding-top:10px; width:320px;">
 					   <div style="font-size:30px; font-weight:bold; left:20px; top:0px; position:relative; color:white; color:#A1430A; text-shadow: 0 0 5px #FFFFFF;">
 							Ya te puedes relajar!!
 						</div>
@@ -357,7 +357,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				</div>
 				<div>
 					<img src="/Content/images/banner/Choplifter-HD-achievements-740x300.jpg">
-					<div class="elemHover fadeIn" style="left:10px; top:15px; bottom:auto; padding-top:10px; width:auto;">
+					<div class="elemHover fadeIn" style="left:10px; top:15px; bottom:auto; padding-top:10px; width:420px;">
 						<div style="font-size:30px; font-weight:bold; left:20px; top:0px; position:relative; color:white; color:#DB0550; text-shadow: 0 0 5px #FFFFFF;">
 							Para que juegues sin parar!!
 						</div>
@@ -394,7 +394,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				</div>
 				<div>
 					<img src="/Content/images/banner/ibiza-club-tickets-5.jpg">
-					<div class="elemHover fadeIn" style="left:10px; top:15px; bottom:auto; padding-top:10px; width:auto;">
+					<div class="elemHover fadeIn" style="left:10px; top:15px; bottom:auto; padding-top:10px; width:420px;">
 						<div style="font-size:30px; font-weight:bold; left:20px; top:0px; position:relative; color:white; color:#F1FFCF; text-shadow: 0 0 5px #FFFFFF;">
 							Para que ahorres de verdad!!
 						</div>
