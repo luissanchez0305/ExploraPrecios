@@ -6,7 +6,7 @@
     var priceStoreLeft = side == "Left" ? (position * 650) +  185 : (position * 650) + 510;
     var nameLeft = side == "Left" ? (position * 650) + 180 : (position * 650) + 505;%>
     <%= Html.Hidden("hdn_productId", Model.productId) %>
-<div class="offer<%= side %> gridItem">
+<div class="offer<%= side %>">
     <img class="offerLogo" src="../../Content/Images/logo_oferta.gif" alt="Oferta" />
     &nbsp;<img class="offerImage" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model.image) %>" alt="<%= Model.brandName + " - " + Model.productName  %>"/>
     <label class="offer<%= side %>Name" style="top:10px; left: <%= nameLeft.ToString() %>px;"><%= Model.productName.Shorten(18) %></label>
