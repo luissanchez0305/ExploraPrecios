@@ -21,7 +21,6 @@
 <!-- END Productos de flotantes -->
 
 <!-- LISTA DE PRODUCTOS -->
-<% var IsGridEmbedded = Request.Url.PathAndQuery.Length > 1;%>
 <div id="gridTopic" class="topic">
     <% if (Model.isSearch)
        { %>
@@ -41,9 +40,6 @@
         </div>
     </div>
 </div>
-<% if(IsGridEmbedded){ %>
 <div id="grid" class="grid">
     <% Html.RenderPartial("PartialViews/ProductsList", Model.productsListViewModel); %>
 </div>
-<%}
-   else {%> <% Html.RenderPartial("PartialViews/ProductsList_Initial", Model.productsListViewModel); %><% } %>

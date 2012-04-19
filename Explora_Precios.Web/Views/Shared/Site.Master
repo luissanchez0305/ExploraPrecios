@@ -359,13 +359,6 @@
 			SetLeftDiv();
 		});
 		$(document).ready(function () {
-			//	        $("#temp").datepicker({
-			//	            showOn: 'both',
-			//	            buttonImage: '/Content/images/calendar.gif',
-			//	            duration: 0,
-			//	            changeYear: true,
-			//	            yearRange: '1950:1997'
-			//	        });
 			if ($.browser.msie && $.browser.version.indexOf('9.0') == -1) {
 				$('#item_OfferNew').html('Ofertas');
 				$('#navigation').addClass('ie8');
@@ -467,7 +460,7 @@
 			$('#grid_floating').html('');
 			$('#nav_floating_buttons').hide();
 			$('.nav_floating_bottom').hide();
-			$('.nav_floating_area').animate({ width: "710px", height: "25px" }, 800);
+			$('.nav_floating_area').animate({ width: "720px", height: "25px" }, 800);
 			$('.nav_floating_area').hide('slow');
 		});
 
@@ -533,7 +526,7 @@
 			else {
 				if ($('.nav_floating_area').attr('style').indexOf('display: none') > -1) {
 					$('.nav_floating_area').show('slow');
-					$('.nav_floating_area').animate({ width: "710px", height: "25px" }, 800);
+					$('.nav_floating_area').animate({ width: "720px", height: "25px" }, 800);
 				}
 				$('#nav_floating_buttons').show();
 				$('#img_Floating_Loading').show();
