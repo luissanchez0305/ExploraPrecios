@@ -105,8 +105,8 @@ namespace Explora_Precios.Web
 				try
 				{
 					var email = new Explora_Precios.ApplicationServices.EmailServices("info@exploraprecios.com",
-						"(Global) Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"] + " - " + ex.Source,
-						"Detalle: " + ex.StackTrace);
+						"Error en " + System.Configuration.ConfigurationManager.AppSettings["Enviroment"] + " - " + ex.Source,
+						"Mensaje: " + ex.Message + "<br/>Detalle: " + ex.StackTrace);
 					email.Send();
 				}
 				catch { }
