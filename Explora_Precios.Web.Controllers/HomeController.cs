@@ -165,7 +165,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public void SendIt(string browser, string where)
 		{
-			var email = new EmailServices("info@exploraprecios.com", where, "Broser: " + browser);
+			var email = new EmailServices("info@exploraprecios.com", "Error en: " + where, "Browser: " + browser);
 			email.Send();
 		}
 
