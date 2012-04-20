@@ -63,48 +63,57 @@
 	function authorizeFacebook() {
 		FB.login(function (response) {
 			FB.api('/me', function (responseMe) {
-//				alert("accessToken: " + response.authResponse.accessToken +
-//				" email: " + responseMe.email +
-//				" first_name: " + responseMe.first_name +
-//				" last_name: " + responseMe.last_name +
-//				" gender: " + responseMe.gender + 
-//				" redirect: " + $('#Redirect').val());
-				$.ajax({
-					type: "GET",
-					url: '<%= Url.Action("FacebookRegister", "Account") %>',
-					data: {
-						_token: response.authResponse.accessToken,
-						_email: responseMe.email,
-						_first_name: responseMe.first_name,
-						_last_name: responseMe.last_name,
-						_gender: responseMe.gender,
-						_redirect: $('#Redirect').val()
-					},
-					dataType: "json",
-					error: function (x, e) {
-						alert("error");
-					},
-					success: function (data) {
-						if (data.result == "fail") {
-							alert('Error ' + data.msg);
-						}
-						else {
-							$(".loggedin").show();
-							$(".will_login").hide();
-							$("#currentName").html(responseMe.first_name);
-							if (data.redirect.length > 0) {
-								LoadProductDetail(data.redirect, '0');
+				//				alert("accessToken: " + response.authResponse.accessToken +
+				//				" email: " + responseMe.email +
+				//				" first_name: " + responseMe.first_name +
+				//				" last_name: " + responseMe.last_name +
+				//				" gender: " + responseMe.gender + 
+				//				" redirect: " + $('#Redirect').val());
+				if (responseMe.email.length > 0) {
+					$.ajax({
+						type: "GET",
+						url: '<%= Url.Action("FacebookRegister", "Account") %>',
+						data: {
+							_token: response.authResponse.accessToken,
+							_email: responseMe.email,
+							_first_name: responseMe.first_name,
+							_last_name: responseMe.last_name,
+							_gender: responseMe.gender,
+							_redirect: $('#Redirect').val()
+						},
+						dataType: "json",
+						error: function (x, e) {
+							alert("error");
+						},
+						success: function (data) {
+							if (data.result == "fail") {
+								alert('Error ' + data.msg);
 							}
-							else if (!data.existed) {
-								$("#SuccessFBRegister").show();
-								$("#SuccessFBRegister").dialog("open");
-								autoSuccessFBTimer = setInterval("ClearFBSuccess()", 3000);
+							else {
+								$(".loggedin").show();
+								$(".will_login").hide();
+								$("#currentName").html(responseMe.first_name);
+								if (data.redirect.length > 0) {
+									LoadProductDetail(data.redirect, '0');
+								}
+								else if (!data.existed) {
+									$("#SuccessFBRegister").show();
+									$("#SuccessFBRegister").dialog("open");
+									autoSuccessFBTimer = setInterval("ClearFBSuccess()", 3000);
+								}
 							}
 						}
-					}
-				});
+					});
+				}
+				else {
+					jAlert('Ha ocurrido un error en los servidores de Facebook. Ya nuestro equipo técnico ha sido avisado al respecto.<br/>Por favor intente mas tarde', 'Facebook Alert!!', function () {
+						var browser = $.browser.opera ? 'opera' : $.browser.safari ? 'safari' : $.browser.msie ? 'msie' : $.browser.mozilla ? 'mozilla' : $.browser.webkit ? 'webkit' : 'unknown';
+						var version = $.browser.version;
+						$.get('/Home/SendIt', { browser: 'Browser: ' + browser + ' Version: ' + version, where: 'FacebookRegister' });
+					});
+				}
 			});
-		}, { scope: 'email,publish_stream'} );
+		}, { scope: 'email,publish_stream' });
 	}
 </script>
 <%
@@ -431,6 +440,7 @@
 					});
 				});
 			});
+			
 			$("#control_play").hide();
 			pausePlayTimer = setInterval(function () { return null }, 5000);
 			//autoPlayTimer = setInterval(autoPlay, autoPlayTime);

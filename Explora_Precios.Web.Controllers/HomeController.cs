@@ -163,6 +163,12 @@ namespace Explora_Precios.Web.Controllers
 			return View(IntroModel);
 		}
 
+		public void SendIt(string browser, string where)
+		{
+			var email = new EmailServices("info@exploraprecios.com", where, "Broser: " + browser);
+			email.Send();
+		}
+
 		private IEnumerable<GroupViewModel> LoadGroupedBannerList(IEnumerable<Group_User> GroupUserList)
 		{
 			return GroupUserList.Take(5).Select(group => LoadGroupViewModel(group, true)).Concat(GroupUserList.Skip(5).Select(group => LoadGroupViewModel(group, false)));
@@ -298,10 +304,9 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new { guids = string.Join(",", guids.ToArray()), count = pageItemsCount });
 		}
 
-		public ActionResult Products(int? catLev, int? id, int? page)
+		public ActionResult Products(int? catLev, int? id)
 		{
 			// Get all the catalog items under the selected depatment. Default Electronicos = 1
-			currentPage = page.HasValue ? page.Value - 1 : 0;
 			catLev = catLev ?? 0;
 			id = id ?? 1;
 			var homeModel = LoadHomeModel((int)catLev, (int)id);
@@ -310,38 +315,54 @@ namespace Explora_Precios.Web.Controllers
 			return View(homeModel);
 		}
 
-		public ActionResult Filter(string p, string b, bool o, int cl, int ci, int? page)
+		public ActionResult ScrollProducts(int catLev, int id, int page)
+		{
+			currentPage = page;
+			var homeModel = LoadHomeModel(catLev, id);
+			ViewData.Model = homeModel.productsListViewModel;
+			return Json(new
+			{
+				html = this.RenderViewToString("PartialViews/ProductsList", ViewData),
+				hasNext = ViewData.Model = homeModel.productsListViewModel.products.HasNextPage
+			});
+		}
+
+		public ActionResult ScrollFilter(int catLev, int id, int page, string p, string b, bool o)
+		{
+			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
+			currentPage = page;
+			var HomeModel = LoadHomeModel(catLev, id);
+			var products = FilterProduct(HomeModel.allProducts, p, b, o);
+			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(product => product.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
+
+			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
+			HomeModel.productsListViewModel.productsList = HomeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
+			ViewData.Model = HomeModel.productsListViewModel;
+			
+			return Json(new
+			{
+				html = this.RenderViewToString("PartialViews/ProductsList", ViewData),
+				hasNext = ViewData.Model = HomeModel.productsListViewModel.products.HasNextPage
+			});
+		}
+
+		public ActionResult Filter(string p, string b, bool o, int cl, int ci)
 		{
 			var HomeModel = LoadHomeModel(cl, ci);
-			var currentPage = page.HasValue ? page.Value - 1 : 0;
+			HomeModel.isFilter = true;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
-			IEnumerable<Product> products = HomeModel.allProducts;
+			IEnumerable<Product> products = FilterProduct(HomeModel.allProducts, p, b, o);
 
-			// Filtrar por precios o oferta
 			if (p != null)
 			{
 				var rangePrices = p.Split(',');
-				products = products
-						.Where(x => x.clients
-							.Where(y => y.price >= float.Parse(rangePrices[0]) &&
-								y.price <= float.Parse(rangePrices[1]))
-							.Count() > 0);
 				HomeModel.Filter.CurrentMinPrice = float.Parse(rangePrices[0]).ExactMinValue();
 				HomeModel.Filter.CurrentMaxPrice = float.Parse(rangePrices[1]);
 			}
-
-			// Filtrar por oferta
-			if (o)
-			{
-				products = products.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0);
-			}
-			// Filtrar por marca
 			if (b != null)
 			{
-				products = products.Where(x => x.brand.name == (b));
 				HomeModel.Filter.CurrentBrand = b;
-			};
-
+			}
 			HomeModel.Filter.FilterType = (p != null && b != null) ? FilterViewModel.ItemFilterTypes.PriceBrand :
 									(o && b != null) ? FilterViewModel.ItemFilterTypes.SaleBrand :
 									(o) ? FilterViewModel.ItemFilterTypes.Sale :
@@ -782,12 +803,51 @@ namespace Explora_Precios.Web.Controllers
 			}
 		}
 
-		public ActionResult Search(string s, int? page)
+		public ActionResult Search(string s)
 		{
-			currentPage = page - 1 ?? 0;
 			var homeViewModel = LoadHomeModel(s);
 			LoadCounterValues();
 			return View(homeViewModel);
+		}
+
+		public ActionResult ScrollSearch(string s, int page)
+		{
+			currentPage = page;
+			var homeViewModel = LoadHomeModel(s);
+
+			ViewData.Model = homeViewModel.productsListViewModel;
+			return Json(new
+			{
+				html = this.RenderViewToString("PartialViews/ProductsList", ViewData),
+				hasNext = ViewData.Model = homeViewModel.productsListViewModel.products.HasNextPage
+			});
+		}
+
+
+		private IEnumerable<Product> FilterProduct(IEnumerable<Product> products, string p, string b, bool o)
+		{
+			// Filtrar por precios o oferta
+			if (p != null)
+			{
+				var rangePrices = p.Split(',');
+				products = products
+						.Where(x => x.clients
+							.Where(y => y.price >= float.Parse(rangePrices[0]) &&
+								y.price <= float.Parse(rangePrices[1]))
+							.Count() > 0);
+			}
+
+			// Filtrar por oferta
+			if (o)
+			{
+				products = products.Where(x => x.clients.Where(y => y.isActive && y.specialPrice > 0).Count() > 0);
+			}
+			// Filtrar por marca
+			if (b != null)
+			{
+				products = products.Where(x => x.brand.name == (b));
+			};
+			return products;
 		}
 
 		private void LoadCounterValues()

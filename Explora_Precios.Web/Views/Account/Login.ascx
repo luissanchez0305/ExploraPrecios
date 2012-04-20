@@ -19,7 +19,7 @@
                 <%= Html.Password("password", "", new { @class = "textpass", style = "margin-top:5px;" })%>
                 </label><br /><br />
                 <label><%= Html.CheckBox("remember") %>Recordarme</label>
-                <label style="float:right;"><input type="button" class="button" id="btnLogin" value="Entrar" /><img alt="Loading..." src="/content/images/loading_big.gif" class="LoginLoading" style="left:-45px;" /></label><br />
+                <label style="float:right;"><input type="button" class="button" id="btnLogin" value="Entrar" /><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" style="left:-45px;" /></label><br />
                 <%=Html.ValidationMessage("ErrorMessage", new { @class = "validation-summary-errors", style = "position:relative; top:10px;" })%>
                 <%= Html.Hidden("Redirect", ViewData["redirect"])%>
             <div id="layer04_holder" class="loginbox">
@@ -38,7 +38,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('.LoginLoading').hide();
+		$('.SmallLoading').hide();
 		$('#LoginForm').keypress(function (event) {
 			if (event.which == 13)
 				LogMeIn();
@@ -48,18 +48,18 @@
 		LogMeIn();
 	});
     function LogMeIn() {
-		$('.LoginLoading').show();
+		$('.SmallLoading').show();
         $.ajax({
             type: "POST",
             url: '<%= Url.Action("Login", "Account") %>',
             data: $('#LoginForm').serialize(),
             dataType: "json",
             error: function (x, e) {
-                $('.LoginLoading').hide();
+                $('.SmallLoading').hide();
                 alert('Error');
             },
             success: function (data) {
-                $('.LoginLoading').hide();
+                $('.SmallLoading').hide();
                 if (data.result == "fail") {
                     $(".LoginContainer").html(data.html);
                 }

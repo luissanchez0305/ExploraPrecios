@@ -25,7 +25,7 @@
 				</div>
 			</li>
 			<li id="foli3" class="button notranslate rightHalf">
-				<input class="button" type="button" id="btnForgotPassword" value="Enviar" /><img alt="Loading..." src="/content/images/loading_big.gif" class="LoginLoading" />
+				<input class="button" type="button" id="btnForgotPassword" value="Enviar" /><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" />
 			</li>
 			<li id="foli14" class="notranslate cGray bold">                
 			</li>
@@ -34,7 +34,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('.LoginLoading').hide();
+		$('.SmallLoading').hide();
 		$('#ForgotForm').keypress(function (event) {
 			if (event.which == 13) {
 				RunForgotPassword();
@@ -45,18 +45,18 @@
 		RunForgotPassword();
 	});
 	function RunForgotPassword() {
-		$('.LoginLoading').show();
+		$('.SmallLoading').show();
 		$.ajax({
 			type: "POST",
 			url: '<%= Url.Action("Forgot", "Account") %>',
 			data: $('#ForgotForm').serialize(),
 			dataType: "json",
 			error: function (x, e) {
-				$('.LoginLoading').hide();
+				$('.SmallLoading').hide();
 				alert('Error');
 			},
 			success: function (data) {
-				$('.LoginLoading').hide();
+				$('.SmallLoading').hide();
 				if (data.result == "fail") {
 					$("#ForgotPanel").html(data.html);
 				}

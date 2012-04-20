@@ -86,7 +86,7 @@
 				</div>
 			</li>
 			<li id="foli13" class="button notranslate rightHalf">
-				<input class="button" type="button" id="btnSubmit" value="<% if(Model.IsNew){ %>Registrar<% } else { %>Guardar<% } %>" /><img alt="Loading..." src="/content/images/loading_big.gif" class="LoginLoading" />
+				<input class="button" type="button" id="btnSubmit" value="<% if(Model.IsNew){ %>Registrar<% } else { %>Guardar<% } %>" /><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" />
 			</li>
 			<li id="foli14" class="notranslate cGray bold">                
 			</li>
@@ -96,7 +96,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('#foli14').hide();
-		$('.LoginLoading').hide();
+		$('.SmallLoading').hide();
 		$("#FloatingPanel").dialog("option", "title", <%if(Model.IsNew){ %>'Llene el formulario para registrarse en ExploraPrecios.com' <% } else { %>'Perfil de usuario'<% } %>);
 		$('#RegisterForm').keypress(function(event){
 			if(event.which == 13){
@@ -117,7 +117,7 @@
 		RegisterMe();
 	});
 	function RegisterMe(){
-		$('.LoginLoading').show();
+		$('.SmallLoading').show();
 		var goOn = true;
 		if($("#NewUser").val() == "false" && $("#hdn_email").val() != $("#RegisterForm #email").val()) {
 			goOn = confirm("Vas a cambiar tu direccion de correo electronico?.\nEn unos momentos vas recibir un mensaje a tu nuevo correo para validarlo.\n\nDeseas Seguir?");
@@ -129,11 +129,11 @@
 				data: $('#RegisterForm').serialize(),
 				dataType: "json",
 				error: function (x, e) {
-					$('.LoginLoading').hide();
+					$('.SmallLoading').hide();
 					alert('Error');
 				},
 				success: function (data) {
-					$('.LoginLoading').hide();
+					$('.SmallLoading').hide();
 					if (data.result == "fail") {
 						$("#RegisterPanel").html(data.html);
 					}
@@ -149,7 +149,7 @@
 			});
 		}
 		else {
-			$('.LoginLoading').hide();
+			$('.SmallLoading').hide();
 		}
 	
 	}

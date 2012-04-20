@@ -124,7 +124,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			var $this = $(this);
 			var url = '';
 			var _redirect = ''
-			$('.LoginLoading').show();
+			$('.SmallLoading').show();
 
 			if ($this.attr('class') == 'login') {
 				$(".ui-dialog-titlebar").hide();
@@ -166,11 +166,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					data: { redirect: _redirect },
 					dataType: "json",
 					error: function (x, e) {
-						$('.LoginLoading').hide();
+						$('.SmallLoading').hide();
 						$.unblockUI();
 					},
 					success: function (data) {
-						$('.LoginLoading').hide();
+						$('.SmallLoading').hide();
 						if (data.result == "fail") {
 							alert(data.msg);
 							$.unblockUI();
@@ -206,7 +206,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		}
 
 		function enlarge(ctr) {
-			var gridItem = $('#' + ctr.id);
+			var gridItem = $(crt);
 			var className =gridItem.attr('class');
 			
 			
@@ -456,7 +456,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<% } %>
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
-					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
+					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %> hand">
 
 						<img id="Highlighted_<%= page %>_<%= indexItem %>"
 							<% if (product.Image != null)
@@ -502,7 +502,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<% } %>
 					<input type="hidden" value="0" />
 					<input type="hidden" value="<%= group.ProductId %>" />
-					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
+					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %> hand">
 						<img class="item" id="Grouped_<%= page %>_<%= indexItem %>"
 							<% if (group.Image != null)
 						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(group.Image) %>" <% } %>
@@ -546,7 +546,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<% } %>
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
-					<div class="item">
+					<div class="item hand">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
@@ -589,7 +589,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<% } %>
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
-					<div class="item">
+					<div class="item hand">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>

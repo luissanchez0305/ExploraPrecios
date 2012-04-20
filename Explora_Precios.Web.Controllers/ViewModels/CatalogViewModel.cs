@@ -26,7 +26,9 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public string departmentName { get; set; }
 		public string categoryName { get; set; }
 		public string subCategoryName { get; set; }
-		public string productTypeName { get; set; }  
+		public string productTypeName { get; set; }
+		public int currentCatalogId { get; set; }
+		public int currentCatalogLevel { get; set; }
 	}
 
 	public class FilterViewModel

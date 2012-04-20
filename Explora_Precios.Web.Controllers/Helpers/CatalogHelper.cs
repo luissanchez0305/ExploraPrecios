@@ -130,21 +130,9 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				departmentId = x.Id,
 				departmentTitle = x.name
 			}).ToList();
-			//response.categories = _cr.GetAll().Select(y => new CategoryViewModel()
-			//{
-			//    categoryId = y.Id,
-			//    categoryTitle = y.name
-			//}).ToList();
-			//response.subCategories = _scr.GetAll().Select(z => new SubCategoryViewModel()
-			//{
-			//    subCategoryId = z.Id,
-			//    subCategoryTitle = z.name
-			//}).ToList();
-			//response.productTypes = _ptr.GetAll().Select(u => new ProductTypeViewModel()
-			//{
-			//    productTypeId = u.Id,
-			//    productTypeTitle = u.name
-			//}).ToList();
+
+			response.currentCatalogId = catalogLevelId;
+			response.currentCatalogLevel = catalogLevel;
 
 			return response;
 		}

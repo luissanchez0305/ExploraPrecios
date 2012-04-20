@@ -440,7 +440,6 @@
     <Content Include="Views\Home\PartialViews\GroupProduct.ascx" />
     <Content Include="Views\Home\PartialViews\ProductTicker.ascx" />
     <Content Include="Views\Home\PartialViews\FollowProduct.ascx" />
-    <Content Include="Views\Home\PartialViews\ProductsList_Initial.ascx" />
     <Content Include="Views\Home\PartialViews\ProductsFloatingIE8.ascx" />
     <Content Include="Views\Home\PartialViews\ProductsList.ascx" />
     <Content Include="Views\Home\PartialViews\ProductReport.ascx" />

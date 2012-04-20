@@ -26,6 +26,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 
 		public CatalogViewModel catalog { get; set; }
 		public bool isSearch { get; set; }
+		public bool isFilter { get; set; }
 		public string departmentTitle { get; set; }
 		public int departmentId { get; set; }
 		public IList<CategoryViewModel> categories { get; set; }

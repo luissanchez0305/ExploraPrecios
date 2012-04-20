@@ -41,7 +41,7 @@ ExploraPrecios.com
         	var $this = $(this);
         	var url = '';
         	var _redirect = ''
-        	$('.LoginLoading').show();
+        	$('.SmallLoading').show();
 
         	//            alert($this.attr('class'));
         	if ($this.attr('class') == 'login') {
@@ -80,11 +80,11 @@ ExploraPrecios.com
         			data: { redirect: _redirect },
         			dataType: "json",
         			error: function (x, e) {
-        				$('.LoginLoading').hide();
+        				$('.SmallLoading').hide();
         				$.unblockUI();
         			},
         			success: function (data) {
-        				$('.LoginLoading').hide();
+        				$('.SmallLoading').hide();
         				if (data.result == "fail") {
         					alert(data.msg);
         					$.unblockUI();
