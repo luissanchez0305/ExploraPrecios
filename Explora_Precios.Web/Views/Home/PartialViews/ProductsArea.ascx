@@ -20,6 +20,9 @@
 </div>
 <!-- END Productos de flotantes -->
 
+<!-- Div GoTop encargado de subir a Top en caso que el scroll se vaya muy abajo -->
+<div id="GoTop">GoTop</div>
+
 <!-- LISTA DE PRODUCTOS -->
 <div id="gridTopic" class="topic">
 	<% if (Model.isSearch)
@@ -50,8 +53,12 @@
 <script type="text/javascript">
 	var lastPaged = 0;
 	var calculatingPage = false;
-	<% if(Model.productsListViewModel.products.HasNextPage){ %>
+	var showingGoTop = false;
+	var goTopShowedAt = 0;
+
+	<% if(Model.productsListViewModel.products.HasNextPage) { %>
 	$(document).ready(function () {
+		$('#GoTop').hide();
 		$(window).scroll(function () {
 			var h = $('#grid').height();
 			var y = $(window).scrollTop();
@@ -88,9 +95,19 @@
 					else					
 						$('#NextPage').val('-1');
 				});
+				if(!showingGoTop) {
+					setGoTop();
+					$('#GoTop').show('slow');
+					goTopShowedAt = y;
+					showingGoTop = true;
+				}
+				if(goTopShowedAt > y) {
+					showingGoTop = false;					
+					$('#GoTop').hide('slow');
+				}
 			}
-			else if(lastPaged - 600 > h) {
-					lastPaged = h - 600;
+			else if(lastPaged - (getWindowHeight() * .75) > h) {
+					lastPaged = h - (getWindowHeight() * .75);
 			}
 		});
 		$('#grid').append('<div class="pager" id="pager_1" style="display:none;"><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" style="margin-left:325px;" /></div>');

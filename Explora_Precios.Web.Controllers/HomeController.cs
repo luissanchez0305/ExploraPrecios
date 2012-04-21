@@ -363,7 +363,6 @@ namespace Explora_Precios.Web.Controllers
 			else if (products.Count() > 1)
 			{
 				HomeModel.Filter.CurrentMaxPrice = OrderedProducts.Last().clients.First().price;
-
 			}
 			if (b != null)
 			{
