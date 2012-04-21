@@ -50,6 +50,7 @@
 <script type="text/javascript">
 	var lastPaged = 0;
 	var calculatingPage = false;
+	<% if(Model.productsListViewModel.products.HasNextPage){ %>
 	$(document).ready(function () {
 		$(window).scroll(function () {
 			var h = $('#grid').height();
@@ -94,4 +95,5 @@
 		});
 		$('#grid').append('<div class="pager" id="pager_1" style="display:none;"><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" style="margin-left:325px;" /></div>');
 	});
+	<%} %>
 </script>

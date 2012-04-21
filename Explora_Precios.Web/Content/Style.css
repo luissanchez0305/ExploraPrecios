@@ -128,6 +128,8 @@ img { border: 0; }
 
 li a.filter {color:black; text-decoration: none;}
 li a.filter:hover {color:#f2581c; text-decoration:none;}
+div .filterButton { float:right; background: url(images/filterButton_disable.png) no-repeat left top; width: 100px; height: 20px; }
+div .filterButton.enable { background: url(images/filterButton_enable.png) no-repeat left top; }
 
 .newProduct {color:Red; font-weight:bold;}
 

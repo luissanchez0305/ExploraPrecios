@@ -194,53 +194,11 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			var ProductsDefaultParameters = "catLev=" + CatalogLevel + "&id=" + CatalogId;
 			// obtener la lista de marcas
 			var brandsList = HomeModel.allProducts.Select(x => x.brand.name).OrderBy(y => y).Distinct().ToList();
-
 			if (HomeModel.allProducts.Count > 1)
 			{
-				int diffMax = 501, diffCurrent = 500;
-				var interval = 3;
-				while (diffMax > diffCurrent - 1)
-				{
-					diffMax = (int)((HomeModel.Filter.CurrentMaxPrice - HomeModel.Filter.CurrentMinPrice) / interval);
-					interval++;
-					if (interval > 10)
-					{
-						diffCurrent += 100;
-						diffMax = diffCurrent + 1;
-						interval = 3;
-					}
-				}
-				var rangesList = new List<KeyValuePair<float, float>>();
-				rangesList.Add(new KeyValuePair<float, float>(0, 0));
-				var price = HomeModel.Filter.CurrentMinPrice;
-				for (int i = 0; i < interval; i++)
-				{
-					if (i == 0) price = (float)(price + 0.01);
-					rangesList.Add(new KeyValuePair<float, float>(price, (price + diffMax) > HomeModel.Filter.CurrentMaxPrice ? HomeModel.Filter.CurrentMaxPrice : price + diffMax - (float)0.01));
-
-					price = price + diffMax;
-				}
-
-				// crear lista de filtros por precios
-				if (rangesList.Count > 0)
-				{
-					var brandFilter = "";
-					if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Brand)
-						brandFilter = "&b=" + HomeModel.Filter.CurrentBrand;
-
-					HomeModel.Filter.FilterPrices = rangesList.Select(range => new FilterItemViewModel
-							{
-								Name = (range.Key == 0 && range.Value == 0) ?
-									"Ofertas" :
-									"De $" + range.Key.ToString("#,0.00") + " a $" + range.Value.ToString("#,0.00"),
-								Url = "/Home/Filter?" + ((range.Key == 0 && range.Value == 0) ?
-									"" : "p=" + range.Key + "," + range.Value) + brandFilter +
-									((range.Key == 0 && range.Value == 0) ?
-									FilterDefaultParameters.Replace("o=false", "o=true") :
-									FilterDefaultParameters)
-							});
-				}
+				HomeModel.Filter.HasFilterPrices = true;
 			}
+
 			// crear lista de filtros por marcas
 			if (brandsList.Count > 1)
 			{
@@ -276,7 +234,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 					{
 						Name = HomeModel.Filter.CurrentBrand,
 						Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand ?
-							"/Home/Filter?p=" + HomeModel.Filter.CurrentMinPrice.ExactMinValue() + "," + (int)HomeModel.Filter.CurrentMaxPrice + FilterDefaultParameters :
+							"/Home/Filter?p=" + HomeModel.Filter.CurrentMinPrice + "," + (int)HomeModel.Filter.CurrentMaxPrice + FilterDefaultParameters :
 							"/Home/Products?" + ProductsDefaultParameters
 					};
 			}
