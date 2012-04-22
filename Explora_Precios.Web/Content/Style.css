@@ -1,5 +1,5 @@
 ﻿cl {height:100%;}
-/*body {background: #a9a9a9 url(images/bg.png) repeat-x left top ;margin-top:0px;margin-left:auto;margin-right:auto;width:980px;height:100%; font: normal 12px Arial;}*/
+/*body {background: url(images/gradientbg.png) repeat-x fixed; margin-top:0px;margin-left:auto;margin-right:auto;height:100%; font: normal 12px Arial;}*/
 body {background-color: White;margin-top:0px;margin-left:auto;margin-right:auto;height:100%; font: normal 12px Arial; padding-left: 5px;}
 img { border: 0; }
 .formbutton { border-radius:5px; cursor:pointer; border:outset 1px #ccc; background:#999; color:#666; font-weight:bold; padding: 1px 2px; background:url(images/formbg.gif) repeat-x left top; }
@@ -66,10 +66,10 @@ img { border: 0; }
 #pageContent .b .left { width:235px; float:left; height:auto;margin-top:10px; }
 #pageContent .b .right{ padding-left: 10px; width:760px; margin-left:245px; margin-top:10px; display:table; border-top: solid 2px #c6c6c6; }
 .pageContentFooter { height:20px;background-color: White; }
-#pageFooter {margin-top:10px;border:0px;text-align:center;color:#d50000;font-size:11px; letter-spacing:0.05em;}
-#pageFooter a:link, #pageFooter a:visited {color:#ef0000; text-decoration:none;}
-#pageFooter a.contactus:hover {color:#f2581c; text-decoration:underline;}
-
+#pageFooter, #bottomPageFooter {  margin-top:10px;border:0px;text-align:center;color:#d50000;font-size:11px; letter-spacing:0.05em;}
+#pageFooter a:link, #pageFooter a:visited, #bottomPageFooter a:link, #bottomPageFooter a:visited {color:#ef0000; text-decoration:none;}
+#pageFooter a.contactus:hover, #bottomPageFooter a.contactus:hover {color:#f2581c; text-decoration:underline;}
+	
 /* Banner Rotator */
 #slidebox{position:relative; border:1px solid #ccc; margin:40px auto; top:-180px; left: 40px;}
 #slidebox, #slidebox .content { width:650px; }
@@ -126,7 +126,7 @@ img { border: 0; }
 .nav_floating_show { padding-right:10px; float:right; }
 .nav_floating_hide { padding-right:10px; float:right; }
 
-li a.filter {color:black; text-decoration: none;}
+li a.filter { color:black; text-decoration: none;}
 li a.filter:hover {color:#f2581c; text-decoration:none;}
 div .filterButton { float:right; background: url(images/filterButton_disable.png) no-repeat left top; width: 100px; height: 20px; }
 div .filterButton.enable { background: url(images/filterButton_enable.png) no-repeat left top; }

@@ -154,6 +154,7 @@ ExploraPrecios.com
 			$("#FloatingPanel").html(html);
 		}
 	</script>
+	<div id="BottomFloatingDisclaimer" style="background-color:#E2F4F9;"></div>
 	<div id="FloatingPanel"></div>
 	<div id="SuccessFBRegister"></div>
 	<input type="hidden" id="current" />

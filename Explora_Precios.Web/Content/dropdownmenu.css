@@ -8,7 +8,7 @@ div .suckerdiv{
 
 div .suckerdiv.filter 
 {
-	background-color:#F5F1E7; 
+	background-color:#E9E8E8; 
 	margin-left:10px; 
 	margin-top:20px;
 	width:190px; 
@@ -53,11 +53,17 @@ border: 1px solid #ccc;
 border-bottom: 0;
 }
 
+.suckerdiv ul li a.filter.offer {
+	font-weight: bold;
+	background-color: #FCF0BA;
+	color: #A93E14;
+}
+
 .suckerdiv ul li a:visited{
 color: black;
 }
 
-.suckerdiv ul li a:hover{
+.suckerdiv ul li a:hover, .suckerdiv ul li a.filter.offer:hover{
 background-color: #fcff75;
 }
 

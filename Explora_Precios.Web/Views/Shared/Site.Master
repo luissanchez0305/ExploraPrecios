@@ -6,13 +6,14 @@
 	<title>
 		<asp:ContentPlaceHolder ID="TitleContent" runat="server" />
 	</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.js"></script>
 	<%--<script type="text/javascript" src="../../Scripts/jquery-1.6.4.min.js"></script>--%>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>--%>
 	<script type="text/javascript" src="../../Scripts/jquery.simpletip-1.3.1.min.js"></script>
 	<script type="text/javascript" src="../../Scripts/jquery-outsideevents-1.1.js"></script>
 	<script type="text/javascript" src="../../Scripts/jquery.easing.1.3.js"></script>
-	<%--<script type="text/javascript" src="../../Scripts/jquery-ui-1.7.2.custom.min.js"></script>--%>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../Scripts/jquery-ui-1.7.2.custom.min.js"></script>
+	<%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>--%>
 	<script type="text/javascript" src="../../Scripts/jquery.blockUI.js"></script>
 	<script type="text/javascript" src="../../Scripts/Explora_Precios.js"></script>
 	<script type="text/javascript" src="../../Scripts/verticaldropdown.js"></script>
@@ -39,8 +40,8 @@
 	<!--[if IE 6]><link href="http://www.lightcms.com/styles/ie6.css" rel="stylesheet" type="text/css" /><![endif]-->		<!--[if IE 7]><link href="http://www.lightcms.com/styles/ie7.css" rel="stylesheet" type="text/css" /><![endif]-->
 	<!--[if IE 8]><link rel="stylesheet" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/ie8.css" /><![endif]-->
 	<!--[if IE 7]><link rel="stylesheet" href="http://www.lightcms.com/websites/luz/templates/LightCMS/css/ie7.css" /><![endif]-->
-	<%--<link href="../../Content/jquery-ui-1.7.3.custom.css" rel="stylesheet" type="text/css" />--%>
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<link href="../../Content/jquery-ui-1.7.3.custom.css" rel="stylesheet" type="text/css" />
+	<%--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />--%>
 	<link href="../../Content/dropdownmenu.css" rel="stylesheet" type="text/css" />
 	<link href="/content/images/compass_icon.png" rel="shortcut icon" /> 
 </head>
@@ -185,19 +186,6 @@
 							clearSearchText();
 						});
 
-						//----- Bottom Menu ------
-						$('#site-bottom-bar').addClass('hide');
-						// Hook up menu root click event.
-						$(".menu-root").click(function () {
-							// Blur the link to remove focus.
-							$(this).blur();
-						});
-
-						$('.menu-root').bind('click', function (event) {
-							$('html, body').stop().animate({ scrollTop: $('body').offset().top }, 1000);
-							event.preventDefault();
-						});
-
 					});
 
 					function clearSearchText() {
@@ -309,6 +297,9 @@
 			<div id="site-bottom-bar-frame">
 				<div id="site-bottom-bar-content">
  
+					<div id="bottomPageFooter" style="display:none;">
+						© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="http://www.espherasoluciones.com" target="_blank" title="eSphera Soluciones Webpage">eSphera</a> / <b><a class="bottomDisclaimer" href="javascript:void(0)" >Importante</a></b>
+					</div>	 
 					<a class="menu-root" href="javascript:void( 0 )">Volver arriba</a>
  
 				</div>
@@ -375,10 +366,11 @@
 		$("li a.groupItem").live('click', function () {
 			LoadProductDetail($(this).prev().val(), '0');
 		});
+		var disclaimer = '<img src="../../Content/Images/information3-sc49.png" width="14px" height="14px" style="position:left;"/> Los precios mostrados son obtenidos de las páginas web de cada establecimiento comercial, por lo que sugerimos revisar la página del proveedor para verificar la vigencia del precio ofrecido. <br/><br/>Las ofertas y promociones presentadas en esta página pueden haber variado, sugerimos revisar la página web del comercio proveedor del producto.';
 		$(".disclaimer").simpletip({
-			content: '<img src="../../Content/Images/information3-sc49.png" width="14px" height="14px" style="position:left;"/> Los precios mostrados son obtenidos de las páginas web de cada establecimiento comercial, por lo que sugerimos revisar la página del proveedor para verificar la vigencia del precio ofrecido. <br/><br/>Las ofertas y promociones presentadas en esta página pueden haber variado, sugerimos revisar la página web del comercio provedor del producto.',
+			content: disclaimer,
 			fixed: true,
-			position: ["10", "20"],
+			position: ["-30", "-120"],
 			showEffect: 'slide',
 			hideEffect: 'fade'
 		});
@@ -468,7 +460,7 @@
 					});
 				});
 			});
-			
+
 			$("#control_play").hide();
 			pausePlayTimer = setInterval(function () { return null }, 5000);
 			//autoPlayTimer = setInterval(autoPlay, autoPlayTime);
@@ -489,6 +481,39 @@
 			if (getParameterByName('i').length > 0) {
 				LoadProductDetail(getParameterByName('i'), '0');
 			}
+
+			//----- Bottom Menu ------
+			$('#site-bottom-bar').addClass('hide');
+			// Hook up menu root click event.
+			$(".menu-root").click(function () {
+				// Blur the link to remove focus.
+				$(this).blur();
+			});
+
+			$('.menu-root').bind('click', function (event) {
+				$('html, body').stop().animate({ scrollTop: $('body').offset().top }, 1000);
+				event.preventDefault();
+			});
+			$('.bottomDisclaimer').click(function () {
+				$('#BottomFloatingDisclaimer').html(disclaimer);
+				$(".ui-dialog-titlebar").hide();
+				$("#BottomFloatingDisclaimer").show();
+				$("#BottomFloatingDisclaimer").dialog("open");
+				return false;
+			});
+			$('#BottomFloatingDisclaimer').dialog({
+				autoOpen: false,
+				bgiframe: false,
+				modal: true,
+				draggable: false,
+				height: 190,
+				width: 350,
+				resizable: false
+			});
+			$('#BottomFloatingDisclaimer').bind("clickoutside", function (event) {
+				$(this).hide();
+				$(this).dialog("close");
+			});
 		});
 
 		$('.nav_floating').live('click', function () {

@@ -20,9 +20,6 @@
 </div>
 <!-- END Productos de flotantes -->
 
-<!-- Div GoTop encargado de subir a Top en caso que el scroll se vaya muy abajo -->
-<div id="GoTop">GoTop</div>
-
 <!-- LISTA DE PRODUCTOS -->
 <div id="gridTopic" class="topic">
 	<% if (Model.isSearch)
@@ -58,7 +55,6 @@
 
 	<% if(Model.productsListViewModel.products.HasNextPage) { %>
 	$(document).ready(function () {
-		$('#GoTop').hide();
 		$(window).scroll(function () {
 			var h = $('#grid').height();
 			var y = $(window).scrollTop();
@@ -99,18 +95,33 @@
 			else if(lastPaged - (getWindowHeight() * .75) > h) {
 					lastPaged = h - (getWindowHeight() * .75);
 			}
+			// Shows the goTop
 			if(y > getWindowHeight() && !showingGoTop) {
 				$('#site-bottom-bar').toggleClass('hide');
+				$('#pageFooter').hide();
+				$('#bottomPageFooter').show();
 				goTopShowedAt = y;
 				showingGoTop = true;
+				$(".bottomDisclaimer").simpletip({
+					content: '<img src="../../Content/Images/information3-sc49.png" width="14px" height="14px" style="position:left;"/> Los precios mostrados son obtenidos de las páginas web de cada establecimiento comercial, por lo que sugerimos revisar la página del proveedor para verificar la vigencia del precio ofrecido. <br/><br/>Las ofertas y promociones presentadas en esta página pueden haber variado, sugerimos revisar la página web del comercio provedor del producto.',
+					fixed: true,
+					position: ["-30", "-120"],
+					showEffect: 'slide',
+					hideEffect: 'fade'
+				});
 			}
-			if(y < goTopShowedAt && showingGoTop) {
-				 goTopShowedAt = 0;
+			// Hides the goTop
+			if(y < goTopShowedAt && showingGoTop) {				
+				goTopShowedAt = 0;
+				$('#pageFooter').show();
+				$('#bottomPageFooter').hide();
 				$('#site-bottom-bar').toggleClass('hide');
-				showingGoTop = false;		
+				showingGoTop = false;
 			}
 		});
 		$('#grid').append('<div class="pager" id="pager_1" style="display:none;"><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" style="margin-left:325px;" /></div>');
 	});
-	<%} %>
+	<%} else { %>
+	
+	<% } %>
 </script>

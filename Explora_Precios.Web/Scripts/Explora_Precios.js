@@ -386,20 +386,3 @@ $(document).ready(function () {
 		}
 		return windowHeight;
 	}
-
-	function setGoTop() {
-		if (document.getElementById) {
-			var windowHeight = getWindowHeight();
-			if (windowHeight > 0) {
-				var footerElement = document.getElementById('GoTop');
-				var footerHeight = footerElement.offsetHeight;
-				if (windowHeight - footerHeight >= 0) {
-					footerElement.style.position = 'relative';
-					footerElement.style.top = (windowHeight - footerHeight) + 'px';
-				}
-				else {
-					footerElement.style.position = 'static';
-				}
-			}
-		}
-	}

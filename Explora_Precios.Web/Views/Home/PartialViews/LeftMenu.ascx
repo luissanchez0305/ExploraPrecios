@@ -91,13 +91,13 @@ function GetOfferUrl() {
 
 		<div class="suckerdiv">
 			<ul class="suckertree1">
-					<li><a style="background-color:#F21400; color:#F4EFCF;" class="filter offer" href="">Ofertas</a></li>
+					<li><a class="filter offer" href="">Ofertas</a></li>
 			</ul>
 		</div>
 
 		<div id="sliderBar" style="width:200px; margin: 15px;"></div>
 		<div id="sliderValues" style="width:214px; margin: 10px; margin-bottom: 20px;">
-			<label id="LabelMinPrice" class="sliderValue" style="float:left;" dataindex="0">$<%= Model.Filter.CurrentMinPrice %></label>&nbsp;-&nbsp;<label id="LabelMaxPrice" class="sliderValue" dataindex="1">$<%= Model.Filter.CurrentMaxPrice %></label>
+			<label id="LabelMinPrice" class="sliderValue" style="float:left; font-weight:bold;" dataindex="0">$<%= Model.Filter.CurrentMinPrice %></label>&nbsp;-&nbsp;<label id="LabelMaxPrice" style="font-weight:bold;" class="sliderValue" dataindex="1">$<%= Model.Filter.CurrentMaxPrice %></label>
 			<div class="filterButton"></div>
 		</div>
 		<% if (Model.Filter.UndoPriceFilter != null)

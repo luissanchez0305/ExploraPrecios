@@ -11,8 +11,10 @@ body {
 	}
  
 #site-bottom-bar {
-	/*background-color: #F0F0F0 ;
-	border-top: 1px solid #CCCCCC ;*/
+	background-color: #F0F0F0 ;
+	opacity: 0.8;
+	filter:alpha(opacity=80);
+	/*border-top: 1px solid #CCCCCC ;*/
 	bottom: 0px ;
 	font-family: verdana, arial ;
 	font-size: 11px ;
@@ -43,7 +45,8 @@ body {
 	text-decoration: none ;
 	width: 105px ;
 	float:right;
-	margin-top:2px;
+	top: -18px;
+	position:relative;
 	}
  
 .menu-root:hover {
