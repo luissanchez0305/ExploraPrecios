@@ -211,6 +211,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bottommenutest.htm" />
     <Content Include="channel.html" />
     <Content Include="Content\banner\anythingslider.css" />
     <Content Include="Content\banner\colorbox.css" />

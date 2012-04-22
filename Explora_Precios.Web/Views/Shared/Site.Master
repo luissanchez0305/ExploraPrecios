@@ -25,6 +25,7 @@
 	<script type="text/javascript" src="../../Scripts/jquery.alerts.js"></script>
 	<%--<script type="text/javascript" src="../../Scripts/banner/jquery.mobile-1.0rc2.customized.min.js"></script>--%>
 	<link href="../../Content/Style.css" rel="stylesheet" type="text/css" />   
+	<link href="../../Content/BottomMenu.css" rel="stylesheet" type="text/css" />   
 	<link href="../../Content/registerform.css" rel="stylesheet" type="text/css" /> 
 	<link href="../../Content/banner/anythingslider.css" rel="stylesheet" type="text/css" />
 	<link href="../../Content/banner/colorbox.css" rel="stylesheet" type="text/css" />
@@ -183,6 +184,20 @@
 						}).blur(function () {
 							clearSearchText();
 						});
+
+						//----- Bottom Menu ------
+						$('#site-bottom-bar').addClass('hide');
+						// Hook up menu root click event.
+						$(".menu-root").click(function () {
+							// Blur the link to remove focus.
+							$(this).blur();
+						});
+
+						$('.menu-root').bind('click', function (event) {
+							$('html, body').stop().animate({ scrollTop: $('body').offset().top }, 1000);
+							event.preventDefault();
+						});
+
 					});
 
 					function clearSearchText() {
@@ -288,6 +303,16 @@
 		</div>
 		<div id="pageFooter">
 			© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="http://www.espherasoluciones.com" target="_blank" title="eSphera Soluciones Webpage">eSphera</a> / <b><a class="disclaimer" href="javascript:void()" >Importante</a></b>
+		</div>		
+ 
+		<div id="site-bottom-bar" class="fixed-position">
+			<div id="site-bottom-bar-frame">
+				<div id="site-bottom-bar-content">
+ 
+					<a class="menu-root" href="javascript:void( 0 )">Volver arriba</a>
+ 
+				</div>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript">

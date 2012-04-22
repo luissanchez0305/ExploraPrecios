@@ -95,19 +95,19 @@
 					else					
 						$('#NextPage').val('-1');
 				});
-				if(!showingGoTop) {
-					setGoTop();
-					$('#GoTop').show('slow');
-					goTopShowedAt = y;
-					showingGoTop = true;
-				}
-				if(goTopShowedAt > y) {
-					showingGoTop = false;					
-					$('#GoTop').hide('slow');
-				}
 			}
 			else if(lastPaged - (getWindowHeight() * .75) > h) {
 					lastPaged = h - (getWindowHeight() * .75);
+			}
+			if(y > getWindowHeight() && !showingGoTop) {
+				$('#site-bottom-bar').toggleClass('hide');
+				goTopShowedAt = y;
+				showingGoTop = true;
+			}
+			if(y < goTopShowedAt && showingGoTop) {
+				 goTopShowedAt = 0;
+				$('#site-bottom-bar').toggleClass('hide');
+				showingGoTop = false;		
 			}
 		});
 		$('#grid').append('<div class="pager" id="pager_1" style="display:none;"><img alt="Loading..." src="/content/images/loading_big.gif" class="SmallLoading" style="margin-left:325px;" /></div>');
