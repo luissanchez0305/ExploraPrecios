@@ -165,7 +165,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public void SendIt(string browser, string where)
 		{
-			var email = new EmailServices("info@exploraprecios.com", where, "Broser: " + browser);
+			var email = new EmailServices("info@exploraprecios.com", "Error en: " + where, "Browser: " + browser);
 			email.Send();
 		}
 
@@ -352,12 +352,17 @@ namespace Explora_Precios.Web.Controllers
 			HomeModel.isFilter = true;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
 			IEnumerable<Product> products = FilterProduct(HomeModel.allProducts, p, b, o);
+			var OrderedProducts = products.OrderBy(product => product.clients.Select(c => c.price).First());
 
 			if (p != null)
 			{
 				var rangePrices = p.Split(',');
-				HomeModel.Filter.CurrentMinPrice = float.Parse(rangePrices[0]).ExactMinValue();
+				HomeModel.Filter.CurrentMinPrice = float.Parse(rangePrices[0]);
 				HomeModel.Filter.CurrentMaxPrice = float.Parse(rangePrices[1]);
+			}
+			else if (products.Count() > 1)
+			{
+				HomeModel.Filter.CurrentMaxPrice = OrderedProducts.Last().clients.First().price;
 			}
 			if (b != null)
 			{
@@ -370,7 +375,7 @@ namespace Explora_Precios.Web.Controllers
 									(b != null) ? FilterViewModel.ItemFilterTypes.Brand :
 									FilterViewModel.ItemFilterTypes.None;
 
-			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(product => product.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
+			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(OrderedProducts, currentPage, defaultPageSize);
 			HomeModel.allProducts = products.ToList();
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			HomeModel.productsListViewModel.productsList = HomeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
@@ -958,7 +963,7 @@ namespace Explora_Precios.Web.Controllers
 			ViewData["search_text"] = s;
 			var homeViewModel = new HomeViewModel();
 			var products = _productRepository.GetbySearchText(s, IsActivated.Yes).ToList();
-			homeViewModel.Filter.CurrentMinPrice = products.Count > 0 ? products.First().clients.OrderBy(c => c.price).First().price.ExactMinValue() : 0;
+			homeViewModel.Filter.CurrentMinPrice = products.Count > 0 ? products.First().clients.OrderBy(c => c.price).First().price : 0;
 			homeViewModel.Filter.CurrentMaxPrice = products.Count > 0 ? products.Last().clients.OrderByDescending(c => c.price).First().price : 0;
 			homeViewModel = LoadProductsOnModel(homeViewModel, products);
 			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();

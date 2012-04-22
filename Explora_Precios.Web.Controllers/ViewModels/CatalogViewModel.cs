@@ -37,18 +37,16 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		{
 			FilterType = FilterViewModel.ItemFilterTypes.None;
 			FilterBrands = new List<FilterItemViewModel>();
-			FilterPrices = new List<FilterItemViewModel>();
 		}
 
 		public FilterViewModel()
 		{
 			FilterType = FilterViewModel.ItemFilterTypes.None;
 			FilterBrands = new List<FilterItemViewModel>();
-			FilterPrices = new List<FilterItemViewModel>();
 		}
 
 		public enum ItemFilterTypes { None, Sale, Price, Brand, SaleBrand, PriceBrand }
-		public IEnumerable<FilterItemViewModel> FilterPrices { get; set; }
+		public bool HasFilterPrices { get; set; }
 		public IEnumerable<FilterItemViewModel> FilterBrands { get; set; }
 		public ItemFilterTypes FilterType { get; set; }
 		public int CurrentCatalogLevel { get; set; }
