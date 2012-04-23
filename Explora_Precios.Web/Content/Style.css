@@ -350,8 +350,10 @@ label .itemModified .new { color: Green; }
 #layer04_holder #center a:hover { color: #FF9900; text-decoration:underline; }
 
 /* ===================== Homepage ======================== */
-#ProductDisplayPanel .section { background: transparent url(images/hometopreviewed2.jpg) no-repeat top left; padding-bottom: 20px; height:150px; width:750px; }
-#ProductDisplayPanel .section .item { position:relative; float:left; width:138px; height:90%; }
+#ProductDisplayPanel .section { border:1px solid black; border-radius:5px; padding-bottom: 20px; margin-bottom:20px; height:150px; width:750px; }
+#ProductDisplayPanel .section .item { position:relative; float:left; width:131px; height:90%; }
+#ProductDisplayPanel .section .border { border-left:1px solid #A3B6CC; }
+#ProductDisplayPanel .section .space { margin-right: 7px; } 
 #ProductDisplayPanel .section label.sectiontitle { color: #354359; font-family: 'verdana'; font-size: 20px; font-weight: bold; padding-left: 10px; }
 #ProductDisplayPanel .section div.title { background: rgba(250, 252, 22, 0.4); color: #354359; font-family: 'verdana'; font-size: 12px; font-weight: bold; left: 10px; position:absolute; z-index:200; }
 #ProductDisplayPanel .section img.item { padding-left: 15px; width:120px; height:80px; position:absolute; z-index:199; }

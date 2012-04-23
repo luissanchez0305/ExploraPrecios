@@ -84,6 +84,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			$('.start-stop').hide();
 			$('.thumbNav').hide();
 			$("ul#TickerBanner").webTicker();
+			$("ul#TickerBanner").show();
 		});
 
 		// Paginacion en sliders
@@ -546,7 +547,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<% } %>
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
-					<div class="item hand">
+					<div class="item hand <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
@@ -589,7 +590,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<% } %>
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
-					<div class="item hand">
+					<div class="item hand <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
 						<div class="client"><%= product.Client%></div>
