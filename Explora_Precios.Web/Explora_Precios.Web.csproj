@@ -215,6 +215,7 @@
     <Content Include="Content\banner\anythingslider.css" />
     <Content Include="Content\banner\colorbox.css" />
     <Content Include="Content\banner\diapo.css" />
+    <Content Include="Content\BottomMenu.css" />
     <Content Include="Content\Images\banner\internet_explorer\borderBottomCenter.png" />
     <Content Include="Content\Images\banner\internet_explorer\borderBottomLeft.png" />
     <Content Include="Content\Images\banner\internet_explorer\borderBottomRight.png" />
@@ -295,7 +296,7 @@
     <Content Include="Content\Images\money-sign.jpg" />
     <Content Include="Content\Images\red_arrow.jpg" />
     <Content Include="Content\Images\WhyRegister.png" />
-    <Content Include="Content\jquery-ui-1.8.18.css" />
+    <Content Include="Content\unused\jquery-ui-1.8.18.css" />
     <Content Include="Content\jquery.alerts.css" />
     <Content Include="Content\registerForm.css" />
     <Content Include="Content\fsmenu\divmenu.css" />
@@ -415,7 +416,7 @@
     <Content Include="Scripts\banner\jquery.anythingslider.min.js" />
     <Content Include="Scripts\banner\jquery.colorbox-min.js" />
     <Content Include="Scripts\banner\jquery.mobile-1.0rc2.customized.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.18-min.js" />
+    <Content Include="Scripts\Unused\jquery-ui-1.8.18-min.js" />
     <Content Include="Scripts\jquery.alerts.js" />
     <Content Include="Scripts\jquery.hoverIntent.minified.js" />
     <Content Include="Scripts\fsmenu\fsmenu.js" />
@@ -562,9 +563,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\unused\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

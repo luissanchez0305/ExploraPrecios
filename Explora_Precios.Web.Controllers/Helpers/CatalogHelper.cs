@@ -45,7 +45,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			if (catalogLevel == 0)
 			{
 				var department = _dr.Get(catalogLevelId);
-				response.departmentId = catalogLevelId;
+				response.departmentId = catalogLevelId;	
 				response.departmentName = department.name;
 				response.categories = department.categories.Select(x => new CategoryViewModel()
 				{
@@ -131,9 +131,6 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				departmentTitle = x.name
 			}).ToList();
 
-			response.currentCatalogId = catalogLevelId;
-			response.currentCatalogLevel = catalogLevel;
-
 			return response;
 		}
 
@@ -187,11 +184,12 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			return result;
 		}
 
-		public static void LoadFilters(this HomeViewModel HomeModel, int CatalogLevel = 0, int CatalogId = 1)
+		public static void LoadFilters(this HomeViewModel HomeModel, int CatalogLevel = 0, int CatalogId = 1, string search = "")
 		{
+			var searchFilter = search.Length > 1 ? "&s=" + search : "";
 			// crear parametro de listado de productos
-			var FilterDefaultParameters = "&o=false&cl=" + CatalogLevel + "&ci=" + CatalogId;
-			var ProductsDefaultParameters = "catLev=" + CatalogLevel + "&id=" + CatalogId;
+			var FilterDefaultParameters = "&o=false" + (search.Length > 1 ? searchFilter : "&cl=" + CatalogLevel + "&ci=" + CatalogId);
+			var ProductsDefaultParameters = search.Length > 1 ? searchFilter : "catLev=" + CatalogLevel + "&id=" + CatalogId;
 			// obtener la lista de marcas
 			var brandsList = HomeModel.allProducts.Select(x => x.brand.name).OrderBy(y => y).Distinct().ToList();
 			if (HomeModel.allProducts.Count > 1)
@@ -219,6 +217,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 
 			// crear "deshacer" filtros
 			// Price
+			var ReturnTo = search.Length > 0 ? "Search" : "Products";
 			if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.Price || HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand)
 			{
 				HomeModel.Filter.UndoPriceFilter = new FilterItemViewModel
@@ -226,7 +225,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 					Name = ((float)(HomeModel.Filter.CurrentMinPrice + 0.01)).Money() + " - " + HomeModel.Filter.CurrentMaxPrice.Money(),
 					Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand ?
 						"/Home/Filter?b=" + HomeModel.Filter.CurrentBrand + FilterDefaultParameters :
-						"/Home/Products?" + ProductsDefaultParameters
+						"/Home/" + ReturnTo + "?" + ProductsDefaultParameters
 				};
 
 				if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand)
@@ -235,7 +234,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 						Name = HomeModel.Filter.CurrentBrand,
 						Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.PriceBrand ?
 							"/Home/Filter?p=" + HomeModel.Filter.CurrentMinPrice + "," + (int)HomeModel.Filter.CurrentMaxPrice + FilterDefaultParameters :
-							"/Home/Products?" + ProductsDefaultParameters
+							"/Home/" + ReturnTo + "?" + ProductsDefaultParameters
 					};
 			}
 
@@ -247,7 +246,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 					Name = "Solo Ofertas",
 					Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand ?
 						"/Home/Filter?b=" + HomeModel.Filter.CurrentBrand + FilterDefaultParameters :
-						"/Home/Products?" + ProductsDefaultParameters
+						"/Home/" + ReturnTo + "?" + ProductsDefaultParameters
 				};
 
 				if (HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand)
@@ -256,7 +255,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 						Name = HomeModel.Filter.CurrentBrand,
 						Url = HomeModel.Filter.FilterType == FilterViewModel.ItemFilterTypes.SaleBrand ?
 							"/Home/Filter?" + FilterDefaultParameters.Replace("o=false", "o=true") :
-							"/Home/Products?" + ProductsDefaultParameters
+							"/Home/" + ReturnTo + "?" + ProductsDefaultParameters
 					};
 			}
 
@@ -266,7 +265,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				HomeModel.Filter.UndoBrandFilter = new FilterItemViewModel
 				{
 					Name = HomeModel.Filter.CurrentBrand,
-					Url = "/Home/Products?" + ProductsDefaultParameters
+					Url = "/Home/" + ReturnTo + "?" + ProductsDefaultParameters
 				};
 			}
 		}

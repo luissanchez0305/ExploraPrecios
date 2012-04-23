@@ -27,18 +27,10 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public string categoryName { get; set; }
 		public string subCategoryName { get; set; }
 		public string productTypeName { get; set; }
-		public int currentCatalogId { get; set; }
-		public int currentCatalogLevel { get; set; }
 	}
 
 	public class FilterViewModel
 	{
-		public FilterViewModel(int CatalogLevel, int CatalogId)
-		{
-			FilterType = FilterViewModel.ItemFilterTypes.None;
-			FilterBrands = new List<FilterItemViewModel>();
-		}
-
 		public FilterViewModel()
 		{
 			FilterType = FilterViewModel.ItemFilterTypes.None;
@@ -49,8 +41,6 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public bool HasFilterPrices { get; set; }
 		public IEnumerable<FilterItemViewModel> FilterBrands { get; set; }
 		public ItemFilterTypes FilterType { get; set; }
-		public int CurrentCatalogLevel { get; set; }
-		public int CurrentCatalogId { get; set; }
 		public float CurrentMinPrice { get; set; }
 		public float CurrentMaxPrice { get; set; }
 		public string CurrentBrand { get; set; }

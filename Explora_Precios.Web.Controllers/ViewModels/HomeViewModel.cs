@@ -13,7 +13,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 			productsListViewModel = new ProductsListViewModel();
 			categories = new List<CategoryViewModel>();
 			isSearch = false;
-			Filter = new FilterViewModel(CatalogLevel, CatalogId);
+			Filter = new FilterViewModel();
 		}
 
 		public HomeViewModel()
@@ -33,6 +33,9 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public ProductsListViewModel productsListViewModel { get; set; }
 		public IList<Product> allProducts { get; set; }
 		public FilterViewModel Filter { get; set; }
+		public int currentCatalogId { get; set; }
+		public int currentCatalogLevel { get; set; }
+		public string currentSearch { get; set; }
 	}
 
 	public class IntroViewModel

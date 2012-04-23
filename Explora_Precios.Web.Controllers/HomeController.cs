@@ -327,11 +327,11 @@ namespace Explora_Precios.Web.Controllers
 			});
 		}
 
-		public ActionResult ScrollFilter(int catLev, int id, int page, string p, string b, bool o)
+		public ActionResult ScrollFilter(int? catLev, int? id, string s, int page, string p, string b, bool o)
 		{
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
 			currentPage = page;
-			var HomeModel = LoadHomeModel(catLev, id);
+			var HomeModel = s.Length > 0 ? LoadHomeModel(s) : LoadHomeModel(catLev.Value, id.Value);
 			var products = FilterProduct(HomeModel.allProducts, p, b, o);
 			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(product => product.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
 
@@ -346,9 +346,9 @@ namespace Explora_Precios.Web.Controllers
 			});
 		}
 
-		public ActionResult Filter(string p, string b, bool o, int cl, int ci)
+		public ActionResult Filter(string p, string b, bool o, string s, int? cl, int? ci)
 		{
-			var HomeModel = LoadHomeModel(cl, ci);
+			var HomeModel = s.Length > 0 ? LoadHomeModel(s) : LoadHomeModel(cl.Value, ci.Value);
 			HomeModel.isFilter = true;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
 			IEnumerable<Product> products = FilterProduct(HomeModel.allProducts, p, b, o);
@@ -378,8 +378,11 @@ namespace Explora_Precios.Web.Controllers
 			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(OrderedProducts, currentPage, defaultPageSize);
 			HomeModel.allProducts = products.ToList();
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
-			HomeModel.productsListViewModel.productsList = HomeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, false));
-			HomeModel.LoadFilters(cl, ci);
+			HomeModel.productsListViewModel.productsList = HomeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, true));
+			if (s.Length > 0)
+				HomeModel.LoadFilters(search: s);
+			else
+				HomeModel.LoadFilters(cl.Value, ci.Value);
 			LoadCounterValues();
 			return View("Products", HomeModel);
 		}
@@ -812,6 +815,7 @@ namespace Explora_Precios.Web.Controllers
 		{
 			var homeViewModel = LoadHomeModel(s);
 			LoadCounterValues();
+			homeViewModel.LoadFilters(search: s);
 			return View(homeViewModel);
 		}
 
@@ -949,6 +953,8 @@ namespace Explora_Precios.Web.Controllers
 			homeModel.Filter.CurrentMaxPrice = EdgePrices.Max;
 
 			homeModel = LoadProductsOnModel(homeModel, products);
+			homeModel.currentCatalogId = id;
+			homeModel.currentCatalogLevel = catLev;
 			return homeModel;
 		}
 
@@ -966,9 +972,9 @@ namespace Explora_Precios.Web.Controllers
 			homeViewModel.Filter.CurrentMinPrice = products.Count > 0 ? products.First().clients.OrderBy(c => c.price).First().price : 0;
 			homeViewModel.Filter.CurrentMaxPrice = products.Count > 0 ? products.Last().clients.OrderByDescending(c => c.price).First().price : 0;
 			homeViewModel = LoadProductsOnModel(homeViewModel, products);
-			homeViewModel.catalog = null; //departament_Obj.FromLevelsToCatalog();
+			homeViewModel.catalog = null; 
 			homeViewModel.isSearch = true;
-			homeViewModel.LoadFilters();
+			homeViewModel.currentSearch = s;
 			return homeViewModel;
 		}
 

@@ -42,9 +42,9 @@
 <div id="grid" class="grid">
 	<% Html.RenderPartial("PartialViews/ProductsList", Model.productsListViewModel); %>
 	<input type="hidden" id="NextPage" value="1" />
-	<% if(Model.catalog != null ) { %>
-		<%= Html.Hidden("CatLevel", Model.catalog.currentCatalogLevel) %>
-		<%= Html.Hidden("CatId", Model.catalog.currentCatalogId) %>
+	<% if(!Model.isSearch ) { %>
+		<%= Html.Hidden("CatLevel", Model.currentCatalogLevel) %>
+		<%= Html.Hidden("CatId", Model.currentCatalogId) %>
 	<% } %>
 </div>
 <script type="text/javascript">
@@ -68,7 +68,8 @@
 					url = '/Home/ScrollFilter';
 					var b = getParameterByName('b');
 					var p = getParameterByName('p');
-					params = { catLev: $('#CatLevel').val(), id: $('#CatId').val(), page: page, o: getParameterByName('o'), b: b.length > 0 ? b : undefined, p: p.length > 0 ? p : undefined };
+					var s = getParameterByName('s');
+					params = { catLev: $('#CatLevel').val(), id: $('#CatId').val(), page: page, o: getParameterByName('o'), b: b.length > 0 ? b : undefined, p: p.length > 0 ? p : undefined, s: s.length > 0 ? s : undefined };
 				<% } else if (Model.isSearch) { %>
 					url = '/Home/ScrollSearch';
 					params = { s: getParameterByName('s'), page: page };

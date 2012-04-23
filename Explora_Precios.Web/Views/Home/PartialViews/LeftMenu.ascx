@@ -22,7 +22,7 @@ $(document).ready(function(){
 						var b = getParameterByName('b');
 						var min = $("input.sliderValue[dataindex=0]").val();
 						var max = $("input.sliderValue[dataindex=1]").val();
-						var url = '/Home/Filter?o=false&p=' + min + "," + max + '&cl=<%=Model.catalog.currentCatalogLevel %>&ci=<%=Model.catalog.currentCatalogId%>';
+						var url = '/Home/Filter?o=false&p=' + min + "," + max + <% if(!Model.isSearch) { %> '&cl=<%=Model.currentCatalogLevel %>&ci=<%=Model.currentCatalogId%>' <% } else { %>'&s=<%= Model.currentSearch %>'<% } %>;
 						if(b.length > 0)
 							url += '&b=' + b;
 						document.location = url;
@@ -38,7 +38,7 @@ $("input.sliderValue").change(function() {
 	alert($this.data("index"));
 });
 function GetOfferUrl() {
-	var response = '/Home/Filter?o=true&cl=<%=Model.catalog.currentCatalogLevel %>&ci=<%=Model.catalog.currentCatalogId%>';
+	var response = '/Home/Filter?o=true<% if(!Model.isSearch) { %>&cl=<%=Model.currentCatalogLevel %>&ci=<%=Model.currentCatalogId%><% } else { %>&s=<%= Model.currentSearch %><% } %>';
 	var p = getParameterByName('p');
 	var b = getParameterByName('b');
 	if(b.length > 0)
@@ -84,7 +84,7 @@ function GetOfferUrl() {
 
 	<% if (Model.Filter.HasFilterPrices || Model.Filter.UndoPriceFilter != null || Model.Filter.UndoSaleFilter != null)
 	 { %>
-	<div class="separator">
+	<div class="separator" <% if(Model.categories.Count == 0){ %> style="margin-top:-10px;"<% } %>>
 		<h3>Precios</h3>
 		<%= Html.Hidden("sliderValueMin", Model.Filter.CurrentMinPrice, new { @class = "sliderValue", dataindex = "0" }) %>
 		<%= Html.Hidden("sliderValueMax", Model.Filter.CurrentMaxPrice, new { @class = "sliderValue", dataindex = "1" })%>
