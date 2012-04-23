@@ -291,8 +291,8 @@ $(document).ready(function () {
 				)
 		}
 	});
-});    
-
+});
+	var disclaimer = '<img src="../../Content/Images/information3-sc49.png" width="14px" height="14px" style="position:left;"/> Los precios mostrados son obtenidos de las páginas web de cada establecimiento comercial, por lo que sugerimos revisar la página del proveedor para verificar la vigencia del precio ofrecido. <br/><br/>Las ofertas y promociones presentadas en esta página pueden haber variado, sugerimos revisar la página web del comercio proveedor del producto.';
 	function LoadProductAjax(url, ref)
 	{    
 		var dataArray = {};
