@@ -336,7 +336,7 @@ $(document).ready(function () {
 		$.ajax({
 			data: $("#mngProductForm").serialize(),
 			dataType: "json",
-			url: "/ProductManager/DoCreateProduct",
+			url: "/Manager/DoCreateProduct",
 			type: "POST",
 			error: function () {
 				alert("ajax error");

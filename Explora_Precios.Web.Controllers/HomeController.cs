@@ -72,7 +72,7 @@ namespace Explora_Precios.Web.Controllers
 			var goTo = System.Configuration.ConfigurationManager.AppSettings["OnLoadGoTo"];
 			if (!string.IsNullOrEmpty(goTo) && goTo != "main")
 			{
-				if (goTo == "contact") Response.Redirect("/Contact"); else if (goTo == "manager") Response.Redirect("/ProductManager");
+				if (goTo == "contact") Response.Redirect("/Contact"); else if (goTo == "manager") Response.Redirect("/Manager");
 			}
 			var RenderMobile = Request.QueryString["status"];
 			var RenderCookie = this.ControllerContext.HttpContext.Request.Cookies["RenderMobile"];
@@ -331,7 +331,7 @@ namespace Explora_Precios.Web.Controllers
 		{
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
 			currentPage = page;
-			var HomeModel = s.Length > 0 ? LoadHomeModel(s) : LoadHomeModel(catLev.Value, id.Value);
+			var HomeModel = s != null ? LoadHomeModel(s) : LoadHomeModel(catLev.Value, id.Value);
 			var products = FilterProduct(HomeModel.allProducts, p, b, o);
 			HomeModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.OrderBy(product => product.clients.Select(c => c.price).First()), currentPage, defaultPageSize);
 
@@ -348,7 +348,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult Filter(string p, string b, bool o, string s, int? cl, int? ci)
 		{
-			var HomeModel = s.Length > 0 ? LoadHomeModel(s) : LoadHomeModel(cl.Value, ci.Value);
+			var HomeModel = s != null ? LoadHomeModel(s) : LoadHomeModel(cl.Value, ci.Value);
 			HomeModel.isFilter = true;
 			var defaultPageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"]);
 			IEnumerable<Product> products = FilterProduct(HomeModel.allProducts, p, b, o);
@@ -379,7 +379,7 @@ namespace Explora_Precios.Web.Controllers
 			HomeModel.allProducts = products.ToList();
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			HomeModel.productsListViewModel.productsList = HomeModel.productsListViewModel.products.Select(product => productVM.LoadModel(product, true));
-			if (s.Length > 0)
+			if (s != null)
 				HomeModel.LoadFilters(search: s);
 			else
 				HomeModel.LoadFilters(cl.Value, ci.Value);
@@ -622,27 +622,28 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult SetLike(string _id)
 		{
+			var ProductObj = _productRepository.Get(_id.CryptProductId());
+			var FBclient = new Facebook.FacebookClient();
+			// Publicacion en muro de usuario
 			try
 			{
-				var ProductObj = _productRepository.Get(_id.CryptProductId());
-				var FBclient = new Facebook.FacebookClient();
 				FBclient.AccessToken = CurrentUser.facebookToken;
-				var msg = string.Format("Estuve en ExploraPrecios.com y me gusto esto, \"{0}\". Ven, regístrate y verás muchos otros productos más! " +
-										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, Server.UrlEncode(_id));
+				var userMsg = string.Format("Encontré un(a) \"{0}\" en ExploraPrecios.com y me gusto esto. Regístrate y encontrarás muchos otros productos más! " +
+										"Haz click aquí: http://www.exploraprecios.com?i={1}", ProductObj.name, Server.UrlEncode(_id));
 
 				var description = string.Join(", ", ProductObj.clients.Select(client => client.client.name).ToArray());
-				var parameters = new Dictionary<string, object>
+				var userParameters = new Dictionary<string, object>
 				{
 					{"access_token",  CurrentUser.facebookToken},
 					{"appId", "285146028212857"},
-					{"message", msg},
+					{"message", userMsg},
 					{"caption", "Desde $" + String.Format("{0:0.00}",ProductObj.clients.OrderBy(client => client.price).First().price)},
 					{"description", "Puedes encontrarlo en la" + (ProductObj.clients.Count > 1 ? "s siguientes tiendas: " : " tienda ") + description },
 					{"name", ProductObj.name},
 					{"picture", ProductObj.image.url},
 					{"link", string.Format("http://www.exploraprecios.com?i={0}", _id)}
 				};
-				var result = FBclient.Post("me/feed", parameters);
+				var userResult = FBclient.Post("me/feed", userParameters);
 				var upObj = new User_Product { Type = User_Product.RelationType.Liked, product = ProductObj, user = CurrentUser };
 				_uProductRepository.SaveOrUpdate(upObj);
 			}
@@ -653,10 +654,36 @@ namespace Explora_Precios.Web.Controllers
 			catch (Facebook.FacebookApiException ex)
 			{
 				if (ex.Message.Contains("authorized"))
-					return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
+					return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
 				if (ex.Message.Contains("Duplicate"))
 					return Json(new { result = "fail", msg = "Mensaje duplicado" });
 			}
+
+			// Publicacion en paginas de facebook de clientes
+			FBclient.AccessToken = CurrentUser.facebookToken;
+			foreach (var client in ProductObj.clients)
+			{
+				if (client.client.facebookPublish)
+				{
+
+					try
+					{
+						var clientResult = FBclient.Post(client.client.facebookId + "/feed", SetFacebookParameters(client));
+					}
+					catch (NullReferenceException ex)
+					{
+						return Json(new { result = "fail", msg = "Necesitas estar conectado con Facebook." });
+					}
+					catch (Facebook.FacebookApiException ex)
+					{
+						if (ex.Message.Contains("authorized"))
+							return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
+						if (ex.Message.Contains("Duplicate"))
+							return Json(new { result = "fail", msg = "Mensaje duplicado" });
+					}
+				}
+			}
+
 			return Json(new { result = "success", msg = "KUDOS!!" });
 		}
 
@@ -671,7 +698,7 @@ namespace Explora_Precios.Web.Controllers
 			{
 				var FBclient = new Facebook.FacebookClient();
 				FBclient.AccessToken = CurrentUser.facebookToken;
-				var msg = string.Format("He creado un grupo de compra de \"{0}\" en www.ExploraPrecios.com. Ven, registrate y entra al grupo para recibir grandes descuentos! "+
+				var msg = string.Format("He creado un grupo de compra de \"{0}\" en www.ExploraPrecios.com. Registrate, entra al grupo y podras recibir grandes descuentos! "+
 										"Haz click en el siguiente link: http://www.exploraprecios.com?i={1}", ProductObj.name, Server.UrlEncode(GroupModel.ProductId));
 				var description = string.Join(", ", ProductObj.clients.Select(client => client.name).ToArray());
 
@@ -696,6 +723,30 @@ namespace Explora_Precios.Web.Controllers
 						return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en su Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
 					if (ex.Message.Contains("Duplicate"))
 						return Json(new { result = "fail", msg = "Mensaje duplicado" });
+				}
+
+				
+				FBclient.AccessToken = CurrentUser.facebookToken;
+				foreach (var client in ProductObj.clients)
+				{
+					if (client.client.facebookPublish)
+					{
+						try
+						{
+							var clientResult = FBclient.Post(client.client.facebookId + "/feed", SetFacebookParameters(client));
+						}
+						catch (NullReferenceException ex)
+						{
+							return Json(new { result = "fail", msg = "Necesitas estar conectado con Facebook." });
+						}
+						catch (Facebook.FacebookApiException ex)
+						{
+							if (ex.Message.Contains("authorized"))
+								return Json(new { result = "fail", msg = "ExploraPrecios.com no está autorizado para poner mensajes en Facebook.\nSi desea autorizarnos vuelva presionar el boton \"Conectar con Facebook\" y asegúrese de autorizar el permiso." });
+							if (ex.Message.Contains("Duplicate"))
+								return Json(new { result = "fail", msg = "Mensaje duplicado" });
+						}
+					}
 				}
 			}
 
@@ -787,7 +838,7 @@ namespace Explora_Precios.Web.Controllers
 			try
 			{
 				var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
-				var productObj = _productRepository.Get(_valId.CryptProductId());
+				var productObj = _productRepository.Get(_valId.Replace(' ', '+').CryptProductId());
 				var productVMObj = productVM.LoadModel(productObj, false);
 				productVMObj.group.Grouped = productObj.groups.Count == 0 || CurrentUser == null ? GroupDisplay.Create : productObj.groups.Where(x => x.user == CurrentUser).Count() > 0 ? GroupDisplay.InGroup : GroupDisplay.IncludeMe;
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);
@@ -832,6 +883,27 @@ namespace Explora_Precios.Web.Controllers
 			});
 		}
 
+		private Dictionary<string, object> SetFacebookParameters(Client_Product client)
+		{
+			var offer = client.specialPrice > 0;
+			var haveProductUrl = client.url.Length > 0;
+			var haveUrl = client.client.url.Length > 0;
+			var clientMsg = string.Format("Encontré un(a) \"{0}\" en ExploraPrecios.com " + (offer ? "y está en OFERTA!!" : ".") +
+				" Regístrate y encontrarás muchos otros productos más! " +
+				"Haz click aquí: " + (haveProductUrl ? "{1}" : " http://www.exploraprecios.com?i={1}"), client.product.name,
+				haveProductUrl ? client.url : Server.UrlEncode(client.product.Id.CryptProductId()));
+			return new Dictionary<string, object>
+							{
+								{"access_token",  CurrentUser.facebookToken},
+								{"appId", "285146028212857"},
+								{"message", clientMsg},
+								{"caption", "$" + String.Format("{0:0.00}", offer ? client.specialPrice : client.price)},
+								{"description", "Puedes encontrar otros de nuestros productos en " + (haveUrl ? "nuestra pagina: " + client.client.url : "http://www.exploraprecios.com?catlev=" + client.product.level_Id + "&id="+client.product.catalog_Id) },
+								{"name", client.product.name},
+								{"picture", client.product.image.url},
+								{"link", string.Format("http://www.exploraprecios.com?i={0}", client.product.Id.CryptProductId())}
+							};
+		}
 
 		private IEnumerable<Product> FilterProduct(IEnumerable<Product> products, string p, string b, bool o)
 		{

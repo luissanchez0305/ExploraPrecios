@@ -161,7 +161,7 @@ namespace Explora_Precios.ApplicationServices
 				Html = Html.Replace("<name>", Follower.Key.name).Replace("<rows>", rows);
 
 				var EmailService = new EmailServices(Follower.Key.email, Subject, Html, true);
-				EmailService.Send();
+				//EmailService.Send();
 			}
 			_userProductRepository.Update(_followers.Select(follow => follow.UserProduct));
 
