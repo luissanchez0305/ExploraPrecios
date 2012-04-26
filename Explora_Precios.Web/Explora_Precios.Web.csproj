@@ -230,6 +230,7 @@
     <Content Include="Content\html\forgot.html" />
     <Content Include="Content\Images\filterButton_disable.png" />
     <Content Include="Content\Images\filterButton_enable.png" />
+    <Content Include="Content\Images\ico_info.png" />
     <Content Include="Content\Images\ico_no.png" />
     <Content Include="Content\Images\ico_ok.gif" />
     <Content Include="Content\Images\nuevo-icon.gif" />
@@ -439,6 +440,7 @@
     <Content Include="Views\Account\Register.ascx" />
     <Content Include="Views\Brochures\Index.aspx" />
     <Content Include="Views\Contact\Index.aspx" />
+    <Content Include="Views\Home\PartialViews\LeftFiller.ascx" />
     <Content Include="Views\Home\Search.aspx" />
     <Content Include="Views\Home\PartialViews\BannerProduct.ascx" />
     <Content Include="Views\Home\Index.aspx" />

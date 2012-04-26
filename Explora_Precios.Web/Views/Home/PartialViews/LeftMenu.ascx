@@ -48,7 +48,9 @@ function GetOfferUrl() {
 	return response;
 }
 </script>
-	<% if (Model.categories.Count > 0) { %>
+	<% var DataOnLeftSide = false;
+		if (Model.categories.Count > 0) {
+			DataOnLeftSide = true; %>
 	<h3>Catalogo de <%= Model.departmentTitle %></h3>
 		<%= Html.Hidden("departmentId", Model.departmentId, new { @class = "department" })%>
 	<div class="suckerdiv">
@@ -83,7 +85,8 @@ function GetOfferUrl() {
 	<% } %>
 
 	<% if (Model.Filter.HasFilterPrices || Model.Filter.UndoPriceFilter != null || Model.Filter.UndoSaleFilter != null)
-	 { %>
+	{
+		DataOnLeftSide = true;%>
 	<div class="separator" <% if(Model.categories.Count == 0){ %> style="margin-top:-10px;"<% } %>>
 		<h3>Precios</h3>
 		<%= Html.Hidden("sliderValueMin", Model.Filter.CurrentMinPrice, new { @class = "sliderValue", dataindex = "0" }) %>
@@ -112,10 +115,11 @@ function GetOfferUrl() {
 				Filtrado: <label><%= Model.Filter.UndoSaleFilter.Name %></label> <input type="hidden" value="<%= Model.Filter.UndoSaleFilter.Url %>" /><div class="hand undofilter" style="background: url(/content/images/ui-icons_cd0a0a_256x240.png) no-repeat -98px -130px; width:11px; height:11px; float:right;"></div>
 			</div>
 		 <%} %>
-	<% } %>
 	</div>
+	<% } %>
 	<% if (Model.Filter.FilterBrands.Count() > 0 || Model.Filter.UndoBrandFilter != null)
-	{ %>
+	{
+		DataOnLeftSide = true;%>
 	<div class="separator">
 		<h3>Marcas</h3>
 		<% if (Model.Filter.UndoBrandFilter != null)
@@ -133,6 +137,9 @@ function GetOfferUrl() {
 		<% } %>
 		</div>
 	</div>
+	<% } %>
+	<% if (!DataOnLeftSide) { %>		
+	<% Html.RenderPartial("PartialViews/LeftFiller"); %>
 	<% } %>
 <script type="text/javascript">
 	$(".undofilter").click(function () {
