@@ -35,9 +35,9 @@
 							</ul>						</div>                    
 						<div class="pricingColumn" id="pricingColumn_basic" style="float:left; padding-left:5px;">                        
 							<h2>Básico</h2>                        
-							<p class="price">$35<span>/mes</span></p>
-							<p class="price_6months">$190<span> /6 meses</span></p>
-							<p class="price_6months">$364<span> /12 meses</span></p>
+							<p class="price">$39<span>/mes</span></p>
+							<p class="price_6months">$212<span> /6 meses</span></p>
+							<p class="price_6months">$407<span> /12 meses</span></p>
 							<span class="pricingBadge">&nbsp;</span>                        							<ul>                            								<li><span>10 - 30</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>   								<li class="pricingColumnsStore space">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li> 								<li class="pricingColumnsStore space">Store Features</li>                 
@@ -47,16 +47,16 @@
 						</div>                    
 						<div class="pricingColumn" id="pricingColumn_plus" style="float:left; padding-left:5px;">                        
 							<h2>Standard</h2>
-							<p class="price">$71<span>/mes</span></p>							<p class="price_6months">$393<span> /6 meses</span></p>							<p class="price_12months">$761<span> /12 meses</span></p>							<span class="pricingBadge">Popular</span>							<ul>                            								<li><span>31 - 60</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
+							<p class="price">$79<span>/mes</span></p>							<p class="price_6months">$436<span> /6 meses</span></p>							<p class="price_12months">$833<span> /12 meses</span></p>							<span class="pricingBadge">Popular</span>							<ul>                            								<li><span>31 - 60</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>   								<li class="pricingColumnsStore space">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li> 								<li class="pricingColumnsStore space">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>    								<li class="pricingColumnsStore space">Store Features</li>                            								<li><img src="../../Content/Images/ico_no.png" width="15px" height="15px" /></li>                        								<li class="pricingColumnsStore space">Store Features</li>       
-								<li><img src="../../Content/Images/ico_no.png" width="15px" height="15px" /></li>                        							</ul>                    						</div>                    						<div class="pricingColumn" id="pricingColumn_advanced" style="float:left; padding-left:5px;">                        							<h2>Avanzado</h2>                        							<p class="price">$134<span>/mes</span></p>							<p class="price_6months">$739<span> /6 meses</span></p>							<p class="price_12months">$1,430<span> /12 meses</span></p>                        							<ul>                            								<li><span>61 - 90</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
+								<li><img src="../../Content/Images/ico_no.png" width="15px" height="15px" /></li>                        							</ul>                    						</div>                    						<div class="pricingColumn" id="pricingColumn_advanced" style="float:left; padding-left:5px;">                        							<h2>Avanzado</h2>                        							<p class="price">$145<span>/mes</span></p>							<p class="price_6months">$800<span> /6 meses</span></p>							<p class="price_12months">$1,530<span> /12 meses</span></p>                        							<ul>                            								<li><span>61 - 90</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>   								<li class="pricingColumnsStore space">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li> 								<li class="pricingColumnsStore space">Store Features</li>                      
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>        								<li class="pricingColumnsStore space">Store Features</li>                            
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>                     								<li class="pricingColumnsStore space">Store Features</li>                            
-								<li><img src="../../Content/Images/ico_no.png" width="15px" height="15px" /></li>      							</ul>                    						</div>                    						<div class="pricingColumn" id="pricingColumn_pro" style="float:left; padding-left:5px;">                        							<h2>Premium</h2>                        							<p class="price">$184<span>/mes</span></p>							<p class="price_6months">$1,041<span> /6 meses</span></p>							<p class="price_12months">$1,965<span> /12 meses</span></p>							<ul>                            								<li><span>91+</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
+								<li><img src="../../Content/Images/ico_no.png" width="15px" height="15px" /></li>      							</ul>                    						</div>                    						<div class="pricingColumn" id="pricingColumn_pro" style="float:left; padding-left:5px;">                        							<h2>Premium</h2>                        							<p class="price">$203<span>/mes</span></p>							<p class="price_6months">$1,116<span> /6 meses</span></p>							<p class="price_12months">$2,134<span> /12 meses</span></p>							<ul>                            								<li><span>91+</span></li>								<li class="pricingColumnsStore">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>   								<li class="pricingColumnsStore space">Store Features</li>                     
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li> 								<li class="pricingColumnsStore space">Store Features</li>                            
 								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>                         								<li class="pricingColumnsStore space">Store Features</li>                            								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>                        								<li class="pricingColumnsStore space">Store Features</li>                            								<li><img src="../../Content/Images/ico_ok.gif" width="15px" height="15px" /></li>                       							</ul>                    						</div>					</section>				</div>
@@ -70,7 +70,7 @@
 	</div>
 	<script type="text/javascript">
 		$('.info.products').simpletip({
-			content: '<table><tr><td><h2>Productos</h2>La publicación de productos de forma unitaria tiene un costo de $1.50 al mes.<br/><br/>Cualquier pregunta dirigirse a <a href="/Contact" class="FollowContact" style="color:Red;">Contacto</a> o síguenos en <a href="http://www.facebook.com/ExploraPrecios" target="_blank" class="FollowFacebook" style="color:Red;">Facebook</a> donde encontrarás instrucciones de como utilizarlo.</td></tr></table>',
+			content: '<table><tr><td><h2>Productos</h2>La publicación de productos de forma unitaria tiene un costo de $1.30 al mes.<br/><br/>Cualquier pregunta dirigirse a <a href="/Contact" class="FollowContact" style="color:Red;">Contacto</a> o síguenos en <a href="http://www.facebook.com/ExploraPrecios" target="_blank" class="FollowFacebook" style="color:Red;">Facebook</a> donde encontrarás instrucciones de como utilizarlo.</td></tr></table>',
 			fixed: true,
 			position: [-120, 30],
 			showEffect: 'slide',
@@ -94,7 +94,7 @@
 			showTime: 300
 		});
 		$('.info.mainBanner').simpletip({
-			content: '<table><tr><td><h2>Banner Principal</h2>Aprovechando el flujo usuarios en constante crecimiento contamos con un banner que ocupa casi todo el rango visual del espectador, lo cual lo hace excelente para ser utilizado para promover su mercancia o diversos servicios.<br/>El costo unitario por publicación es de $7.50.<br/><br/>Cualquier pregunta dirigirse a <a href="/Contact" class="FollowContact" style="color:Red;">Contacto</a> o síguenos en <a href="http://www.facebook.com/ExploraPrecios" target="_blank" class="FollowFacebook" style="color:Red;">Facebook</a> donde encontrarás instrucciones de como utilizarlo.</td></tr></table>',
+			content: '<table><tr><td><h2>Banner Principal</h2>Aprovechando el flujo usuarios en constante crecimiento contamos con un banner que ocupa casi todo el rango visual del espectador, lo cual lo hace excelente para ser utilizado para promover su mercancia o diversos servicios.<br/>El costo unitario por publicación es de $7.50 x semana.<br/><br/>Cualquier pregunta dirigirse a <a href="/Contact" class="FollowContact" style="color:Red;">Contacto</a> o síguenos en <a href="http://www.facebook.com/ExploraPrecios" target="_blank" class="FollowFacebook" style="color:Red;">Facebook</a> donde encontrarás instrucciones de como utilizarlo.</td></tr></table>',
 			fixed: true,
 			position: [-120, 220],
 			showEffect: 'slide',
