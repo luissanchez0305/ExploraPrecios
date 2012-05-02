@@ -9,6 +9,7 @@ img { border: 0; }
 .captcha label { font-weight: bold; clear: both; }
 .hand { cursor: pointer; }
 .hideme { display:none; }
+.logo { background: url(images/logo_modificado.png) no-repeat left top ; width:275px;height:146px; cursor: pointer;}
 /* ===================== Counter tools ====================== */
 .notification { float:right; position: relative; top: -675px; font-weight:bold; }
 .notification table img { float: left; padding-right: 5px; }
@@ -22,7 +23,6 @@ img { border: 0; }
 #pageHeader .menu a { padding: 3px 10px; }
 #pageHeader .menu a:link, #pageHeader a:visited{color:#7f7f7f;text-decoration: none;}
 #pageHeader .menu a:hover {color: #484848; text-decoration: none;}
-#pageHeader .logo { background: url(images/logo_modificado.png) no-repeat left top ; width:275px;height:146px; cursor: pointer;}
 #pageHeader .marketingbox {position:absolute; top: 146px; margin-left:2px; font-weight:bold; }
 #pageHeader .marketingbox a.twitter-follow-button { vertical-align:top; }
 #pageHeader .marketingbox a img { width: 28px; height: 20px; border: none; vertical-align:top; }

@@ -177,7 +177,6 @@
     <Compile Include="ManagerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRegistrar.cs" />
-    <Compile Include="ServicesController.cs" />
     <Compile Include="ShowImageController.cs" />
     <Compile Include="TestController.cs" />
     <Compile Include="Validators\ContactValidator.cs" />
