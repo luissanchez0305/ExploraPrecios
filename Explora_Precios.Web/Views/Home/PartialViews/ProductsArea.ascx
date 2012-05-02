@@ -58,7 +58,7 @@
 		$(window).scroll(function () {
 			var h = $('#grid').height();
 			var y = $(window).scrollTop();
-			if (y > (h * .49) && lastPaged < y && !calculatingPage && $('#NextPage').val() != '-1') {
+			if (y > (h * .47) && lastPaged < y && !calculatingPage && $('#NextPage').val() != '-1') {
 				calculatingPage = true;
 				lastPaged = y;
 				var page = $('#NextPage').val();

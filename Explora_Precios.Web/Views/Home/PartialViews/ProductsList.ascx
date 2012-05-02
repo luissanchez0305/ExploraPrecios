@@ -14,18 +14,19 @@
 <%	var isFloating = Request.Url.AbsolutePath.Contains("GetFloatingProducts");
 	var isIE8 = Request.Url.AbsoluteUri.Contains("ie8");
 	var productIndex = 0;%>
-
 <% if (Model.products.Count > 0)
 		   { %>
    <% foreach (var product in Model.productsList)
-			   {
+	  {
+		  var productImageSize = product.productImage.FitImage(125, 100);
 		   var specialOffer = product.clientList.SingleOrDefault(client => client.specialPrice > 0) != null ?
 			   product.clientList.Where(client => client.specialPrice > 0).OrderBy(orderPrice => orderPrice.specialPrice).First().specialPrice.ToString(moneyFormat) : "0";
 		   %>
 	<%= Html.Hidden("productId_" + productIndex, product.productId.CryptProductId())%>
 	<div class="gridItem <%= isIE8 ? "nogo" : "" %>" onmouseover="enlarge(this, true);" onmouseout="enlarge(this, false);" >
 		<div class="frame">
-			<img width="125" height="100" alt="<%= product.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.productImage) %>" />
+			<img width="<%= productImageSize[0] %>" height="<%= productImageSize[1] %>" alt="<%= product.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.productImage) %>" />
+			
 			<% if (specialOffer != "0")
 			   {%>
 			<img src="../../Content/Images/etiqueta_oferta.gif" alt="Oferta" width="30px" height="35px" class="offerImage" /><%} %>

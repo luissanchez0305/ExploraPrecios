@@ -1,8 +1,11 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Explora_Precios.Web.Controllers.ViewModels.ProductViewModel>" %>
+
+<%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
 <% var moneyFormat = "#,###.00";
 
    var highlight = Request.QueryString["_highlight"];
-   var id_val = Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]);%>
+   var id_val = Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]);
+   var productImageSize = Model.productImage.FitImage(250, 200);%>
 
 	<div id="FloatingPanel" class="details">
 	<input type="hidden" id="displaying" value="<%= id_val %>" />
@@ -28,7 +31,7 @@
 		</div>--%>
 	</div>
 	<div class="productLeft">
-		<img width="250" height="200" class="productImage" alt="<%= Model.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model.productImage) %>" />
+		<img width="<%= productImageSize[0] %>" height="<%= productImageSize[1] %>" class="productImage" alt="<%= Model.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model.productImage) %>" />
 		<!-- TODO LISTA DE IMAGENES -->
 		<div class="qualities">
 			<label class="title">Caracteristicas</label><div class="<%= Model.isLiked ? "liked" : "like" %> hand" style="float:right;" src="../../../Content/Images/facebook-like.jpg" width="79px" height="20px"></div>

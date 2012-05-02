@@ -5,7 +5,8 @@ $(document).ready(function(){
 	$(".department").val(<%= Model.departmentId %>);
 	$(".filter.offer").attr('href', offerUrl);
 	$("#sliderBar").slider({
-		min: <%= Model.Filter.CurrentMinPrice %>,
+		range: "min",
+		min: 0,
 		max: <%= Model.Filter.CurrentMaxPrice %>,
 		step: 1,
 		values: [<%= Model.Filter.CurrentMinPrice %>, <%= Model.Filter.CurrentMaxPrice %>],

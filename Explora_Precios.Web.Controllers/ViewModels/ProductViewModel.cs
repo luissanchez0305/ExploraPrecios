@@ -65,6 +65,8 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public float highestPrice { get; set; }
 		public string productImageUrl { get; set; }
 		public Byte[] productImage { get; set; }
+		public int productImageWidth { get; set; }
+		public int productImageHeight { get; set; }
 		public List<string> qualityNames { get; set; }
 		public List<QualityViewModel> qualities { get; set; }
 		public int catalogLevel { get; set; }
