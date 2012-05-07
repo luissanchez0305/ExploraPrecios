@@ -149,7 +149,7 @@ div .filterButton.enable { background: url(images/filterButton_enable.png) no-re
 .gridItem { border: 1px solid #DCDCDC; float:left; width:170px; height:210px; cursor:pointer; margin: 1px; border-radius:7px; }
 .gridItem .frame {width:140px; height:114px;margin-left:auto;margin-right:auto; border-bottom:solid 5px white;}
 .gridItem .frame img { display:block; margin-left:auto; margin-right:auto; padding-top:16px; }
-.gridItem .frame img.offerImage { position:relative; width:35px; height:41px; top: -50px; left: 62px; }
+.gridItem .frame img.offerImage { position:relative; width:35px; height:41px; left: 62px; }
 
 .gridItem .content {margin-top:10px;margin-left:auto;margin-right:auto;width:142px; }
 .gridItem .content .brand { position:relative; font: bold 12px Arial;}
