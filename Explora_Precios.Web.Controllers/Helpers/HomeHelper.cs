@@ -61,46 +61,49 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			var width = 0;
 			var height = 0;
 
-			using (System.IO.MemoryStream stream = new System.IO.MemoryStream(data))
+			if (data != null)
 			{
-				realImage = System.Drawing.Image.FromStream(stream);
-			}
+				using (System.IO.MemoryStream stream = new System.IO.MemoryStream(data))
+				{
+					realImage = System.Drawing.Image.FromStream(stream);
+				}
 
-			if (fitWidth < realImage.Width)
-			{
-				var proportion = (Convert.ToDecimal(fitWidth) / Convert.ToDecimal(realImage.Width));
-				width = fitWidth;
-				height = (int)(realImage.Height * proportion);
-				if (height > fitHeight)
+				if (fitWidth < realImage.Width)
 				{
-					proportion = Convert.ToDecimal(fitHeight) / Convert.ToDecimal(height);
-					height = fitHeight;
-					width = (int)(fitWidth * proportion);
-				}
-			}
-			else if (fitHeight < realImage.Height)
-			{
-				var proportion = (Convert.ToDecimal(fitHeight) / Convert.ToDecimal(realImage.Height));
-				width = (int)(realImage.Width * proportion);
-				height = fitHeight;
-				if (width > fitWidth)
-				{
-					proportion = Convert.ToDecimal(fitWidth) / Convert.ToDecimal(width);
-					height = (int)(fitHeight * proportion);
+					var proportion = (Convert.ToDecimal(fitWidth) / Convert.ToDecimal(realImage.Width));
 					width = fitWidth;
+					height = (int)(realImage.Height * proportion);
+					if (height > fitHeight)
+					{
+						proportion = Convert.ToDecimal(fitHeight) / Convert.ToDecimal(height);
+						height = fitHeight;
+						width = (int)(fitWidth * proportion);
+					}
 				}
-			}
-			else if (realImage.Height < fitHeight)
-			{
-				var proportion = (Convert.ToDecimal(realImage.Height) / Convert.ToDecimal(fitHeight));
-				width = (int)(realImage.Width * proportion);
-				height = fitHeight;
-			}
-			else
-			{
-				var proportion = (Convert.ToDecimal(realImage.Width) / Convert.ToDecimal(fitWidth));
-				width = fitWidth;
-				height = (int)(realImage.Height * proportion);
+				else if (fitHeight < realImage.Height)
+				{
+					var proportion = (Convert.ToDecimal(fitHeight) / Convert.ToDecimal(realImage.Height));
+					width = (int)(realImage.Width * proportion);
+					height = fitHeight;
+					if (width > fitWidth)
+					{
+						proportion = Convert.ToDecimal(fitWidth) / Convert.ToDecimal(width);
+						height = (int)(fitHeight * proportion);
+						width = fitWidth;
+					}
+				}
+				else if (realImage.Height < fitHeight)
+				{
+					var proportion = (Convert.ToDecimal(realImage.Height) / Convert.ToDecimal(fitHeight));
+					width = (int)(realImage.Width * proportion);
+					height = fitHeight;
+				}
+				else
+				{
+					var proportion = (Convert.ToDecimal(realImage.Width) / Convert.ToDecimal(fitWidth));
+					width = fitWidth;
+					height = (int)(realImage.Height * proportion);
+				}
 			}
 
 			return new[] { width, height };

@@ -206,7 +206,7 @@
 					</script>
 					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 				</div>
-				<div class="notification">
+				<div class="hand notification">
 					<img src="../../Content/Images/WhyRegister.png" alt="Por que resgistrarse?" />
 				</div>
 			</div>
@@ -239,55 +239,9 @@
 					<asp:ContentPlaceHolder ID="MainContent" runat="server" />
 				</div>
 			</div>
-		</div><div class="pageContentFooter"></div>
+		</div>
+		<div class="pageContentFooter"></div>
 		<div class="block margin_t_10">
-			<%--<div class="h"></div>
-			<div class="b">
-				<div class="newsletter margin_l_10">
-					<div class="cGray bold">Join Newsletter</div>
-					<p class="f11">
-						The weekly newsletter to help you learn more about technology and promotions.
-						<input type="text" class="newsletter_text" /><input type="button" value="Subscribe" class="newsletter_btn"  />
-					</p>
-				</div>
-				<div class="line"></div>
-				<div class="fLeft w180 margin_l_10">
-					<div class="cGray bold">Product Categories</div>
-					<ul class="list">
-						<li><a href="">Computers</a></li>
-						<li><a href="">Electronics</a></li>
-						<li><a href="">Accessories</a></li>
-						<li><a href="">Others</a></li>
-					</ul>
-				</div>
-				<div class="fLeft w180">
-					<div class="cGray bold">Customer Service</div>
-					<ul class="list">
-						<li><a href="">Help</a></li>
-						<li><a href="">Contact Us</a></li>
-						<li><a href="">About Us</a></li>
-						<li><a href="">Online Returns </a></li>
-					</ul>
-				</div>
-				<div class="fLeft w180">
-					<div class="cGray bold">Shopping Policy</div>
-					<ul class="list">
-						<li><a href="">Terms & Conditions</a></li>
-						<li><a href="">Privacy Policy</a></li>
-					</ul>
-				</div>
-				<div class="fLeft w180">
-					<div class="cGray bold">Your Order</div>
-					<ul class="list">
-						<li><a href="">Order Status</a></li>
-						<li><a href="">Shipping & Delivery</a></li>
-						<li><a href="">Store Pickup</a></li>
-						<li><a href="">Find a Rebate</a></li>
-						<li><a href="">Returns</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="f"></div>--%>
 		</div>
 		<div id="pageFooter">
 			© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="http://www.espherasoluciones.com" target="_blank" title="eSphera Soluciones Webpage">eSphera</a> / <b><a class="disclaimer" href="javascript:void()" >Importante</a></b>
@@ -373,6 +327,14 @@
 			showEffect: 'slide',
 			hideEffect: 'fade'
 		});
+//		$(".notification").click(function () {
+//			$.get('<%= Url.Action("GetPromoVideo","Home") %>', function (data) {
+//				$("#FloatingPanel").html(data.html);
+//				$("#FloatingPanel").show();
+//				$("#FloatingPanel").dialog('open');
+//				$("#ui-dialog-title-FloatingPanel").html('Video: Por qué registrarse en ExploraPrecios.com?');
+//			});
+//		});
 		$(".notification").simpletip({
 			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td><img src="../../Content/Images/people.png" alt="pregunta" width="20px" height="20px"/></td><td>Podrás crear grupos de compra de los productos que te interesaría recibir grandes descuentos y ofertas en las tiendas en que los venden</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
 			fixed: true,

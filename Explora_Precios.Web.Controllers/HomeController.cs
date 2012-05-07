@@ -246,7 +246,7 @@ namespace Explora_Precios.Web.Controllers
 				ProductId = cp.product.Id,
 				Name = cp.product.name,
 				Client = cp.client.name,
-				Image = loadImage ? cp.product.image.imageObj : null,
+				Image = loadImage && cp.product.image != null ? cp.product.image.imageObj : null,
 				ClientId = cp.client.Id,
 				Price = cp.specialPrice
 			};
@@ -256,6 +256,8 @@ namespace Explora_Precios.Web.Controllers
 		{
 			var pageSize = 5;
 			var lists = new List<IEnumerable<Client_Product>>();
+			var width = 120;
+			var height = 80;
 			IEnumerable<Group_User> grouped;
 			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null ||
 				System.Web.HttpRuntime.Cache.Get("OfferProducts") == null ||
@@ -281,6 +283,8 @@ namespace Explora_Precios.Web.Controllers
 				case "Highlighted":
 					listCount = lists[0].Count();
 					ids = lists[0].Select(cp => cp.product.Id);
+					width = 90;
+					height = 75;
 					break;
 				case "Offers":
 					listCount = lists[1].Count();
@@ -298,10 +302,12 @@ namespace Explora_Precios.Web.Controllers
 			var pageItemsCount = toPage * pageSize < listCount ? pageSize : pageSize - ((toPage * pageSize) - listCount);
 			for (int i = 0; i < pageItemsCount; i++)
 			{
-				guids.Add(CommonUtilities.CacheImage(_productRepository.Get(ids.ElementAt(i + ((toPage - 1) * pageSize))).image.imageObj));
+				var image = _productRepository.Get(ids.ElementAt(i + ((toPage - 1) * pageSize))).image.imageObj;
+				var sizes = image.FitImage(width, height);
+				guids.Add(CommonUtilities.CacheImage(image) + "," + sizes[0] + "," + sizes[1]);
 			}
 
-			return Json(new { guids = string.Join(",", guids.ToArray()), count = pageItemsCount });
+			return Json(new { guids = string.Join(";", guids.ToArray()), count = pageItemsCount });
 		}
 
 		public ActionResult Products(int? catLev, int? id)
@@ -385,6 +391,11 @@ namespace Explora_Precios.Web.Controllers
 				HomeModel.LoadFilters(cl.Value, ci.Value);
 			LoadCounterValues();
 			return View("Products", HomeModel);
+		}
+
+		public ActionResult GetPromoVideo()
+		{
+			return Json(new { html = this.RenderViewToString("PartialViews/PromoVideo", ViewData) });
 		}
 
 		public ActionResult GenerateBannerProduct(string side, int position, int id)
