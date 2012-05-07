@@ -425,16 +425,16 @@ ExploraPrecios.com
 				<% } %>
 					<input type="hidden" value="<%= product.ClientId %>" />
 					<input type="hidden" value="<%= product.ProductId %>" />
-					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %> hand">
-
-						<img id="Highlighted_<%= page %>_<%= indexItem %>"
-							<% if (product.Image != null)
-						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %>
-						   alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>"  />
-						
+					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %> hand">		
+						<div style="height:93px">
+							<img id="Highlighted_<%= page %>_<%= indexItem %>"
+								<% if (product.Image != null)
+							   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %>
+							   alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>"  />
+						</div>
 						<div class="title"><%= product.Name.Shorten(25)%></div>
 						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
-						<div class="client"><%= product.Client%></div>
+						<div class="client"><%= product.Client%></div>			
 					</div> 
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.HighlightProducts.Count() - 1 == index)
 					   {%>
@@ -473,12 +473,13 @@ ExploraPrecios.com
 					<input type="hidden" value="0" />
 					<input type="hidden" value="<%= group.ProductId %>" />
 					<div class="item <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %> hand">
-						<img class="image" id="Grouped_<%= page %>_<%= indexItem %>"
-							<% if (group.Image != null)
-						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(group.Image) %>" <% } %>
-						   alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>" />
-						
 						<div class="title"><%= group.ProductName.Shorten(15)%></div>
+						<div style="height:80px">
+							<img class="image" id="Grouped_<%= page %>_<%= indexItem %>"
+								<% if (group.Image != null)
+							   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(group.Image) %>" <% } %>
+							   alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>" />
+						</div>
 						<div class="groupsize">Con <%= group.GroupSize %> persona<%= group.GroupSize > 1 ? "s" : "" %></div>
 						<div class="client"><%= created.GroupCreated() %></div>
 					</div> 
@@ -495,7 +496,7 @@ ExploraPrecios.com
 			</ul>
 		</div>       
 		<%} %> 		
-		<% if (Model.OfferProducts.Count() > 0)
+		<% if (Model.OfferProducts.Count() > 5)
 		   {  %>
 		<div id="Offers" class="section">
 			<input type="hidden" id="offer_page" value="1" />
@@ -519,12 +520,12 @@ ExploraPrecios.com
 					<input type="hidden" value="<%= product.ProductId %>" />
 					<div class="item hand <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">						
 						<div class="title"><%= product.Name.Shorten(15)%></div>
-						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
-						<div class="client"><%= product.Client%></div>        
 						<img class="image" id="Offers_<%= page %>_<%= indexItem %>"                        
 						<% if (product.Image != null)
 						   { %>src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
-						   alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>" />      
+						   alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>" />  
+						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
+						<div class="client"><%= product.Client%></div>            
 						   
 					</div> 
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.OfferProducts.Count() - 1 == index)
@@ -563,12 +564,12 @@ ExploraPrecios.com
 					<input type="hidden" value="<%= product.ProductId %>" />
 					<div class="item hand <%= index % 5 == 0 ? "" : "border" %> <%= (index + 1) % 5 == 0 ? "" : "space" %>">
 						<div class="title"><%= product.Name.Shorten(15)%></div>
-						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
-						<div class="client"><%= product.Client%></div>
 						<img class="image" id="News_<%= page %>_<%= indexItem %>"
 						<% if (product.Image != null)
 							{ %> src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.Image) %>" <% } %> 
 						 alt="image" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>" />
+						<div class="itemprice">$<%= string.Format("{0:0.00}", product.Price)%></div>
+						<div class="client"><%= product.Client%></div>
 					</div> 
 					<% if ((isLiOpen && (index + 1) % 5 == 0) || Model.NewProducts.Count() - 1 == index)
 					   {%>

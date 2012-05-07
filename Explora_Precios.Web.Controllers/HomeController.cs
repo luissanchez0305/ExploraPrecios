@@ -470,9 +470,16 @@ namespace Explora_Precios.Web.Controllers
 
 			while (listIds.Count < 4)
 			{
-				var offerProduct = offerProducts[new Random().Next(offerProducts.Count - 1)];
-				if (!listIds.Contains(offerProduct.Id))
-					listIds.Add(offerProduct.Id);
+				if (offerProducts.Count <= 4)
+				{
+					foreach (var offerProduct in offerProducts)
+						listIds.Add(offerProduct.Id);
+					break;
+				}
+
+				var product = offerProducts[new Random().Next(offerProducts.Count - 1)];
+				if (!listIds.Contains(product.Id))
+					listIds.Add(product.Id);
 			}
 
 			return Json(new

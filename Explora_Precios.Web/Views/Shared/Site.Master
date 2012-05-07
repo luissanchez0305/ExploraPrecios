@@ -412,14 +412,24 @@
 						autoPlayTimer = setInterval(autoPlay, autoPlayTime);
 					});
 				});
-				//Left
-				$.get('/Home/GenerateBannerProduct', { side: 'Left', position: 2, id: ids[2] }, function (data) {
-					$(".content.offer3").append(data.html);
-					//Right
-					$.get('/Home/GenerateBannerProduct', { side: 'Right', position: 2, id: ids[3] }, function (data) {
+				if (ids[2]) {
+					//Left
+					$.get('/Home/GenerateBannerProduct', { side: 'Left', position: 2, id: ids[2] }, function (data) {
 						$(".content.offer3").append(data.html);
+						//Right
+						if (ids[3]) {
+							$.get('/Home/GenerateBannerProduct', { side: 'Right', position: 2, id: ids[3] }, function (data) {
+								$(".content.offer3").append(data.html);
+							});
+						}
+						else {
+							$(".content.offer3").append('<div class="offerRight"><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label></a></div>');		
+						}
 					});
-				});
+				}
+				else {
+					$(".content.offer3").append('<div><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label><img src="../../Content/Images/banner_sample3.jpg" alt="Sample4" /></a></div>');
+				}
 			});
 
 			$("#control_play").hide();
