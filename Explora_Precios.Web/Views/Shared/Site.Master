@@ -24,6 +24,8 @@
 	<script type="text/javascript" src="../../Scripts/jquery.hoverIntent.minified.js"></script>
 	<script type="text/javascript" src="../../Scripts/banner/diapo.js"></script>
 	<script type="text/javascript" src="../../Scripts/jquery.alerts.js"></script>
+	<script type="text/javascript" src="../../Scripts/mainmenu/hoverIntent.js"></script>
+	<script type="text/javascript" src="../../Scripts/mainmenu/superfish.js"></script>
 	<%--<script type="text/javascript" src="../../Scripts/banner/jquery.mobile-1.0rc2.customized.min.js"></script>--%>
 	<link href="../../Content/Style.css" rel="stylesheet" type="text/css" />   
 	<link href="../../Content/BottomMenu.css" rel="stylesheet" type="text/css" />   
@@ -43,6 +45,7 @@
 	<link href="../../Content/jquery-ui-1.7.3.custom.css" rel="stylesheet" type="text/css" />
 	<%--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />--%>
 	<link href="../../Content/dropdownmenu.css" rel="stylesheet" type="text/css" />
+	<link href="../../Content/mainmenu/superfish.css" rel="stylesheet" type="text/css" />
 	<link href="/content/images/compass_icon.png" rel="shortcut icon" /> 
 </head>
 
@@ -172,8 +175,13 @@
 				<div class="will_login hand groups <%= isLoggedIn ? "" : "hideme" %>">Estoy en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
 			</div>
 			<div class="searchbox">
-				<input type="text" id="search_text" class="searchbox_textbox" value="<%= ViewData["search_text"] %>" />
-				<input type="button" class="searchbox_btn" />
+				<div class="hand notification">
+					<img src="../../Content/Images/WhyRegister.png" alt="Por que resgistrarse?" />
+				</div>
+				<div class="searchitems">
+					<input type="text" id="search_text" class="searchbox_textbox" value="<%= ViewData["search_text"] %>" />
+					<input type="button" class="searchbox_btn" />
+				</div>
 				<script type="text/javascript">
 					$(document).ready(function () {
 						clearSearchText()
@@ -189,55 +197,79 @@
 					});
 
 					function clearSearchText() {
-							if ($.trim($("#search_text").val()).length == 0) {
-								$("#search_text").attr("style", "color:gray;");
-								$("#search_text").val("Buscar");
-							}
+						if ($.trim($("#search_text").val()).length == 0) {
+							$("#search_text").attr("style", "color:gray;");
+							$("#search_text").val("Buscar");
+						}
 					}
 				</script>
-				<div style="position:relative; top:40px; left:25px;">
-					<script type="text/javascript"><!--
-						google_ad_client = "ca-pub-8106411801578478";
-						/* 160x600 Vertical Right */
-						google_ad_slot = "6024523980";
-						google_ad_width = 160;
-						google_ad_height = 600;
-					//-->
-					</script>
-					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-				</div>
-				<div class="hand notification">
-					<img src="../../Content/Images/WhyRegister.png" alt="Por que resgistrarse?" />
-				</div>
 			</div>
 		</div>
-		<% if (ViewData["depList"] != null)
-		   { %>
-		<div id="navigation">
-			<ul class="menu">
-				<%--<li><a href="">Home</a></li>--%>
-				<% foreach (var dep in (List<Explora_Precios.Core.Department>)ViewData["depList"])
-			   { %>
-								<li class="item"><a id="item_<%= dep.name %>" href="/Home/Products/?catlev=0&id=<%= Html.Encode(dep.Id) %>"><%= dep.name%></a></li>
-						<% } %>
-				
-						<% if ((ViewData["newProductsCount"] != null && ViewData["newProductsCount"].ToString() != "0") || (ViewData["productsSaleCount"] != null && ViewData["productsSaleCount"].ToString() != "0"))
-			   { %>
-					<li class="tabCounter"><a id="item_OfferNew" href="javascript:void(0);">a</a></li>
-				<% } %>
-			</ul>
-		</div>
-		<% } %>
 		<div id="pageContent">
-			<div class="b">
-				<div class="left">
-					<div class="submenu">
-						<asp:ContentPlaceHolder ID="LeftContent" runat="server" />
-					</div>
+			<div class="left">
+				<div class="submenu">
+					<asp:ContentPlaceHolder ID="LeftContent" runat="server" />
 				</div>
-				<div class="right">
-					<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+			</div>
+			<div class="middle">
+				<% if (ViewData["depList"] != null)
+					{ %>
+				<div id="navigation">
+					<ul class="main-menu roundedBorder">
+						<% foreach (var dep in (List<Explora_Precios.Core.Department>)ViewData["depList"])
+						{ %>
+							<li class="item">
+								<a id="item_<%= dep.name %>" href="/Home/Products/?catlev=0&id=<%= Html.Encode(dep.Id) %>"><%= dep.name%></a>
+								<% if (dep.categories.Count > 1) { %>
+								<ul>
+									<%foreach (var cat in dep.categories) { %>
+									<li class="child">
+										<a href="/Home/Products/?catlev=1&id=<%= Html.Encode(cat.Id) %>"><%= cat.name%></a>
+										<% if (cat.subCategories.Count > 0) { %>
+										<ul>
+											<% foreach (var subCat in cat.subCategories) { %>
+											<li class="child">
+												<a href="/Home/Products/?catlev=2&id=<%= Html.Encode(subCat.Id) %>"><%= subCat.name%></a>
+												<%if (subCat.productTypes.Count > 0) { %>
+												<ul>
+													<%foreach (var prodType in subCat.productTypes) { %>
+														<li class="child">
+															<a href="/Home/Products/?catlev=3&id=<%= Html.Encode(prodType.Id) %>"><%= prodType.name%></a>
+														</li>
+													<% } %>
+												</ul>
+												<% } %>
+											</li>
+											<% } %>
+										</ul>
+										<% } %>
+									</li>
+									<% } %>
+								</ul>
+								<% } %>
+							</li>
+					<% } %>
+				
+					<% if (!(ViewData["newProductsCount"] != null && ViewData["newProductsCount"].ToString() != "0"))
+						{ %>
+							<li class="tabCounter"><a id="item_OfferNew" href="javascript:void(0);">Nuevos</a></li>
+						<% } %>
+					</ul>
+					<div class="bar"></div>
 				</div>
+				<% } %>
+				<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+			</div>
+			<div class="right" style="position:relative; top:25px; left:5px;">
+				<script type="text/javascript"><!--
+					google_ad_client = "ca-pub-8106411801578478";
+					/* 160x600 Vertical Right */
+					google_ad_slot = "6024523980";
+					google_ad_width = 160;
+					google_ad_height = 600;
+				//-->
+				</script>
+				<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 			</div>
 		</div>
 		<div class="pageContentFooter"></div>
@@ -349,12 +381,10 @@
 			SetLeftDiv();
 		});
 		$(document).ready(function () {
-			if ($.browser.msie && $.browser.version.indexOf('9.0') == -1) {
-				$('#item_OfferNew').html('Ofertas');
-				$('#navigation').addClass('ie8');
+			if ($.browser.msie) {
+				$('#navigation').addClass('ie');
 			}
 			else {
-				$('#item_OfferNew').html('Ofertas y Nuevos');
 				$('#navigation').addClass('normal');
 			}
 			SetLeftDiv();
@@ -401,17 +431,31 @@
 				$('.nav_floating_area').hide();
 			}
 
+			$("ul.main-menu").superfish();
+
 			$.get('/Home/GetBannerProducts', function (data) {
 				var ids = data.ids.split(',');
-				//Left
-				$.get('/Home/GenerateBannerProduct', { side: 'Left', position: 0, id: ids[0] }, function (data) {
-					$(".content.offer1").append(data.html);
-					//Right
-					$.get('/Home/GenerateBannerProduct', { side: 'Right', position: 0, id: ids[1] }, function (data) {
+				if (ids[0]) {
+					//Left
+					$.get('/Home/GenerateBannerProduct', { side: 'Left', position: 0, id: ids[0] }, function (data) {
 						$(".content.offer1").append(data.html);
-						autoPlayTimer = setInterval(autoPlay, autoPlayTime);
+						if (ids[1]) {
+							//Right
+							$.get('/Home/GenerateBannerProduct', { side: 'Right', position: 0, id: ids[1] }, function (data) {
+								$(".content.offer1").append(data.html);
+								autoPlayTimer = setInterval(autoPlay, autoPlayTime);
+							});
+						}
+						else {
+							$(".content.offer1").append('<div class="offerRight"><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label></a></div>');
+							autoPlayTimer = setInterval(autoPlay, autoPlayTime);
+						}
 					});
-				});
+				}
+				else {
+					$(".content.offer1").append('<div><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label><img src="../../Content/Images/banner_sample1.jpg" alt="Sample1" /></a></div>');
+					autoPlayTimer = setInterval(autoPlay, autoPlayTime);
+				}
 				if (ids[2]) {
 					//Left
 					$.get('/Home/GenerateBannerProduct', { side: 'Left', position: 2, id: ids[2] }, function (data) {
@@ -423,12 +467,12 @@
 							});
 						}
 						else {
-							$(".content.offer3").append('<div class="offerRight"><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label></a></div>');		
+							$(".content.offer3").append('<div class="offerRight"><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label></a></div>');
 						}
 					});
 				}
 				else {
-					$(".content.offer3").append('<div><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label><img src="../../Content/Images/banner_sample3.jpg" alt="Sample4" /></a></div>');
+					$(".content.offer3").append('<div><a href="/Contact"><label class="announce">Anunciese aquí!! <label class="inside">Contáctenos <img src="../../Content/Images/mail-icon.png" alt="info@exploraprecios.com" style="border-width:0px;" /></label></label><img src="../../Content/Images/banner_sample3.jpg" alt="Sample3" /></a></div>');
 				}
 			});
 
@@ -498,16 +542,9 @@
 			$('.nav_floating_area').hide('slow');
 		});
 
-		$('#btn_new_floating').live('click', function () {
-			LoadFloatingProducts('new');
-		});
-		$('#btn_onsale_floating').live('click', function () {
-			LoadFloatingProducts('onsale');
-		});
-
 		$('.tabCounter').click(function () {
 			var $this = $(this);
-			LoadFloatingProducts('onsale');
+			LoadFloatingProducts();
 		});
 
 		function SetLeftDiv() {
@@ -546,11 +583,11 @@
 			});
 		}
 
-		function LoadFloatingProducts(_type) {
+		function LoadFloatingProducts() {
 			if ($.browser.msie && $.browser.version.indexOf('9.0') == -1) {
 				$('.ui-dialog-titlebar').hide();
 				$.blockUI({ message: '<h4>Un momento por favor...</h4>' });
-				$.get('/Home/GetFloatingProducts', { type: _type, ie8: true }, function (data) {
+				$.get('/Home/GetFloatingProducts', { ie8: true }, function (data) {
 					$('.nav_floating_area').html(data.html);
 					$('.nav_floating_area').show();
 					$('.nav_floating_area').dialog("open");
@@ -564,15 +601,7 @@
 				}
 				$('#nav_floating_buttons').show();
 				$('#img_Floating_Loading').show();
-				if (_type == "onsale") {
-					$('#btn_onsale_floating').addClass('selected');
-					$('#btn_new_floating').removeClass('selected');
-				}
-				else {
-					$('#btn_new_floating').addClass('selected');
-					$('#btn_onsale_floating').removeClass('selected');
-				}
-				$.get('/Home/GetFloatingProducts', { type: _type }, function (data) {
+				$.get('/Home/GetFloatingProducts', function (data) {
 					$('#grid_floating').html(data.html);
 					$('.nav_floating_area').animate({ height: "522px" }, 1000);
 					$('.nav_floating_bottom').show();

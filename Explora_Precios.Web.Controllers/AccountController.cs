@@ -12,6 +12,7 @@ using System.Web;
 using Explora_Precios.Web.Controllers.Helpers;
 using Explora_Precios.Web.Controllers.ViewModels;
 using Explora_Precios.Web.Controllers.Validators;
+using Explora_Precios.ApplicationServices;
 using System.Configuration;
 using Explora_Precios.Data;
 using Facebook;

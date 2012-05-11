@@ -431,19 +431,11 @@ namespace Explora_Precios.Web.Controllers
 		}
 
 		// AJAX
-		public JsonResult GetFloatingProducts(string type, int? page, bool? ie8)
+		public JsonResult GetFloatingProducts(int? page, bool? ie8)
 		{
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			var pageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["FloatingPageSize"]);
-			var allProducts = new List<Explora_Precios.Core.Product>();
-			if (type == "onsale")
-			{
-				allProducts = _cpRepository.GetProductsOnSale().Select(cp => cp.product).ToList();
-			}
-			else
-			{
-				allProducts = _cpRepository.GetLastAdded().Select(cp => cp.product).ToList();
-			}
+			var allProducts =  _cpRepository.GetLastAdded().Select(cp => cp.product).ToList();
 
 			var pagedList = new PagedList<Explora_Precios.Core.Product>(allProducts, page.HasValue ? page.Value - 1 : 0, pageSize);
 			ViewData.Model = new ProductsListViewModel()
@@ -496,7 +488,7 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new
 			{
 				key = Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(GenerateImageBytesCaptcha()),
-				text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
+				text = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
 			});
 		}
 		
@@ -509,7 +501,7 @@ namespace Explora_Precios.Web.Controllers
 			var key = System.Configuration.ConfigurationManager.AppSettings["PublicKey"];
 			return Json(new
 			{
-				text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key),
+				text = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key),
 				html = this.RenderViewToString("PartialViews/ProductReport", ViewData)
 			});
 		}
@@ -555,7 +547,7 @@ namespace Explora_Precios.Web.Controllers
 				{
 					result = "novalid",
 					html = this.RenderViewToString("PartialViews/ProductReport", ViewData),
-					text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
+					text = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
 				});
 				//ClientScript.RegisterClientScriptBlock(typeof(Page), "ValidateMsg", "<script>alert('You entered INCORRECT CAPTCHA Code!');</script>");
 			}

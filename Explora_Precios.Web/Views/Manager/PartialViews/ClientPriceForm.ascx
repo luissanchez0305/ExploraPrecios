@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<List<Explora_Precios.Web.Controllers.ViewModels.ClientViewModel>>" %>
-<%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
+<%@ Import Namespace="Explora_Precios.ApplicationServices" %>
 <b><label>Clients & Prices</label></b>
 <table id="clientPriceTable">
 <thead><tr><th>&nbsp;</th><th>Price</th><th>Url</th><th>Reference</th></tr></thead>

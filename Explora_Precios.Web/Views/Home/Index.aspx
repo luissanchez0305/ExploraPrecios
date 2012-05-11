@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Explora_Precios.Web.Controllers.ViewModels.IntroViewModel>" %>
 <%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
+<%@ Import Namespace="Explora_Precios.ApplicationServices" %>
 <asp:Content ID="HeaderTitleContent" ContentPlaceHolderID="TitleContent" runat="server">
 ExploraPrecios.com
 </asp:Content>

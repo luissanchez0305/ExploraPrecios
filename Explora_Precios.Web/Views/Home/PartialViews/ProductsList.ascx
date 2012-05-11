@@ -9,6 +9,7 @@
 <%@ Import Namespace="Explora_Precios.Web" %>
 <%@ Import Namespace="Explora_Precios.Web.Controllers" %>
 <%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
+<%@ Import Namespace="Explora_Precios.ApplicationServices" %>
 <% var moneyFormat = "#,###.00"; %>
 
 <%	var isFloating = Request.Url.AbsolutePath.Contains("GetFloatingProducts");
@@ -26,7 +27,6 @@
 	<div class="gridItem <%= isIE8 ? "nogo" : "" %>" onmouseover="enlarge(this, true);" onmouseout="enlarge(this, false);" >
 		<div class="frame">
 			<img width="<%= productImageSize[0] %>" height="<%= productImageSize[1] %>" alt="<%= product.productName %>" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(product.productImage) %>" />
-			
 			<% if (specialOffer != "0")
 			   {%>
 			<img src="../../Content/Images/etiqueta_oferta.gif" alt="Oferta" width="30px" height="35px" class="offerImage" /><%} %>

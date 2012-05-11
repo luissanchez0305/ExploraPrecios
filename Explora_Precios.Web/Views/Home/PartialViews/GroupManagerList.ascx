@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<Explora_Precios.Web.Controllers.ViewModels.GroupViewModel>>" %>
-<%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
+<%@ Import Namespace="Explora_Precios.ApplicationServices" %>
 
 	<ul class="groupList">
 		<li>

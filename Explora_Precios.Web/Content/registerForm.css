@@ -71,8 +71,8 @@ form li{
 	position:relative; /* Makes Instructs z-index stay on top in IE. */
 	-webkit-transition: background-color 350ms ease-out;
 	   -moz-transition: background-color 350ms ease-out;
-	     -o-transition: background-color 350ms ease-out;
-	        transition: background-color 350ms ease-out;
+		 -o-transition: background-color 350ms ease-out;
+			transition: background-color 350ms ease-out;
 }
 form ul:after,form li:after, form li div:after{
 	content:"."; 
@@ -257,8 +257,8 @@ input.text, input.search, textarea.textarea{
 
 input.nospin::-webkit-inner-spin-button,
 input.nospin::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 select.select{
@@ -300,7 +300,7 @@ form li.phone input.text, form li.phone span label,
 form li.time input.text, form li.time span label{
 	text-align:center;
 }
-form li.navigation a:link, a:visited {	color: #560808;	text-decoration:none; font-size: 11px; font-family: Arial; }
+form li.navigation a:link, a:visited { text-decoration:none; font-size: 11px; font-family: Arial; }
 form li.navigation a:hover { color: #FF9900; text-decoration:underline; font-size: 11px; font-family: Arial; }
 form li.button .button { margin-top:5px; background-color: #CCCCCC; border: 3px double #454544; color: #454544; margin-left: 0px; font-size:10px; right: 0px; width: 90px; } 
 form li.time select.select{
@@ -657,8 +657,8 @@ form .instruct{
 	font-size:105%;
 	-webkit-transition: opacity 350ms ease-out;
 	   -moz-transition: opacity 350ms ease-out;
-	     -o-transition: opacity 350ms ease-out;
-	        transition: opacity 350ms ease-out;
+		 -o-transition: opacity 350ms ease-out;
+			transition: opacity 350ms ease-out;
 }
 form .instruct small{
 	line-height:120%;

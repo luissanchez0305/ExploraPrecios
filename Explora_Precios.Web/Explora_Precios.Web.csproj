@@ -301,6 +301,9 @@
     <Content Include="Content\Images\money-sign.jpg" />
     <Content Include="Content\Images\red_arrow.jpg" />
     <Content Include="Content\Images\WhyRegister.png" />
+    <Content Include="Content\mainmenu\images\arrows-ffffff.png" />
+    <Content Include="Content\mainmenu\images\shadow.png" />
+    <Content Include="Content\mainmenu\superfish.css" />
     <Content Include="Content\plans\960.css" />
     <Content Include="Content\plans\Aristo\images\bg-input-focus.png" />
     <Content Include="Content\plans\Aristo\images\bg-input.png" />
@@ -435,6 +438,8 @@
     <Content Include="Scripts\banner\jquery.anythingslider.min.js" />
     <Content Include="Scripts\banner\jquery.colorbox-min.js" />
     <Content Include="Scripts\banner\jquery.mobile-1.0rc2.customized.min.js" />
+    <Content Include="Scripts\mainmenu\hoverIntent.js" />
+    <Content Include="Scripts\mainmenu\superfish.js" />
     <Content Include="Scripts\plans\jquery-1.3.1.min.js" />
     <Content Include="Scripts\plans\jquery-ui-1.8.11.custom.min.js" />
     <Content Include="Scripts\plans\jquery.form.js" />
@@ -445,9 +450,9 @@
     <Content Include="Scripts\Unused\jquery-ui-1.8.18-min.js" />
     <Content Include="Scripts\jquery.alerts.js" />
     <Content Include="Scripts\jquery.hoverIntent.minified.js" />
-    <Content Include="Scripts\fsmenu\fsmenu.js" />
-    <Content Include="Scripts\fsmenu\fsmenu_commented.js" />
-    <Content Include="Scripts\fsmenu\fsmenu_extras.js" />
+    <Content Include="Scripts\managermenu\fsmenu.js" />
+    <Content Include="Scripts\managermenu\fsmenu_commented.js" />
+    <Content Include="Scripts\managermenu\fsmenu_extras.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery-outsideevents-1.1.js" />
     <Content Include="Scripts\jquery.easing.1.3.js" />
