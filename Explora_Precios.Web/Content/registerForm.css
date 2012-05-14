@@ -153,7 +153,6 @@ form li.complex div span.right select{
 }
 
 label span, .section span, p span, .likert span{
-	display:inline !important;
 	float:none !important;
 }
 

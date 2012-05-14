@@ -368,11 +368,11 @@ label .itemModified .new { color: Green; }
 #ProductDisplayPanel .highlighted .panel { margin-left:4px; }
 #ProductDisplayPanel .highlighted .border { border-left:1px solid #A3B6CC; }
 #ProductDisplayPanel .highlighted .space { margin-right: 7px; } 
-#ProductDisplayPanel .highlighted .item { position:relative; float:left; width:131px; height:90%; }
+#ProductDisplayPanel .highlighted .item { position:relative; float:left; width:127px; height:90%; }
 #ProductDisplayPanel .highlighted img { z-index:199; margin-left: auto; margin-right:auto; display:block; }
 #ProductDisplayPanel .highlighted div.title { color: #354359; font-family: 'verdana'; font-size: 12px; font-weight: bold; left: 10px; top:75px; position:absolute; z-index:200; }
 #ProductDisplayPanel .highlighted div.itemprice { color: #C80F02; font-family: 'verdana'; font-size: 14px; font-weight: bold; float:right; top:30px; position:relative; z-index:200; }
-#ProductDisplayPanel .highlighted div.client { color: #2C7C7C; font-family: 'verdana'; font-size: 12px; font-weight: bold; float:right; left:0px; top:30px; position:relative; z-index:200; }
+#ProductDisplayPanel .highlighted div.client { color: #2C7C7C; font-family: 'verdana'; font-size: 12px; font-weight: bold; float:right; left:0px; top:30px; position:relative; z-index:200; min-width: 73px; text-align: right; }
 
 .tickercontainer { width: 745px; height: 27px; margin: 20px 0px 20px 0px; border: 1px solid black; overflow: hidden; }
 .tickercontainer .mask { position: relative; top: 8px; height: 18px; overflow: hidden; }

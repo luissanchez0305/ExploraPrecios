@@ -449,12 +449,12 @@ ExploraPrecios.com
 			</ul>
 		</div>       
 		<%} %> 
+		<div id="Grouped" class="section">
+			<label class="sectiontitle" style="color:#C80F02">Productos en grupos</label><img class="new" src="/Content/Images/nuevo-icon.gif" alt="nuevo" />
 		<% if (Model.GroupedProducts.Count() > 0)
 		   {  %>
-		<div id="Grouped" class="section">
 			<input type="hidden" id="grouped_page" value="1" />
 			<input type="hidden" id="grouped_max" value="<%= (int)(Model.GroupedProducts.Count() / 5) + 1 %>" />
-			<label class="sectiontitle" style="color:#C80F02">Productos en grupos</label><img class="new" src="/Content/Images/nuevo-icon.gif" alt="nuevo" />
 			<ul id="GroupedBanner">
 				<%  var index = 0;
 					var page = 0;
@@ -493,9 +493,15 @@ ExploraPrecios.com
 						indexItem = index % 5 == 0 ? 1 : indexItem + 1;
 					}
 				%>
-			</ul>
-		</div>       
+			</ul> 
 		<%} %> 		
+		<% if (Model.GroupedProducts.Count() < 5)
+			{%>
+			<div style="margin-top:<%= Model.GroupedProducts.Count() > 0 ? 40 : 200 %>px; width:<%= (5 - Model.GroupedProducts.Count()) * 138 %>px; position:relative; top:-160px; left: <%= (Model.GroupedProducts.Count() * 138) + 32 %>px; text-align:center;">
+				<h2>Que esperas?</h2><h2 style="color:#C80F02;"><img src="../../Content/Images/people.png" width="30px" height="30px" /> Has tu grupo de compra ahora!!</h2>
+			</div>
+			<% } %>  		
+		</div>    		
 		<% if (Model.OfferProducts.Count() > 5)
 		   {  %>
 		<div id="Offers" class="section">
