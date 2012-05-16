@@ -216,6 +216,7 @@
     <Content Include="Content\banner\colorbox.css" />
     <Content Include="Content\banner\diapo.css" />
     <Content Include="Content\BottomMenu.css" />
+    <Content Include="Content\html\welcomeexpedite.html" />
     <Content Include="Content\Images\banner\internet_explorer\borderBottomCenter.png" />
     <Content Include="Content\Images\banner\internet_explorer\borderBottomLeft.png" />
     <Content Include="Content\Images\banner\internet_explorer\borderBottomRight.png" />

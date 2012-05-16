@@ -267,6 +267,53 @@ namespace Explora_Precios.Web.Controllers
 			}
 			return response;
 		}
+		
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult VideoRegister()
+		{
+			var VRModel = new VideoRegisterModel();
+			var ValidModel = TryUpdateModel(VRModel);
+			var ValidationResults = new RegisterValidator().Validate(VRModel.video_email);
+			if (!ValidModel || !ValidationResults.isValid())
+			{
+				return Json(new
+				{
+					result = "fail",
+					msg = ValidationResults.First().Value
+				});
+			}
+			var Password = AccountHelper.NextRandom(8);
+			MembershipCreateStatus status = AccountMembership.CreateUser(VRModel.video_email, Password, VRModel.video_email);
+
+			if (status == MembershipCreateStatus.Success)
+			{
+				var Code = "";
+				var emailSent = AccountHelper.SendEmail(AccountHelper.EmailType.NewExpediteUser, VRModel.video_email, "", out Code, Password);
+				var NewUser = UserRepository.GetByEmail(VRModel.video_email);
+				NewUser.email = VRModel.video_email;
+				NewUser.username = VRModel.video_email;
+				NewUser.validationCode = Code;
+				NewUser.birthdate = System.Data.SqlTypes.SqlDateTime.MinValue.Value;
+				UserRepository.UpdateUser(NewUser);
+				var Message = "Bienvenido! Te has registrado con éxito! <br />En breve recibirá un correo con tu password que podrás cambiar en cualquier momento.";
+				
+				return Json(new
+				{
+					result = "success",
+					msg = Message
+				});
+			}
+			else
+			{
+				ViewData.ModelState.AddModelError("ErrorData", ErrorCodeToString(status));
+
+				return Json(new
+				{
+					result = "fail",
+					msg = ErrorCodeToString(status)
+				});
+			}
+		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Register()
@@ -305,7 +352,7 @@ namespace Explora_Precios.Web.Controllers
 							NewUser.birthdate = UserModel.Birthdate;
 							NewUser.validationCode = Code;
 							UserRepository.UpdateUser(NewUser);
-							var Message = "Su inscripción ha sido ingresada con éxito! <br />En breve recibirá un correo para verificar su dirección de correo electrónico.";
+							var Message = "Bienvenido! Te has registrado con éxito! <br />En breve recibirás un correo para verificar tu dirección de correo electrónico.";
 							if (!string.IsNullOrEmpty(UserModel.Redirect))
 							{
 								var ProductRepository = new Explora_Precios.Data.ProductRepository();

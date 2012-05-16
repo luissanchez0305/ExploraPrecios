@@ -410,6 +410,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult GetPromoVideo()
 		{
+			ViewData.Model = HttpContext.User.Identity.Name;
 			return Json(new { html = this.RenderViewToString("PartialViews/PromoVideo", ViewData) });
 		}
 

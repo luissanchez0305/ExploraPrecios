@@ -12,7 +12,7 @@ img { border: 0; }
 .logo { background: url(images/logo_modificado.png) no-repeat left top ; width:275px;height:146px; cursor: pointer;}
 /* ===================== Counter tools ====================== */
 .notification { float:right; position: relative; top: -675px; font-weight:bold; }
-.notification img { float: right; padding-right: 0px; /*width: 165px; height: 45px;*/ }
+.notification img { float: right; padding-right: 0px; width: 165px; height: 45px; }
 
 /* ===================== Page layout ====================== */
 #page { background-color:White; margin:0px; height:100%; position:absolute; width:1215px; }
@@ -31,7 +31,7 @@ img { border: 0; }
 .loginbox.home { top: -2px; right:15px; }
 .loginbox .facebook { position:absolute; top: 23px; }
 .loginbox.home .facebook { left: 26px; }
-.loginbox.home .groups { position:absolute; top: 23px; float:right; }
+.loginbox.home .groups { position:absolute; top: 23px; left:55px; }
 .loginbox.home .groups .tooltip { height: 165px; width: 320px;  }
 .loginbox.home .groups .tooltip h2 { font-size:14px; font-weight: bold; }
 .loginbox.home .groups .tooltip ul { background-color: White; border-radius:10px; border-color: #CE8036; padding:5px 10px 5px 10px; list-style:none; height:100px; }

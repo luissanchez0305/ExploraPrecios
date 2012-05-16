@@ -386,3 +386,19 @@ $(document).ready(function () {
 		}
 		return windowHeight;
 	}
+
+	function loadPromotionalVideo(data) {
+		$.get('/Home/GetPromoVideo', function (data) {
+			$("#FloatingPanel").html(data.html);
+			$("#FloatingPanel").show();
+			$("#FloatingPanel").dialog('open');
+			$("#ui-dialog-title-FloatingPanel").html('Video: Por qué registrarse en ExploraPrecios.com?');
+		});
+	}
+	
+	function clearTextBox(id, value) {
+		if ($.trim($('#' + id).val()).length == 0) {
+			$('#' + id).attr("style", "color:gray;");
+			$('#' + id).val(value);
+		}
+	}

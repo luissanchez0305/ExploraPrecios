@@ -48,7 +48,7 @@ namespace Explora_Precios.Web.Controllers
 					}
 					else
 					{
-						Name = CurrentUser.name;
+						Name = string.IsNullOrEmpty(CurrentUser.name) ? CurrentUser.email.Substring(0, CurrentUser.email.IndexOf("@")) : CurrentUser.name;
 					}
 				}
 			}
