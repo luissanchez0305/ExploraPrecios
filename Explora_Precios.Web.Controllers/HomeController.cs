@@ -208,6 +208,10 @@ namespace Explora_Precios.Web.Controllers
 			{
 				highlightedProducts.AddRange(offerProducts.Where(cp => cp.client.Id == clientId).Take(6));
 			}
+			if (highlightedProducts.Count < 10)
+			{
+				highlightedProducts.AddRange(_cpRepository.GetLastUpdated());
+			}
 			var newProducts = _cpRepository.GetLastAdded(); // sacamos los nuevos productos
 
 			// se generan los objetos de banner, se revuelven y se guardan una variable
@@ -241,14 +245,25 @@ namespace Explora_Precios.Web.Controllers
 
 		private BannerProduct LoadBannerProduct(Client_Product cp, bool loadImage)
 		{
+			byte[] image = { };
+			try
+			{
+				image = loadImage && cp.product.image != null ? cp.product.image.imageObj : null;
+			}
+			catch (NHibernate.LazyInitializationException)
+			{
+				var product = _productRepository.Get(cp.product.Id);
+				image = product.image.imageObj;
+			}
+
 			return new BannerProduct()
 			{
 				ProductId = cp.product.Id,
 				Name = cp.product.name,
 				Client = cp.client.name,
-				Image = loadImage && cp.product.image != null ? cp.product.image.imageObj : null,
+				Image = image,
 				ClientId = cp.client.Id,
-				Price = cp.specialPrice
+				Price = cp.specialPrice > 0 ? cp.specialPrice : cp.price
 			};
 		}
 
@@ -395,6 +410,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult GetPromoVideo()
 		{
+			ViewData.Model = HttpContext.User.Identity.Name;
 			return Json(new { html = this.RenderViewToString("PartialViews/PromoVideo", ViewData) });
 		}
 

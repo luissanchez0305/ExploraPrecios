@@ -167,12 +167,12 @@
 			</div>
 			<div class="loginbox home">
 			<%--<%= Html.TextBox("temp") %>--%>
-				<% var isLoggedIn = !string.IsNullOrEmpty(ViewData["CurrentName"].ToString()); %>
+				<% var isLoggedIn = ViewData["CurrentName"] != null && !string.IsNullOrEmpty(ViewData["CurrentName"].ToString())	; %>
 				<div class="loggedin <%= isLoggedIn ? "" : "hideme" %>" style="float:left;"><a class="profile" href="javascript:void(0)">Perfil de <label id="currentName"><%= ViewData["CurrentName"] %></label></a> / <a class="logout" href="javascript:void(0)">Cerrar</a></div>
 				<div class="will_login <%= isLoggedIn ? "hideme" : "" %>" style="float:left;"><a class="register" href="javascript:void(0)">Registrarse</a> / <a class="login" href="javascript:void(0)">Iniciar</a></div>
 				<div style="float:right;">/ <a href="/Contact">Contáctenos</a></div>
 				<div class="will_login facebook hand <%= isLoggedIn ? "hideme" : "" %>"><img src="../../Content/Images/facebook_login_button.gif" onclick="authorizeFacebook(); return false;" /></div>
-				<div class="will_login hand groups <%= isLoggedIn ? "" : "hideme" %>">Estoy en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
+				<div class="will_login hand groups <%= isLoggedIn ? "" : "hideme" %>">Estás en <b style="color:Red;"><%=ViewData["GroupSize"] %></b> grupos de compras</div>
 			</div>
 			<div class="searchbox">
 				<div class="hand notification">
@@ -184,24 +184,17 @@
 				</div>
 				<script type="text/javascript">
 					$(document).ready(function () {
-						clearSearchText()
+						clearTextBox('search_text', 'Buscar');
 						$("#search_text").focus(function () {
 							if ($("#search_text").val() == "Buscar") {
 								$("#search_text").attr("style", "color:black;");
 								$("#search_text").val("");
 							}
 						}).blur(function () {
-							clearSearchText();
+							clearTextBox('search_text', 'Buscar');
 						});
 
 					});
-
-					function clearSearchText() {
-						if ($.trim($("#search_text").val()).length == 0) {
-							$("#search_text").attr("style", "color:gray;");
-							$("#search_text").val("Buscar");
-						}
-					}
 				</script>
 			</div>
 		</div>
@@ -359,22 +352,17 @@
 			showEffect: 'slide',
 			hideEffect: 'fade'
 		});
-//		$(".notification").click(function () {
-//			$.get('<%= Url.Action("GetPromoVideo","Home") %>', function (data) {
-//				$("#FloatingPanel").html(data.html);
-//				$("#FloatingPanel").show();
-//				$("#FloatingPanel").dialog('open');
-//				$("#ui-dialog-title-FloatingPanel").html('Video: Por qué registrarse en ExploraPrecios.com?');
-//			});
-//		});
-		$(".notification").simpletip({
-			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td><img src="../../Content/Images/people.png" alt="pregunta" width="20px" height="20px"/></td><td>Podrás crear grupos de compra de los productos que te interesaría recibir grandes descuentos y ofertas en las tiendas en que los venden</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
-			fixed: true,
-			shadow: true,
-			position: ["-1370", "0"],
-			showEffect: 'slide',
-			hideEffect: 'fade'
+		$(".notification").click(function () {
+				loadPromotionalVideo();
 		});
+//		$(".notification").simpletip({
+//			content: '<table><tr><td><img src="../../Content/Images/Questionmark.png" alt="pregunta" width="20px" height="20px"/></td><td><h2>Por qué registrarse en <label>ExploraPrecios.com</label>?</h2></td></tr><tr><td colspan="2">Registrarse con nosotros es muy fácil, completamente gratis y obtienes muchos beneficios. Como:</td></tr><tr><td><img src="../../Content/Images/money-sign.jpg" alt="dinero" width="20px" height="20px"/></td><td>Oportunidades de participar en promociones especiales de los productos de tu interés y de ganar muchos premios</td></tr><tr><td><img src="../../Content/Images/Network-Marketing.jpg" alt="pregunta" width="20px" height="35px"/></td><td>Podrás seguir los productos que te interesan en todo momento y recibirás un correo justo en el momento en que la tienda los rebaje o los ponga en oferta</td></tr><tr><td><img src="../../Content/Images/people.png" alt="pregunta" width="20px" height="20px"/></td><td>Podrás crear grupos de compra de los productos que te interesaría recibir grandes descuentos y ofertas en las tiendas en que los venden</td></tr><tr><td colspan="2">Que esperas, regístrate y empieza a usar <label>ExploraPrecios.com</label></td></tr></table>',
+//			fixed: true,
+//			shadow: true,
+//			position: ["-1370", "0"],
+//			showEffect: 'slide',
+//			hideEffect: 'fade'
+//		});
 
 		var autoPlayTime = 10000;
 		$(this.window).resize(function () {
@@ -495,6 +483,9 @@
 			});
 			if (getParameterByName('i').length > 0) {
 				LoadProductDetail(getParameterByName('i'), '0');
+			}
+			if (getParameterByName('v').length > 0) {
+				loadPromotionalVideo();				
 			}
 
 			//----- Bottom Menu ------
