@@ -401,6 +401,7 @@ ExploraPrecios.com
 			display: block;
 			overflow: hidden;
 			position: relative;
+			width: inherit;
 		}
 	</style>
 	<div id="ProductDisplayPanel">

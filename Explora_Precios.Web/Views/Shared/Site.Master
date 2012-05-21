@@ -193,7 +193,6 @@
 						}).blur(function () {
 							clearTextBox('search_text', 'Buscar');
 						});
-
 					});
 				</script>
 			</div>
@@ -243,7 +242,7 @@
 							</li>
 					<% } %>
 				
-					<% if (!(ViewData["newProductsCount"] != null && ViewData["newProductsCount"].ToString() != "0"))
+					<% if (ViewData["newProductsCount"] != null && ViewData["newProductsCount"].ToString() != "0")
 						{ %>
 							<li class="tabCounter"><a id="item_OfferNew" href="javascript:void(0);">Nuevos</a></li>
 						<% } %>

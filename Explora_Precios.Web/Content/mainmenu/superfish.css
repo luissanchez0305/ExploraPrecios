@@ -4,6 +4,7 @@
 	margin:			0;
 	padding:		0;
 	list-style:		none;
+	z-index:		1500; 
 }
 .main-menu {
 	line-height:	1.0;
@@ -62,22 +63,23 @@ ul.main-menu li li li.sfHover ul {
 	/*border-top:		1px solid #CFDEFF;*/
 	padding: 		.75em 1em;
 	text-decoration:none;
+	/*color:			#8E8E20;*/
 }
 .main-menu a, .main-menu a:visited  { /* visited pseudo selector so IE6 applies text colour*/
 	color:			#13a;
 }
 .main-menu li {
-	background:		#BDD2FF;
+	background:		white;
 }
 .main-menu li li {
-	background:		#AABDE6;
+	background:		white;
 }
 .main-menu li li li {
-	background:		#9AAEDB;
+	background:		white;
 }
 .main-menu li:hover, .main-menu li.sfHover,
 .main-menu a:focus, .main-menu a:hover, .main-menu a:active {
-	background:		#CFDEFF;
+	background:		white url(../images/menu_normal_bg.png) repeat-x left bottom; 
 	outline:		0;
 }
 
@@ -85,6 +87,7 @@ ul.main-menu li li li.sfHover ul {
 .main-menu a.sf-with-ul {
 	padding-right: 	2.25em;
 	min-width:		1px; /* trigger IE7 hasLayout so spans position accurately */
+	/*color:			#8E8E20;*/
 }
 .sf-sub-indicator {
 	position:		absolute;
@@ -95,7 +98,7 @@ ul.main-menu li li li.sfHover ul {
 	height:			10px;
 	text-indent: 	-999em;
 	overflow:		hidden;
-	background:		url('images/arrows-ffffff.png') no-repeat -10px -100px; /* 8-bit indexed alpha png. IE6 gets solid image only */
+	background:		url('images/arrows-000000.png') no-repeat -10px -100px; /* 8-bit indexed alpha png. IE6 gets solid image only */
 }
 a > .sf-sub-indicator {  /* give all except IE6 the correct values */
 	top:			.8em;
