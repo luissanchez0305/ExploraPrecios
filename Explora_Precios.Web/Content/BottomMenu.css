@@ -48,6 +48,10 @@ body {
 	top: -18px;
 	position:relative;
 	}
+
+.menu-root span	{
+	vertical-align:middle;
+}
  
 .menu-root:hover {
 	background-color: #DDC20A ;

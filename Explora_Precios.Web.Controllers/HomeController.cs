@@ -90,51 +90,8 @@ namespace Explora_Precios.Web.Controllers
 
 			if (!(RenderMobile ?? "normal").Contains("normal"))
 				Response.Redirect("http://mobile.exploraprecios.com");
-			
-			// Get Ticker Items
-			var result = new List<string>();
-
-			var SubCats = ConfigurationManager.AppSettings["TickerSubCategories"].Split(',').RandomizeList<string>();
-
-			if (System.Web.HttpRuntime.Cache.Get("SubCategorySpinnerList") == null)
-			{
-				foreach (var subCat in SubCats)
-				{
-					var subCatObj = _subCatRepository.Get(int.Parse(subCat)).FromLevelsToCatalog();
-					var productList = _productRepository.GetbySubCategory(int.Parse(subCat)).Select(product => product.clients.OrderBy(client => client.price).First());
-					if (productList.Count() > 0)
-					{
-						var price = productList.OrderBy(product => product.price).First().price;
-						var li = "<li><span>" + subCatObj.subCategoryName + "</span><a href=\"/Home/Products/?catlev=2&id=" + subCat + "\" title=\"" + subCatObj.departmentName + " - " + subCatObj.categoryName + " - " + subCatObj.subCategoryName + "\" >desde $" + String.Format("{0:0.00}", price) + "</a></li>";
-						result.Add(li);
-					}
-				}
-				System.Web.HttpRuntime.Cache.Insert("SubCategorySpinnerList", result,
-					null,
-					DateTime.Now.AddHours(23),
-					System.Web.Caching.Cache.NoSlidingExpiration);
-			}
-			else
-			{
-				result = (List<string>)System.Web.HttpRuntime.Cache.Get("SubCategorySpinnerList");
-			}
-
-			var ProdutTypes = ConfigurationManager.AppSettings["TickerProductTypes"].Split(',').RandomizeList<string>();
-
-			foreach (var prodType in ProdutTypes)
-			{
-				var prodTypeObj = _productTypeRepository.Get(int.Parse(prodType)).FromLevelsToCatalog();
-				var productList = _productRepository.GetbyProductType(int.Parse(prodType)).Select(product => product.clients.OrderBy(client => client.price).First());
-				if (productList.Count() > 0)
-				{
-					var price = productList.OrderBy(product => product.price).First().price;
-					var li = "<li><span>" + prodTypeObj.subCategoryName + "</span><a href=\"/Home/Products/?catlev=2&id=" + prodType + "\" title=\"" + prodTypeObj.departmentName + " - " + prodTypeObj.categoryName + " - " + prodTypeObj.subCategoryName + " - " + prodTypeObj.productTypeName + "\" >desde $" + String.Format("{0:0.00}", price) + "</a></li>";
-					result.Add(li);
-				}
-			}
 
 			var IntroModel = new IntroViewModel();
-			IntroModel.TickerList = result;
 
 			//Productos de las lista de destacados, en ofertas y nuevos
 			if (System.Web.HttpRuntime.Cache.Get("HighlightProducts") == null ||
@@ -332,8 +289,74 @@ namespace Explora_Precios.Web.Controllers
 			id = id ?? 1;
 			var homeModel = LoadHomeModel((int)catLev, (int)id);
 			homeModel.LoadFilters((int)catLev, (int)id);
-			LoadCounterValues();
+			ViewData["depId"] = homeModel.departmentId;
 			return View(homeModel);
+		}
+
+		public ActionResult LoadMainMenu(int depId)
+		{
+			var newProductsCount = 0;
+			if (Session["NewProducts"] == null)
+			{
+				var newProducts = Session["NewProducts"] = _cpRepository.GetLastAdded();
+				newProductsCount = ((IList<Client_Product>)newProducts).Count;
+			}
+			else
+				newProductsCount = ((IList<Client_Product>)Session["NewProducts"]).Count;
+
+			var mainMenuModel = new MainMenuModel { DepId = depId, DepList = new DepartmentRepository().GetAll().OrderBy(d => d.index_order), DisplayNewProducts = depId >= 0 && newProductsCount > 0 };
+			ViewData.Model = mainMenuModel;
+			return Json(new { 
+				html = this.RenderViewToString("PartialViews/MainMenu",ViewData)
+			});
+		}
+
+		public ActionResult LoadTickerList()
+		{
+			// Get Ticker Items
+			var result = new List<string>();
+
+			var SubCats = ConfigurationManager.AppSettings["TickerSubCategories"].Split(',').RandomizeList<string>();
+
+			if (System.Web.HttpRuntime.Cache.Get("SubCategorySpinnerList") == null)
+			{
+				foreach (var subCat in SubCats)
+				{
+					var subCatObj = _subCatRepository.Get(int.Parse(subCat)).FromLevelsToCatalog();
+					var productList = _productRepository.GetbySubCategory(int.Parse(subCat)).Select(product => product.clients.OrderBy(client => client.price).First());
+					if (productList.Count() > 0)
+					{
+						var price = productList.OrderBy(product => product.price).First().price;
+						var li = "<li><span>" + subCatObj.subCategoryName + "</span><a href=\"/Home/Products/?catlev=2&id=" + subCat + "\" title=\"" + subCatObj.departmentName + " - " + subCatObj.categoryName + " - " + subCatObj.subCategoryName + "\" >desde $" + String.Format("{0:0.00}", price) + "</a></li>";
+						result.Add(li);
+					}
+				}
+				System.Web.HttpRuntime.Cache.Insert("SubCategorySpinnerList", result,
+					null,
+					DateTime.Now.AddHours(23),
+					System.Web.Caching.Cache.NoSlidingExpiration);
+			}
+			else
+			{
+				result = (List<string>)System.Web.HttpRuntime.Cache.Get("SubCategorySpinnerList");
+			}
+
+			var ProdutTypes = ConfigurationManager.AppSettings["TickerProductTypes"].Split(',').RandomizeList<string>();
+
+			foreach (var prodType in ProdutTypes)
+			{
+				var prodTypeObj = _productTypeRepository.Get(int.Parse(prodType)).FromLevelsToCatalog();
+				var productList = _productRepository.GetbyProductType(int.Parse(prodType)).Select(product => product.clients.OrderBy(client => client.price).First());
+				if (productList.Count() > 0)
+				{
+					var price = productList.OrderBy(product => product.price).First().price;
+					var li = "<li><span>" + prodTypeObj.subCategoryName + "</span><a href=\"/Home/Products/?catlev=2&id=" + prodType + "\" title=\"" + prodTypeObj.departmentName + " - " + prodTypeObj.categoryName + " - " + prodTypeObj.subCategoryName + " - " + prodTypeObj.productTypeName + "\" >desde $" + String.Format("{0:0.00}", price) + "</a></li>";
+					result.Add(li);
+				}
+			}
+
+			ViewData.Model = result;
+			return Json(new { html = this.RenderViewToString("PartialViews/ProductTicker", ViewData) });
 		}
 
 		public ActionResult ScrollProducts(int catLev, int id, int page)
@@ -404,7 +427,7 @@ namespace Explora_Precios.Web.Controllers
 				HomeModel.LoadFilters(search: s);
 			else
 				HomeModel.LoadFilters(cl.Value, ci.Value);
-			LoadCounterValues();
+			ViewData["depId"] = HomeModel.departmentId;
 			return View("Products", HomeModel);
 		}
 
@@ -447,19 +470,11 @@ namespace Explora_Precios.Web.Controllers
 		}
 
 		// AJAX
-		public JsonResult GetFloatingProducts(string type, int? page, bool? ie8)
+		public JsonResult GetFloatingProducts(int? page, bool? ie8)
 		{
 			var productVM = new ProductViewModel(_productTypeRepository, _subCatRepository, _catRepository, _departmentRepository);
 			var pageSize = int.Parse(System.Configuration.ConfigurationManager.AppSettings["FloatingPageSize"]);
-			var allProducts = new List<Explora_Precios.Core.Product>();
-			if (type == "onsale")
-			{
-				allProducts = _cpRepository.GetProductsOnSale().Select(cp => cp.product).ToList();
-			}
-			else
-			{
-				allProducts = _cpRepository.GetLastAdded().Select(cp => cp.product).ToList();
-			}
+			var allProducts =  _cpRepository.GetLastAdded().Select(cp => cp.product).ToList();
 
 			var pagedList = new PagedList<Explora_Precios.Core.Product>(allProducts, page.HasValue ? page.Value - 1 : 0, pageSize);
 			ViewData.Model = new ProductsListViewModel()
@@ -512,7 +527,7 @@ namespace Explora_Precios.Web.Controllers
 			return Json(new
 			{
 				key = Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(GenerateImageBytesCaptcha()),
-				text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
+				text = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
 			});
 		}
 		
@@ -525,7 +540,7 @@ namespace Explora_Precios.Web.Controllers
 			var key = System.Configuration.ConfigurationManager.AppSettings["PublicKey"];
 			return Json(new
 			{
-				text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key),
+				text = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key),
 				html = this.RenderViewToString("PartialViews/ProductReport", ViewData)
 			});
 		}
@@ -571,7 +586,7 @@ namespace Explora_Precios.Web.Controllers
 				{
 					result = "novalid",
 					html = this.RenderViewToString("PartialViews/ProductReport", ViewData),
-					text = IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
+					text = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Session["CaptchaCode"].ToString(), key)
 				});
 				//ClientScript.RegisterClientScriptBlock(typeof(Page), "ValidateMsg", "<script>alert('You entered INCORRECT CAPTCHA Code!');</script>");
 			}
@@ -899,7 +914,6 @@ namespace Explora_Precios.Web.Controllers
 		public ActionResult Search(string s)
 		{
 			var homeViewModel = LoadHomeModel(s);
-			LoadCounterValues();
 			homeViewModel.LoadFilters(search: s);
 			return View(homeViewModel);
 		}
@@ -963,25 +977,6 @@ namespace Explora_Precios.Web.Controllers
 				products = products.Where(x => x.brand.name == (b));
 			};
 			return products;
-		}
-
-		private void LoadCounterValues()
-		{
-			if (Session["NewProducts"] == null)
-			{
-				var newProducts = Session["NewProducts"] = _cpRepository.GetLastAdded();
-				ViewData["newProductsCount"] = ((IList<Client_Product>)newProducts).Count;
-			}
-			else
-				ViewData["newProductsCount"] = ((IList<Client_Product>)Session["NewProducts"]).Count;
-
-			if (Session["DisplayOffers"] == null)
-			{
-				var onSaleProducts = Session["DisplayOffers"] = _cpRepository.GetProductsOnSale();
-				ViewData["productsSaleCount"] = ((IList<Client_Product>)onSaleProducts).Count;
-			}
-			else
-				ViewData["productsSaleCount"] = ((IList<Client_Product>)Session["DisplayOffers"]).Count;
 		}
 
 		private byte[] GenerateImageBytesCaptcha()

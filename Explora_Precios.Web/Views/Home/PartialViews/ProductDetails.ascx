@@ -4,7 +4,7 @@
 <% var moneyFormat = "#,###.00";
 
    var highlight = Request.QueryString["_highlight"];
-   var id_val = Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]);
+   var id_val = Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(Model.productId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]);
    var productImageSize = Model.productImage.FitImage(250, 200);%>
 
 	<div id="FloatingPanel" class="details">
@@ -72,7 +72,7 @@
 					<% if (store.specialPrice == 0){%><br /><%}%><div class="openProduct">
 						<div class="attention25_20" title="<%= isReported ? "Este producto ya ha sido reportado como desactualizado" : "Reporta este producto como desactualizado" %>">
 							<div class="clickReport hand <%= isReported ? "reported" : "reportme" %>" style="float:left;"></div>
-							<input type="hidden" class="current" value="<%= Explora_Precios.Web.Controllers.Helpers.IdEncrypter.EncryptStringAES(store.clientProductId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]) %>" />
+							<input type="hidden" class="current" value="<%= Explora_Precios.ApplicationServices.Helper.IdEncrypter.EncryptStringAES(store.clientProductId.ToString(), System.Configuration.ConfigurationSettings.AppSettings["PublicKey"]) %>" />
 							<a href="<%= store.url %>" target="_blank">Ir a la pagina (<%= store.domain %>)</a>
 							<div class="ProductReport" style="display:none; width:330px; padding-top: 5px;"><img id="reportLoadingImg" src="../../Content/Images/ajax-loader.gif" alt="Loading..." /></div>
 						</div>

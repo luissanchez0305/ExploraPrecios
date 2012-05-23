@@ -25,7 +25,7 @@
 		}
 
 	strong, em, b, i {
-    	font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif; /* Fixes Lucida Sans Unicode looking ugly on Windows */
+		font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif; /* Fixes Lucida Sans Unicode looking ugly on Windows */
 		}
 
 	p {
@@ -158,8 +158,13 @@
 		padding: 40px 0;
 		}
 		
+	.nav_image.fixed {
+		position: fixed;
+		top: 0;
+		padding: 5px 0;
+	}
 	.navigation.fixed {
-  		position: fixed;
+		position: fixed;
 		top: 0;
 		padding: 40px 0;
 		text-align: center;

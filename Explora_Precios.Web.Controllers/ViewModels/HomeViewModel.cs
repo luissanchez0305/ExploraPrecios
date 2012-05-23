@@ -42,17 +42,21 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 	{
 		public IntroViewModel()
 		{
-			TickerList = new List<string>();
 			HighlightProducts = new List<BannerProduct>();
 			OfferProducts = new List<BannerProduct>();
 			NewProducts = new List<BannerProduct>();
 		}
 
-		public List<string> TickerList { get; set; }
 		public IEnumerable<BannerProduct> HighlightProducts { get; set; }
 		public IEnumerable<BannerProduct> OfferProducts { get; set; }
 		public IEnumerable<BannerProduct> NewProducts { get; set; }
 		public IEnumerable<GroupViewModel> GroupedProducts { get; set; }
+	}
+
+	public class MainMenuModel {
+		public int DepId { get; set; }
+		public IEnumerable<Department> DepList { get; set; }
+		public bool DisplayNewProducts { get; set; }
 	}
 
 	public class BannerProduct

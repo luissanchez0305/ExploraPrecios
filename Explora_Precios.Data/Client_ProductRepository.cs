@@ -28,7 +28,7 @@ namespace Explora_Precios.Data
 		{
 			return NHibernateSession.Current.CreateCriteria(typeof(Client_Product))
 				.Add(Expression.Conjunction()
-						.Add(Expression.Ge("dateModified", DateTime.Now.AddDays(-14)))
+						.Add(Expression.Ge("dateModified", DateTime.Now.AddDays(-20)))
 						.Add(Expression.Eq("isActive", true))
 						.Add(Expression.Le("price", (float)200)))
 				.SetMaxResults(20)

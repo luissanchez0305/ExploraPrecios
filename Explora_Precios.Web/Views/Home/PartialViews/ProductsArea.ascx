@@ -10,13 +10,8 @@
 <%@ Import Namespace="Explora_Precios.Web.Controllers" %>
 <!-- BEGIN Productos de flotantes -->
 <div class="nav_floating_area roundedBorder">
-	<div id="nav_floating_buttons">
-		<input type="button" value="Ofertas" id="btn_onsale_floating" class="formbutton" />&nbsp;
-		<input type="button" value="Nuevos" id="btn_new_floating" class="formbutton" />&nbsp;
-		<img alt="Loading..." id="img_Floating_Loading" src="../../Content/Images/loading_big.gif" class="smallImg" style="display:none; vertical-align:bottom;" />
-	</div>
-	<div id="grid_floating" class="grid" style="padding-top:15px; padding-bottom:10px;"></div>
-	<div class="nav_floating nav_floating_bottom hand">Cerrar <img src="../../Content/Images/hide.png" alt="Cerrar" class="nav_floating_hide" /> </div>
+	<div id="grid_floating" class="grid" style="width:100%; padding-top:15px; padding-bottom:10px;"></div>
+	<div class="nav_floating nav_floating_bottom hand"><div style="margin-top:2px">Cerrar <img src="../../Content/Images/hide.png" alt="Cerrar" class="nav_floating_hide" /> </div></div>
 </div>
 <!-- END Productos de flotantes -->
 
@@ -55,10 +50,12 @@
 
 	<% if(Model.productsListViewModel.products.HasNextPage) { %>
 	$(document).ready(function () {
+		//alert("window " + $(window).height() + " left " + $('div.left').height());
 		$(window).scroll(function () {
-			var h = $('#grid').height();
+			var diff = $('#grid').height() - $(window).height();
+			//var h = $('#grid').height();
 			var y = $(window).scrollTop();
-			if (y > (h * .47) && lastPaged < y && !calculatingPage && $('#NextPage').val() != '-1') {
+			if (y >= diff && lastPaged < y && !calculatingPage && $('#NextPage').val() != '-1') {
 				calculatingPage = true;
 				lastPaged = y;
 				var page = $('#NextPage').val();
@@ -93,14 +90,12 @@
 						$('#NextPage').val('-1');
 				});
 			}
-			else if(lastPaged - (getWindowHeight() * .75) > h) {
-					lastPaged = h - (getWindowHeight() * .75);
+			else if(lastPaged - getWindowHeight() > diff) {
+					lastPaged = diff - getWindowHeight();
 			}
 			// Shows the goTop
 			if(y > getWindowHeight() && !showingGoTop) {
-				$('#site-bottom-bar').toggleClass('hide');
-				$('#pageFooter').hide();
-				$('#bottomPageFooter').show();
+				$('.menu-root').show();
 				goTopShowedAt = y;
 				showingGoTop = true;
 				$(".bottomDisclaimer").simpletip({
@@ -112,11 +107,9 @@
 				});
 			}
 			// Hides the goTop
-			if(y < goTopShowedAt && showingGoTop) {				
+			if(y < goTopShowedAt && showingGoTop) {			
 				goTopShowedAt = 0;
-				$('#pageFooter').show();
-				$('#bottomPageFooter').hide();
-				$('#site-bottom-bar').toggleClass('hide');
+				$('.menu-root').hide();
 				showingGoTop = false;
 			}
 		});

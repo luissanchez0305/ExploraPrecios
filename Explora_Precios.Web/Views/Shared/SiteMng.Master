@@ -18,7 +18,7 @@
 	<link href="/content/images/compass_icon.png" rel="shortcut icon" /> 
 	
 	 <!-- FreeStyle Menu v1.0RC by Angus Turnbull http://www.twinhelix.com -->
-	 <script type="text/javascript" src="/scripts/fsmenu/fsmenu.js"></script>
+	 <script type="text/javascript" src="/scripts/managermenu/fsmenu.js"></script>
 	 <!-- Demo CSS layouts for the list menu. Pick your favourite one and customise! -->
 	 <!-- Remove all but one and change "alternate stylesheet" to "stylesheet" to enable -->
 	 <link rel="alternate stylesheet" type="text/css" href="/content/fsmenu/listmenu_o.css" title="Vertical 'Office'" />

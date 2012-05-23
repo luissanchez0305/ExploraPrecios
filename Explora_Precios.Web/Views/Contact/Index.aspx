@@ -50,11 +50,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <%= Html.ValidationSummary("Corrija los siguientes errores:")%>
 <form id="contactform" method="post" action="/Contact/SendContact">
  <div class="contact">
-    <% if (Model.success)
-       { %>
-        <label class="contactsuccess" for="cfsuccess">El mensaje ha sido enviado satisfactoriamente. En menos de 24 horas recibirá respuesta por parte de uno de nuestros representantes.</label> <br /><br />
-    <% } %>
-    <label class="contactlabel">Por favor proporcione la siguiente informacion y nos pondremos en comunicacion con usted tan pronto nos sea posible</label><br /><br /><br /><br /><br />
+	<% if (Model.success)
+	   { %>
+		<label class="contactsuccess" for="cfsuccess">El mensaje ha sido enviado satisfactoriamente. En menos de 24 horas recibirá respuesta por parte de uno de nuestros representantes.</label> <br /><br />
+	<% } %>
+	<label class="contactlabel">Por favor proporcione la siguiente informacion y nos pondremos en comunicacion con usted tan pronto nos sea posible</label><br /><br /><br /><br /><br />
 	<div>
 	 <label for="cfname">Nombre: <em>(requerido)</em></label>
 	 <%= Html.TextBox("name", Model.name, new {size = "30"}) %>
@@ -70,118 +70,118 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	 <label for="cfmessage">Su Mensaje: <em>(requerido)</em></label>
 	 <%= Html.TextArea("message", Model.message, new {cols = "30", rows = "8"}) %>
 	</div>
-    <%= Html.Captcha() %>
+	<%= Html.Captcha() %>
  </div>
 
  <div><input type="submit" value="Enviar" name="cfsubmit" id="cfsubmit" class="formbutton" /></div>
 </form>
-    <div id="FloatingPanel"></div>
-    <div id="SuccessFBRegister"></div>
-    <input type="hidden" id="current" />
-    <input type="hidden" id="text" />
+	<div id="FloatingPanel"></div>
+	<div id="SuccessFBRegister"></div>
+	<input type="hidden" id="current" />
+	<input type="hidden" id="text" />
 <script type="text/javascript">
-    var autoFloatingTimer;
-    $("#FloatingPanel").dialog({
-        autoOpen: false,
-        bgiframe: false,
-        modal: true,
-        draggable: false,
-        height: 400,
-        width: 620,
-        resizable: false
-    });
-    $("#FloatingPanel").hide();
-    $("#FloatingPanel").dialog("close");
-    $("#FloatingPanel").bind("clickoutside", function (event) {
-        $(this).hide();
-        $(this).dialog("close");
-    });
-    $("#SuccessFBRegister").dialog({
-        autoOpen: false,
-        bgiframe: false,
-        modal: true,
-        draggable: false,
-        height: 100,
-        width: 100,
-        resizable: false
-    });
-    $("#SuccessFBRegister").hide();
-    $("#SuccessFBRegister").dialog("close");
+	var autoFloatingTimer;
+	$("#FloatingPanel").dialog({
+		autoOpen: false,
+		bgiframe: false,
+		modal: true,
+		draggable: false,
+		height: 400,
+		width: 620,
+		resizable: false
+	});
+	$("#FloatingPanel").hide();
+	$("#FloatingPanel").dialog("close");
+	$("#FloatingPanel").bind("clickoutside", function (event) {
+		$(this).hide();
+		$(this).dialog("close");
+	});
+	$("#SuccessFBRegister").dialog({
+		autoOpen: false,
+		bgiframe: false,
+		modal: true,
+		draggable: false,
+		height: 100,
+		width: 100,
+		resizable: false
+	});
+	$("#SuccessFBRegister").hide();
+	$("#SuccessFBRegister").dialog("close");
 
-    $(".gridItem").live('click', function () {
-        var $this = $(this);
-        var val = $(this).prev().val();
-        LoadProductDetail(val, "0");        
-    });
+	$(".gridItem").live('click', function () {
+		var $this = $(this);
+		var val = $(this).prev().val();
+		LoadProductDetail(val, "0");        
+	});
 
-    $('.loginbox a').live('click', function () {
-        var goAjax = true;
-        var $this = $(this);
-        var url = '';
-        var _redirect = ''
-        $('.SmallLoading').show();
+	$('.loginbox a').live('click', function () {
+		var goAjax = true;
+		var $this = $(this);
+		var url = '';
+		var _redirect = ''
+		$('.SmallLoading').show();
 
-        //        alert($this.attr('class'));
-        if ($this.attr('class') == 'login') {
-            $(".ui-dialog-titlebar").hide();
-            $("#FloatingPanel").bind("clickoutside", function (event) {
-                $(this).hide();
-                $(this).dialog("close");
-            });
-            url = '<%= Url.Action("Login", "Account") %>';
-        }
-        else if ($this.attr('class') == 'register' || $this.attr('class') == 'profile') {
-            $(".ui-dialog-titlebar").show();
-            $("#FloatingPanel").unbind("clickoutside");
-            $("#FloatingPanel").dialog("option", "title", 'Llene el formulario para registrarse en ExploraPrecios.com');
-            url = '<%= Url.Action("Register", "Account") %>';
-        }
-        else if ($this.attr('class') == 'logout') {
-            goAjax = false;
-            window.location = '<%= Url.Action("Logout", "Account") %>';
-        }
-        else if ($this.attr('class') == 'forgot') {
-            $(".ui-dialog-titlebar").hide();
-            $("#FloatingPanel").bind("clickoutside", function (event) {
-                $(this).hide();
-                $(this).dialog("close");
-            });
-            url = '<%= Url.Action("Forgot", "Account") %>';
-        }
-        _redirect = $('#Redirect').val();
+		//        alert($this.attr('class'));
+		if ($this.attr('class') == 'login') {
+			$(".ui-dialog-titlebar").hide();
+			$("#FloatingPanel").bind("clickoutside", function (event) {
+				$(this).hide();
+				$(this).dialog("close");
+			});
+			url = '<%= Url.Action("Login", "Account") %>';
+		}
+		else if ($this.attr('class') == 'register' || $this.attr('class') == 'profile') {
+			$(".ui-dialog-titlebar").show();
+			$("#FloatingPanel").unbind("clickoutside");
+			$("#FloatingPanel").dialog("option", "title", 'Llene el formulario para registrarse en ExploraPrecios.com');
+			url = '<%= Url.Action("Register", "Account") %>';
+		}
+		else if ($this.attr('class') == 'logout') {
+			goAjax = false;
+			window.location = '<%= Url.Action("Logout", "Account") %>';
+		}
+		else if ($this.attr('class') == 'forgot') {
+			$(".ui-dialog-titlebar").hide();
+			$("#FloatingPanel").bind("clickoutside", function (event) {
+				$(this).hide();
+				$(this).dialog("close");
+			});
+			url = '<%= Url.Action("Forgot", "Account") %>';
+		}
+		_redirect = $('#Redirect').val();
 
-        if (goAjax) {
-            $.blockUI({ message: '<h4>Un momento por favor...</h4>' });
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: { redirect: _redirect },
-                dataType: "json",
-                error: function (x, e) {
-                    $('.SmallLoading').hide();
-                    $.unblockUI();
-                },
-                success: function (data) {
-                    $('.SmallLoading').hide();
-                    if (data.result == "fail") {
-                        alert(data.msg);
-                        $.unblockUI();
-                    }
-                    else {
-                        $("#FloatingPanel").show();
-                        $("#FloatingPanel").dialog("open");
-                        $("#FloatingPanel").html(data.html);
-                        $.unblockUI();
-                    }
-                }
-            });
-        }
-    });
-    function Clear() {
-        clearInterval(autoFloatingTimer);
-        $("#FloatingPanel").hide();
-        $("#FloatingPanel").dialog("close");    
-    }
+		if (goAjax) {
+			$.blockUI({ message: '<h4>Un momento por favor...</h4>' });
+			$.ajax({
+				type: "GET",
+				url: url,
+				data: { redirect: _redirect },
+				dataType: "json",
+				error: function (x, e) {
+					$('.SmallLoading').hide();
+					$.unblockUI();
+				},
+				success: function (data) {
+					$('.SmallLoading').hide();
+					if (data.result == "fail") {
+						alert(data.msg);
+						$.unblockUI();
+					}
+					else {
+						$("#FloatingPanel").show();
+						$("#FloatingPanel").dialog("open");
+						$("#FloatingPanel").html(data.html);
+						$.unblockUI();
+					}
+				}
+			});
+		}
+	});
+	function Clear() {
+		clearInterval(autoFloatingTimer);
+		$("#FloatingPanel").hide();
+		$("#FloatingPanel").dialog("close");    
+	}
 </script>
 
 </asp:Content>

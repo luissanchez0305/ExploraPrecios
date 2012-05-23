@@ -8,9 +8,13 @@ $(document).ready(function () {
 		$(window).scroll(function (event) {
 			var y = $(this).scrollTop();
 			if (y >= top) {
+				$('.nav_image').addClass('fixed');
+				$('.nav_image').show();
 				$('.navigation').addClass('fixed');
 				$('.slidey').addClass('nudge');
 			} else {
+				$('.nav_image').removeClass('fixed');
+				$('.nav_image').hide();
 				$('.navigation').removeClass('fixed');
 				$('.slidey').removeClass('nudge');
 			}

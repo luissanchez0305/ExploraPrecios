@@ -8,6 +8,7 @@
 	overflow: hidden;
 	position: relative;
 	width: 738px;
+	z-index: 400;
 }
 .pix_diapo > div {
 	display: none;
@@ -119,15 +120,15 @@
 	-webkit-box-shadow: 0 1px 8px #000;
 	box-shadow: 0 1px 8px #000;
 	height: 58px;
- 	left: -17px;
+	left: -17px;
 	position: absolute;
 	top: -40px;
 	width: 58px;
 }
 #pix_pag_ul > li > .thumb_arrow {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid  #e6e6e6;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid  #e6e6e6;
 	top: 26px;
 	left: 12px;
 	position: absolute;
@@ -144,8 +145,8 @@
 }
 .caption {
 	background: rgba(0, 0, 0, 0.8);
-    .filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000)\9;
+	.filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000)\9;
 	bottom: 20px;
 	color: #fff;
 	display: block;
@@ -155,8 +156,8 @@
 }
 .lightcaption {
 	background: rgba(0, 0, 0, 0.2);
-    .filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000)\9;
+	.filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#cc000000, endColorstr=#cc000000)\9;
 	color: #fff;
 	display: block;
 }
