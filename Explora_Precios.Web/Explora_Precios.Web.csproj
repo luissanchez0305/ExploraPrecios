@@ -432,6 +432,7 @@
     <Content Include="Content\plans\ServicesStyle.css" />
     <Content Include="Content\html\welcome.html" />
     <Content Include="cv\index.htm" />
+    <Content Include="Data\counter.txt" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\banner\diapo.js" />

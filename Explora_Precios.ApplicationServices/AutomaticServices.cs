@@ -12,6 +12,10 @@ namespace Explora_Precios.ApplicationServices
 {
 	public static class Helper
 	{
+		public static string RootFolder()
+		{
+			return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", ""));
+		}
 		public static string Shorten(this string text, int lenght)
 		{
 			return text.Length >= lenght ? text.Substring(0, lenght) + "..." : text;
@@ -313,7 +317,7 @@ namespace Explora_Precios.ApplicationServices
 				}
 
 				var Subject = "ExploraPrecios.com - Cambio de Precios y Ofertas";
-				var FilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", "")) + "\\Content\\html\\follow.html";
+				var FilePath = Helper.RootFolder() + "\\Content\\html\\follow.html";
 				var Html = File.ReadAllText(FilePath);
 				Html = Html.Replace("<name>", Follower.Key.name).Replace("<rows>", rows);
 

@@ -1111,6 +1111,14 @@ namespace Explora_Precios.Web.Controllers
 			homeViewModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.AsEnumerable(), currentPage, defaultPageSize);
 			homeViewModel.productsListViewModel.productsList = homeViewModel.productsListViewModel.products.Select(p => productVM.LoadModel(p, true));
 			homeViewModel.allProducts = products;
+			// Actualiza el archivo contador de productos
+			var FilePath = Helper.RootFolder() + "\\Data\\counter.txt";
+			var sb = new System.Text.StringBuilder();
+			string[] file = System.IO.File.ReadAllLines(FilePath);
+			foreach (string line in file)
+			{ sb.Append(line); }
+			sb.Append(string.Join(";", homeViewModel.productsListViewModel.products.Select(p => p.Id.ToString() + ",0.05").ToArray()));
+			System.IO.File.WriteAllText(FilePath, sb.ToString());
 			return homeViewModel;
 		}
 	}

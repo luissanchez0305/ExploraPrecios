@@ -50,14 +50,14 @@ namespace Explora_Precios.Web.Controllers.Helpers
 					var NewPassword = NextRandom(8);
 					MembershipUser.ChangePassword(TempPassword, NewPassword);
 					Subject = "ExploraPrecios.com - Contraseña Reinicializada";
-					FilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", "")) + "\\Content\\html\\forgot.html";
+					FilePath = Helper.RootFolder() + "\\Content\\html\\forgot.html";
 					Html = File.ReadAllText(FilePath);
 					Body = Html.Replace("<name>", Name).Replace("<email>", Email).Replace("<pwd>", NewPassword);
 					break;
 				case EmailType.NewUser:
 					Code = NextRandom(10);
 					Subject = "ExploraPrecios.com - Usuario Creado";
-					FilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", "")) + "\\Content\\html\\welcome.html";
+					FilePath = Helper.RootFolder() + "\\Content\\html\\welcome.html";
 					Html = File.ReadAllText(FilePath);
 					Address = "http://www.exploraprecios.com/Account/Valid?code="+Code+"&email="+Email;
 					Body = Html.Replace("<email>", MembershipUser.Email).Replace("<code>", Code).Replace("<address>", Address).Replace("<name>", Name);
@@ -65,7 +65,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				case EmailType.NewExpediteUser:
 					Code = NextRandom(10);
 					Subject = "ExploraPrecios.com - Usuario Creado";
-					FilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", "")) + "\\Content\\html\\welcomeexpedite.html";
+					FilePath = Helper.RootFolder() + "\\Content\\html\\welcomeexpedite.html";
 					Html = File.ReadAllText(FilePath);
 					Address = "http://www.exploraprecios.com/Account/Valid?code=" + Code + "&email=" + Email;
 					Body = Html.Replace("<email>", MembershipUser.Email).Replace("<code>", Code).Replace("<address>", Address).Replace("<name>", Name).Replace("<password>", Password);
@@ -73,7 +73,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				case EmailType.ChangeEmail:
 					Code = NextRandom(10);
 					Subject = "ExploraPrecios.com - Correo Actualizado";
-					FilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", "")) + "\\Content\\html\\changeemail.html";
+					FilePath = Helper.RootFolder() + "\\Content\\html\\changeemail.html";
 					Html = File.ReadAllText(FilePath);
 					Address = "http://www.exploraprecios.com/Account/Valid?code="+Code+"&email="+Email;
 					Body = Html.Replace("<name>", Name).Replace("<email>", Email).Replace("<code>", Code).Replace("<address>", Address);             
