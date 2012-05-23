@@ -55,7 +55,7 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 
 	public class MainMenuModel {
 		public int DepId { get; set; }
-		public IList<Department> DepList { get; set; }
+		public IEnumerable<Department> DepList { get; set; }
 		public bool DisplayNewProducts { get; set; }
 	}
 

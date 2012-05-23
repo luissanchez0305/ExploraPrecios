@@ -51,6 +51,7 @@ img { border: 0; }
 #navigation .main-menu { position:relative; white-space: nowrap; font: bold 16px Arial;letter-spacing:0.06em; top: -20px; z-index:500; }
 #navigation .main-menu li { min-width: 100px; }
 #navigation .main-menu li.child { height: 30px; padding: 0px 0px 3px 0px; border-bottom: 1px dotted black; }
+#navigation .main-menu li.child:last-child { border-bottom: 0px; }
 #navigation .main-menu li.child ul { width:210px; }
 #navigation .main-menu li.child ul li ul { left:220px; }
 #navigation .main-menu li.child a, li.child a:link, a:visited { color: #A2662A; font: 12px Arial; background-color: White; }
@@ -60,6 +61,7 @@ img { border: 0; }
 #navigation.ie .main-menu .item ul { width: 180px; top: 60px; }
 #navigation.ie .main-menu .item a, .item a:visited { padding: 30px 9px 3px 9px; color: #A2662A; }
 #navigation.ie .main-menu li.child { height: 13px; padding: 0px 0px 3px 0px; }
+#navigation.ie .main-menu li.child:last-child { border-bottom: 0px; }
 #navigation.ie .main-menu li.child ul { width: 220px; left: 180px; top: 10px; }
 #navigation.ie .main-menu li.child ul li ul { left: 220px; }
 #navigation.ie .main-menu li.child a { padding: 0px 9px 0px 9px; }

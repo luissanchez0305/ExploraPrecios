@@ -304,7 +304,7 @@ namespace Explora_Precios.Web.Controllers
 			else
 				newProductsCount = ((IList<Client_Product>)Session["NewProducts"]).Count;
 
-			var mainMenuModel = new MainMenuModel { DepId = depId, DepList = new DepartmentRepository().GetAll(), DisplayNewProducts = depId >= 0 && newProductsCount > 0 };
+			var mainMenuModel = new MainMenuModel { DepId = depId, DepList = new DepartmentRepository().GetAll().OrderBy(d => d.index_order), DisplayNewProducts = depId >= 0 && newProductsCount > 0 };
 			ViewData.Model = mainMenuModel;
 			return Json(new { 
 				html = this.RenderViewToString("PartialViews/MainMenu",ViewData)

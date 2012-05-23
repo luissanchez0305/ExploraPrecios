@@ -9,7 +9,7 @@
 	var imageSize = Model.image.FitImage(110, 80); %>
 	<%= Html.Hidden("hdn_clientId", 0) %>
 	<%= Html.Hidden("hdn_productId", Model.productId) %>
-<div class="bannerProduct offer<%= side %>">
+<div class="hand bannerProduct offer<%= side %>">
 	<img class="offerLogo" src="../../Content/Images/logo_oferta.gif" alt="Oferta" />
 	&nbsp;<img class="offerImage" src="/ShowImage/?image=<%= Explora_Precios.ApplicationServices.CommonUtilities.CacheImage(Model.image) %>" alt="<%= Model.brandName + " - " + Model.productName  %>" width="<%= imageSize[0] %>" height="<%= imageSize[1] %>"/>
 	<label class="offer<%= side %>Name" style="top:10px; left: <%= nameLeft.ToString() %>px;"><%= Model.productName.Shorten(18) %></label>
