@@ -302,6 +302,7 @@
     <Content Include="Content\Images\money-sign.jpg" />
     <Content Include="Content\Images\red_arrow.jpg" />
     <Content Include="Content\Images\WhyRegister.png" />
+    <Content Include="Content\mainmenu\images\arrows-000000.png" />
     <Content Include="Content\mainmenu\images\arrows-ffffff.png" />
     <Content Include="Content\mainmenu\images\shadow.png" />
     <Content Include="Content\mainmenu\superfish.css" />
@@ -467,6 +468,7 @@
     <Content Include="Views\Account\Register.ascx" />
     <Content Include="Views\Brochures\Index.aspx" />
     <Content Include="Views\Contact\Index.aspx" />
+    <Content Include="Views\Home\PartialViews\MainMenu.ascx" />
     <Content Include="Views\Home\PartialViews\PromoVideo.ascx" />
     <Content Include="Views\Home\PartialViews\LeftFiller.ascx" />
     <Content Include="Views\Home\Search.aspx" />

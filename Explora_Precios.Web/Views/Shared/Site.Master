@@ -203,56 +203,14 @@
 					<asp:ContentPlaceHolder ID="LeftContent" runat="server" />
 				</div>
 			</div>
-			<div class="middle">
-				<% if (ViewData["depList"] != null)
-					{ %>
+			<div class="middle">	
+				<!--Main menu-->		
 				<div id="navigation">
-					<ul class="main-menu roundedBorder">
-						<% foreach (var dep in (List<Explora_Precios.Core.Department>)ViewData["depList"])
-						{ %>
-							<li class="item">
-								<a id="item_<%= dep.name %>" href="/Home/Products/?catlev=0&id=<%= Html.Encode(dep.Id) %>"><%= dep.name%></a>
-								<% if (dep.categories.Count > 1) { %>
-								<ul>
-									<%foreach (var cat in dep.categories) { %>
-									<li class="child">
-										<a href="/Home/Products/?catlev=1&id=<%= Html.Encode(cat.Id) %>"><%= cat.name%></a>
-										<% if (cat.subCategories.Count > 0) { %>
-										<ul>
-											<% foreach (var subCat in cat.subCategories) { %>
-											<li class="child">
-												<a href="/Home/Products/?catlev=2&id=<%= Html.Encode(subCat.Id) %>"><%= subCat.name%></a>
-												<%if (subCat.productTypes.Count > 0) { %>
-												<ul>
-													<%foreach (var prodType in subCat.productTypes) { %>
-														<li class="child">
-															<a href="/Home/Products/?catlev=3&id=<%= Html.Encode(prodType.Id) %>"><%= prodType.name%></a>
-														</li>
-													<% } %>
-												</ul>
-												<% } %>
-											</li>
-											<% } %>
-										</ul>
-										<% } %>
-									</li>
-									<% } %>
-								</ul>
-								<% } %>
-							</li>
-					<% } %>
-				
-					<% if (ViewData["newProductsCount"] != null && ViewData["newProductsCount"].ToString() != "0")
-						{ %>
-							<li class="tabCounter"><a id="item_OfferNew" href="javascript:void(0);">Nuevos</a></li>
-						<% } %>
-					</ul>
-					<div class="bar"></div>
+					<img id="MainMenuLoader" src="../../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Main Menu Loader" />
 				</div>
-				<% } %>
 				<asp:ContentPlaceHolder ID="MainContent" runat="server" />
 			</div>
-			<div class="right" style="position:relative; top:25px; left:5px;">
+			<div class="right" style="position:relative; left:-20px;">
 				<script type="text/javascript"><!--
 					google_ad_client = "ca-pub-8106411801578478";
 					/* 160x600 Vertical Right */
@@ -267,18 +225,18 @@
 		<div class="pageContentFooter"></div>
 		<div class="block margin_t_10">
 		</div>
-		<div id="pageFooter">
+<%--		<div id="pageFooter">
 			© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="http://www.espherasoluciones.com" target="_blank" title="eSphera Soluciones Webpage">eSphera</a> / <b><a class="disclaimer" href="javascript:void()" >Importante</a></b>
-		</div>		
+		</div>	--%>	
  
 		<div id="site-bottom-bar" class="fixed-position">
 			<div id="site-bottom-bar-frame">
 				<div id="site-bottom-bar-content">
  
-					<div id="bottomPageFooter" style="display:none;">
+					<div id="bottomPageFooter">
 						© 2011 MVC E-commerce. All Rights Reserved. Created by <a class="contactus" href="http://www.espherasoluciones.com" target="_blank" title="eSphera Soluciones Webpage">eSphera</a> / <b><a class="bottomDisclaimer" href="javascript:void(0)" >Aviso Importante</a></b>
 					</div>	 
-					<a class="menu-root" href="javascript:void( 0 )">Volver arriba</a>
+					<a class="menu-root" href="javascript:void( 0 )"><span>Volver arriba</span></a>
  
 				</div>
 			</div>
@@ -368,6 +326,10 @@
 			SetLeftDiv();
 		});
 		$(document).ready(function () {
+			$.get('/Home/LoadMainMenu', { depId: '<%= ViewData["depId"] != null ? ViewData["depId"] : -1 %>' }, function (data) {
+				$("#navigation").append(data.html);
+				$("#MainMenuLoader").hide();
+			});
 			if ($.browser.msie) {
 				$('#navigation').addClass('ie');
 			}
@@ -417,8 +379,6 @@
 				});
 				$('.nav_floating_area').hide();
 			}
-
-			$("ul.main-menu").superfish();
 
 			$.get('/Home/GetBannerProducts', function (data) {
 				var ids = data.ids.split(',');
@@ -484,16 +444,16 @@
 				LoadProductDetail(getParameterByName('i'), '0');
 			}
 			if (getParameterByName('v').length > 0) {
-				loadPromotionalVideo();				
+				loadPromotionalVideo();
 			}
 
 			//----- Bottom Menu ------
-			$('#site-bottom-bar').addClass('hide');
+			$('.menu-root').hide();
 			// Hook up menu root click event.
-			$(".menu-root").click(function () {
-				// Blur the link to remove focus.
-				$(this).blur();
-			});
+//			$(".menu-root").click(function () {
+//				// Blur the link to remove focus.
+//				$(this).blur();
+//			});
 
 			$('.menu-root').bind('click', function (event) {
 				$('html, body').stop().animate({ scrollTop: $('body').offset().top }, 1000);

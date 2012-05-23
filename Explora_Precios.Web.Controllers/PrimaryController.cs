@@ -23,7 +23,6 @@ namespace Explora_Precios.Web.Controllers
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
-			ViewData["depList"] = new DepartmentRepository().GetAll();
 			var Name = "";
 			try
 			{

@@ -32,7 +32,7 @@ ExploraPrecios.com
 				$(this).dialog("close");
 			});
 
-			   $(".gridItem, .gridItem_v").live('click', function () {
+			$(".bannerProduct, .gridItem, .gridItem_v").live('click', function () {
 				LoadProductDetail($(this).prev().val(), '0');
 			});
 		});
@@ -154,7 +154,7 @@ ExploraPrecios.com
 			$("#FloatingPanel").html(html);
 		}
 	</script>
-	<div id="BottomFloatingDisclaimer" style="background-color:#E2F4F9;"></div>
+	<div id="BottomFloatingDisclaimer"></div>
 	<div id="FloatingPanel"></div>
 	<div id="SuccessFBRegister"></div>
 	<input type="hidden" id="current" />

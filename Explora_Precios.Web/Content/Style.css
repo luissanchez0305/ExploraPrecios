@@ -10,6 +10,7 @@ img { border: 0; }
 .hand { cursor: pointer; }
 .hideme { display:none; }
 .logo { background: url(images/logo_modificado.png) no-repeat left top ; width:275px;height:146px; cursor: pointer;}
+#BottomFloatingDisclaimer { background-color:#E2F4F9; }
 /* ===================== Counter tools ====================== */
 .notification { position: absolute; font-weight:bold; left: 30px; }
 .notification img { padding-right: 0px; width: 165px; height: 45px; }
@@ -42,7 +43,7 @@ img { border: 0; }
 .searchbox_textbox { border:solid 1px #757575; background-color:#ffffff; height:16px; vertical-align: middle;  margin:0px; }
 .searchbox_btn {background: white url(images/search_btn.png) no-repeat left top ;  width:26px; height:22px; border:0px; vertical-align: middle; margin:0px; padding:0px; cursor:pointer;}
 
-#navigation.ie {  }
+#navigation.ie { z-index:500; }
 #navigation.normal {  }
 #navigation { background-color:white; }
 #navigation .bar { border-top: solid 2px #c6c6c6; height:5px; position:relative; top:28px; }
@@ -50,13 +51,17 @@ img { border: 0; }
 #navigation .main-menu { position:relative; white-space: nowrap; font: bold 16px Arial;letter-spacing:0.06em; top: -20px; z-index:500; }
 #navigation .main-menu li { min-width: 100px; }
 #navigation .main-menu li.child { height: 30px; padding: 0px 0px 3px 0px; border-bottom: 1px dotted black; }
+#navigation .main-menu li.child ul { width:210px; }
+#navigation .main-menu li.child ul li ul { left:220px; }
 #navigation .main-menu li.child a, li.child a:link, a:visited { color: #A2662A; font: 12px Arial; background-color: White; }
 #navigation .main-menu li.child a:hover { font: bold 12px Arial; background:inherit; }
 #navigation .main-menu .item ul { border: 1px solid black; top:45px; }
-#navigation.ie .main-menu .item ul { top: 60px; }
-#navigation.ie .main-menu .item a, a:visited { padding: 30px 9px 3px 9px; color: #A2662A; }
+#navigation .main-menu .item ul li ul { top:10px; }
+#navigation.ie .main-menu .item ul { width: 180px; top: 60px; }
+#navigation.ie .main-menu .item a, .item a:visited { padding: 30px 9px 3px 9px; color: #A2662A; }
 #navigation.ie .main-menu li.child { height: 13px; padding: 0px 0px 3px 0px; }
-#navigation.ie .main-menu li.child ul { top: 10px; }
+#navigation.ie .main-menu li.child ul { width: 220px; left: 180px; top: 10px; }
+#navigation.ie .main-menu li.child ul li ul { left: 220px; }
 #navigation.ie .main-menu li.child a { padding: 0px 9px 0px 9px; }
 #navigation.ie .main-menu ul .sf-sub-indicator { top: 2px; }
 #navigation.ie .main-menu .tabCounter { top:18px; }
@@ -79,7 +84,7 @@ img { border: 0; }
 #pageContent { background-color:white; min-height:300px; margin:0px; padding:0px;}
 #pageContent .left { width:235px; float:left; height:auto;margin-top:34px; }
 #pageContent .middle { padding-left: 10px; float:left; width:760px; display:table; }
-#pageContent .right{ float:left; width:auto; }
+#pageContent .right{ float:right; width:auto; }
 .pageContentFooter { height:20px;background-color: White; }
 #pageFooter, #bottomPageFooter {  margin-top:10px;border:0px;text-align:center;color:#d50000;font-size:11px; letter-spacing:0.05em;}
 #pageFooter a:link, #pageFooter a:visited, #bottomPageFooter a:link, #bottomPageFooter a:visited {color:#ef0000; text-decoration:none;}
@@ -164,7 +169,7 @@ div .filterButton.enable { background: url(images/filterButton_enable.png) no-re
 .gridItem { border: 1px solid #DCDCDC; float:left; width:170px; height:210px; cursor:pointer; margin: 1px; border-radius:7px; }
 .gridItem .frame {width:140px; height:114px;margin-left:auto;margin-right:auto; border-bottom:solid 5px white;}
 .gridItem .frame img { display:block; margin-left:auto; margin-right:auto; padding-top:16px; }
-.gridItem .frame img.offerImage { position:relative; width:35px; height:41px; left: 62px; top:-16px; float:right; }
+.gridItem .frame img.offerImage { position:relative; width:35px; height:41px; top:-16px; float:right; }
 
 .gridItem .content {margin-top:10px;margin-left:auto;margin-right:auto;width:142px; }
 .gridItem .content .brand { position:relative; font: bold 12px Arial;}
@@ -179,7 +184,7 @@ div .filterButton.enable { background: url(images/filterButton_enable.png) no-re
 
 .gridItem_on .frame {width:140px; height:114px; margin-left:auto; margin-right:auto; cursor:pointer; border-bottom:solid 5px white;}
 .gridItem_on .frame img { display:block; margin-left:auto; margin-right:auto; padding-left:2px; padding-top:12px; }
-.gridItem_on .frame img.offerImage { position:relative; width:35px; height:41px; left: 61px; }
+.gridItem_on .frame img.offerImage { position:relative; width:35px; height:41px; }
 
 .gridItem_v { position:relative; width:100%; height:120px; }
 .gridItem_v .frame { border: 1px solid #C4C4C4; float: left; width:140px; height:114px; margin-left:auto; margin-right:auto; cursor:pointer; border-radius:5px; }

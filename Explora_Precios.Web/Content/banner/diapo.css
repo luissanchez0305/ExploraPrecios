@@ -8,6 +8,7 @@
 	overflow: hidden;
 	position: relative;
 	width: 738px;
+	z-index: 400;
 }
 .pix_diapo > div {
 	display: none;

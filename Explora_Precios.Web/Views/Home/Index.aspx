@@ -13,6 +13,12 @@ ExploraPrecios.com
 	<script type="text/javascript">
 		var autoFloatingTimer;
 		$(document).ready(function () {
+			$.get('/Home/LoadTickerList', function (data) {
+				$('.TickerBannerPanel').html(data.html);
+				$("ul#TickerBanner").webTicker();
+				$("ul#TickerBanner").show();
+				$("#MainMenuLoader").hide();
+			});
 			LoadBanner('banners');
 
 			$("#FloatingPanel").dialog({
@@ -31,12 +37,6 @@ ExploraPrecios.com
 				$(this).dialog("close");
 			});
 
-			$(".gridItem, .gridItem_v").live('click', function () {
-				var $this = $(this);
-				var val = $(this).prev().val();
-				LoadProductDetail(val, "0");
-			});
-
 			$('.pix_diapo').diapo({ time: 30000, loader: 'none' });
 			LoadSlider('MediumBanner', false);
 			LoadSlider('OffersBanner', false);
@@ -44,8 +44,6 @@ ExploraPrecios.com
 			LoadSlider('GroupedBanner', false);
 			$('.start-stop').hide();
 			$('.thumbNav').hide();
-			$("ul#TickerBanner").webTicker();
-			$("ul#TickerBanner").show();
 		});
 
 		// Paginacion en sliders
@@ -243,6 +241,7 @@ ExploraPrecios.com
 
 	<div id="FloatingPanel"></div>
 	<div id="SuccessFBRegister"></div>
+	<div id="BottomFloatingDisclaimer"></div>
 	
 	<section>     
 		<div style="overflow:hidden; width:745px; margin: 10px 0px 10px 0px;"> 
@@ -382,8 +381,9 @@ ExploraPrecios.com
 			</div>
 		</div>
 	</section>
+	<!-- Ticker Pannel -->
 	<div class="TickerBannerPanel">
-		<% Html.RenderPartial("PartialViews/ProductTicker", Model.TickerList); %>
+		<img id="MainMenuLoader" src="../../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Main Menu Loader" />
 	</div>
 	<!-- Define slider dimensions here -->
 	<style type="text/css"> 
@@ -402,6 +402,7 @@ ExploraPrecios.com
 			overflow: hidden;
 			position: relative;
 			width: inherit;
+			z-index: 400;
 		}
 	</style>
 	<div id="ProductDisplayPanel">
@@ -593,7 +594,7 @@ ExploraPrecios.com
 		<% } %>
 	</div>
 	<script type="text/javascript">
-		$('div.section [id$=Banner] div.item, div.highlighted [id$=Banner] div.item').live('click', function () {
+		$('.bannerProduct, div.section [id$=Banner] div.item, div.highlighted [id$=Banner] div.item').live('click', function () {
 				LoadProductDetail($(this).prev().val(), $(this).prev().prev().val());
 		});
 	</script>
