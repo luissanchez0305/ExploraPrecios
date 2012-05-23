@@ -892,6 +892,8 @@ namespace Explora_Precios.Web.Controllers
 				productVMObj.group.Grouped = productObj.groups.Count == 0 || CurrentUser == null ? GroupDisplay.Create : productObj.groups.Where(x => x.user == CurrentUser).Count() > 0 ? GroupDisplay.InGroup : GroupDisplay.IncludeMe;
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);
 				ViewData.Model = productVMObj;
+				// Actualiza el archivo contador con el producto
+				UpdateCounterFile(productObj.Id.ToString() + ",1");
 				return Json(new
 				{
 					result = "success",
@@ -1112,14 +1114,31 @@ namespace Explora_Precios.Web.Controllers
 			homeViewModel.productsListViewModel.productsList = homeViewModel.productsListViewModel.products.Select(p => productVM.LoadModel(p, true));
 			homeViewModel.allProducts = products;
 			// Actualiza el archivo contador de productos
+			UpdateCounterFile(homeViewModel.productsListViewModel.products.Select(p => p.Id.ToString() + ",0.05").ToArray());
+			return homeViewModel;
+		}
+
+		private void UpdateCounterFile(string productWeight)
+		{
+			var array = new string[]{ productWeight };
+			UpdateCounterFile(array);
+		}
+
+		/// <summary>
+		/// Actualiza el archivo contador de productos visualizados
+		/// </summary>
+		/// <param name="productsWeights">Id de producto y peso separado por una coma</param>
+		private void UpdateCounterFile(string[] productsWeights)
+		{
 			var FilePath = Helper.RootFolder() + "\\Data\\counter.txt";
 			var sb = new System.Text.StringBuilder();
-			string[] file = System.IO.File.ReadAllLines(FilePath);
-			foreach (string line in file)
+			string[] fileLines = System.IO.File.ReadAllLines(FilePath);
+			foreach (string line in fileLines)
 			{ sb.Append(line); }
-			sb.Append(string.Join(";", homeViewModel.productsListViewModel.products.Select(p => p.Id.ToString() + ",0.05").ToArray()));
+			if (fileLines.Length > 0)
+				sb.Append(";");
+			sb.Append(string.Join(";", productsWeights));
 			System.IO.File.WriteAllText(FilePath, sb.ToString());
-			return homeViewModel;
 		}
 	}
 }
