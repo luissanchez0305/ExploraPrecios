@@ -30,12 +30,34 @@ ExploraPrecios.com - Manejo de productos
 	<%= Html.ActionLink("Buscar repetidos", "RepeatedProducts")%><br />
 	<% var showAutomaticFields = System.Configuration.ConfigurationManager.AppSettings["showAutomaticFields"]; %>
 	<div id="AutomaticUpdate" <%= (!string.IsNullOrEmpty(showAutomaticFields) && Boolean.Parse(showAutomaticFields)) ? "" : "style=\"display:none;\"" %>><input type="button" id="AutomaticUpdateBtn" value="Automatic Update" /><img id="image_Loading" src="/content/images/loading_big.gif" alt="Loading" /><label id="updateTitle"></label></div>
+	<div><input type="button" id="UpdateCounters" value="Actualiza contadores" /><label id="updateCounterTitle"></label></div>
 </td>
 </tr>
 </table>
 <script type="text/javascript">
 	$(document).ready(function () {
 		$("#image_Loading").hide();
+	});
+
+	$("#UpdateCounters").click(function () {
+		$("#image_Loading").show();
+		$.ajax({
+			url: '<%= Url.Action("UpdateCounters", "Manager") %>',
+			dataType: 'json',
+			error: function () {
+				$("#image_Loading").hide();
+				$("#updateCounterTitle").html('ERROR');
+			},
+			success: function (data) {
+				$("#image_Loading").hide();
+				if (data.result == 'success') {
+					$("#updateCounterTitle").html('LISTO' + ' ' + getCurrentTime());
+				}
+				else if (data.result == 'fail') {
+					$("#updateCounterTitle").html('FALLO: ' + data.msg + ' ' + getCurrentTime());
+				}
+			}
+		});
 	});
 	$("#AutomaticUpdateBtn").click(function () {
 		$("#image_Loading").show();

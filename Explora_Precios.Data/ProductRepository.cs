@@ -163,6 +163,17 @@ namespace Explora_Precios.Data
 			return result.Distinct().OrderBy(p => p.clients.Select(c => c.price).First()).ToList();
 		}
 
+		public void Update(Product product)
+		{
+			NHibernate.ISession session = SharpArch.Data.NHibernate.NHibernateSession.Current;
+
+			using (NHibernate.ITransaction transaction = session.BeginTransaction())
+			{
+				session.Update(product);
+				transaction.Commit();
+			}
+		}
+
 		private List<Product> GetData(IEnumerable<int> categories, IEnumerable<int> subcategories, IEnumerable<int> producttypes)
 		{
 			var response = new List<Product>();

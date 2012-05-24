@@ -16,7 +16,7 @@ namespace Explora_Precios.Core
         public virtual Client client { get; set; }
         public virtual Product product { get; set; }
         public virtual string productReference { get; set; }    
-        public virtual int counter { get; set; }
+        public virtual float counter { get; set; }
         public virtual float price { get; set; }
         public virtual float specialPrice { get; set; }
         public virtual string url { get; set; }
