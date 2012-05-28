@@ -15,6 +15,7 @@ namespace Explora_Precios.Data
 		{
 			return NHibernateSession.Current.CreateCriteria(typeof(Client_Product))
 				.Add(Expression.Eq("isActive", true))
+				.AddOrder(Order.Asc("product.Id"))
 				.List<Client_Product>();
 		}
 

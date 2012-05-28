@@ -12,6 +12,10 @@ namespace Explora_Precios.ApplicationServices
 {
 	public static class Helper
 	{
+		public static string RootFolder()
+		{
+			return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", ""));
+		}
 		public static string Shorten(this string text, int lenght)
 		{
 			return text.Length >= lenght ? text.Substring(0, lenght) + "..." : text;
@@ -183,8 +187,15 @@ namespace Explora_Precios.ApplicationServices
 		public bool IsSale { get; set; }
 	}
 
+	public class CounterItem
+	{
+		public int Id { get; set; }
+		public float Weight { get; set; }
+	}
+
 	public class AutomaticServices
 	{
+		IProductRepository _productRepository;
 		ICatalog_AddressRepository _catalogAddressRepository;
 		IClient_ProductRepository _clientProductRepository;
 		IProductLogRepository _productLogRepository;
@@ -193,6 +204,13 @@ namespace Explora_Precios.ApplicationServices
 		IList<ProductLog> _productLogs;
 		IList<Client_Product> _clientProductUpdated;
 		protected DateTime StartedAt { get; set; }
+
+		public AutomaticServices(IClient_ProductRepository clientProductRepository, IProductRepository productRepository)
+		{
+			_clientProductRepository = clientProductRepository;
+			_productRepository = productRepository;
+			StartedAt = DateTime.Now;
+		}
 
 		public AutomaticServices(IClient_ProductRepository clientProductRepository, ICatalog_AddressRepository catalogAddressRepository, 
 			IProductLogRepository productLogRepository, IUser_ProductRepository userProductRepository)
@@ -205,6 +223,55 @@ namespace Explora_Precios.ApplicationServices
 			_productLogs = new List<ProductLog>();
 			_clientProductUpdated = new List<Client_Product>();
 			StartedAt = DateTime.Now;
+		}
+
+		public bool UpdateCounters()
+		{
+			try
+			{
+				// Cargar informacion de archivos
+				var ClientFilePath = Helper.RootFolder() + "\\Data\\clientcounter.txt";
+				var fileLines = System.IO.File.ReadAllLines(ClientFilePath);
+				var clientItems = fileLines[0].Split(';').Select(i => new CounterItem { Id = int.Parse(i.Split(',')[0]), Weight = float.Parse(i.Split(',')[1]) });
+				var ProductFilePath = Helper.RootFolder() + "\\Data\\productcounter.txt";
+				fileLines = System.IO.File.ReadAllLines(ProductFilePath);
+				var productItems = fileLines[0].Split(';').Select(i => new CounterItem { Id = int.Parse(i.Split(',')[0]), Weight = float.Parse(i.Split(',')[1]) });
+
+				// Cargar listado de productos
+				var products = _productRepository.GetAll();
+				// Cargar listado de productos de clientes
+				var clientProducts = _clientProductRepository.GetAll();
+
+				// Sumar ponderacion al producto
+				foreach (var product in products)
+				{
+					var productCount = productItems.Where(pi => pi.Id == product.Id).Sum(x => x.Weight);
+					if (productCount > 0)
+					{
+						product.counter += productCount;
+						_productRepository.Update(product);
+					}
+				}
+				// Sumar ponderacion al producto del cliente
+				foreach (var clientProduct in clientProducts)
+				{
+					var clientProductCount = clientItems.Where(ci => ci.Id == clientProduct.Id).Sum(x => x.Weight);
+					if (clientProductCount > 0)
+					{
+						clientProduct.counter += clientProductCount;
+						_clientProductRepository.Update(clientProduct);
+					}
+				}
+
+				System.IO.File.WriteAllText(ClientFilePath, "");
+				System.IO.File.WriteAllText(ProductFilePath, "");
+			}
+			catch(Exception e)
+			{
+				var errorException = new Exception(e.Message + "<br/>" + e.StackTrace + "<br/>Duracion: <b>" + DateTime.Now.Subtract(StartedAt).TotalMinutes + " minutos</b>");
+				throw errorException;
+			}
+			return true;
 		}
 
 		/// <summary>
@@ -270,7 +337,7 @@ namespace Explora_Precios.ApplicationServices
 					}
 					catch (Exception e)
 					{
-						var errorException = new Exception(e.Message + "<b> product_Id: " + currentProductId.ToString() + "</b><br/>" + e.StackTrace);
+						var errorException = new Exception(e.Message + "<b> product_Id: " + currentProductId.ToString() + "</b><br/>" + e.StackTrace + "<br/>Duracion: <b>"+ DateTime.Now.Subtract(StartedAt).TotalMinutes + " minutos</b>");
 						throw errorException;
 					}
 				}
@@ -313,7 +380,7 @@ namespace Explora_Precios.ApplicationServices
 				}
 
 				var Subject = "ExploraPrecios.com - Cambio de Precios y Ofertas";
-				var FilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "").Replace("/bin", "")) + "\\Content\\html\\follow.html";
+				var FilePath = Helper.RootFolder() + "\\Content\\html\\follow.html";
 				var Html = File.ReadAllText(FilePath);
 				Html = Html.Replace("<name>", Follower.Key.name).Replace("<rows>", rows);
 

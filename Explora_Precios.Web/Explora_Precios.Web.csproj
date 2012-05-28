@@ -234,6 +234,7 @@
     <Content Include="Content\Images\ico_info.png" />
     <Content Include="Content\Images\ico_no.png" />
     <Content Include="Content\Images\ico_ok.gif" />
+    <Content Include="Content\Images\logo_solo.png" />
     <Content Include="Content\Images\nuevo-icon.gif" />
     <Content Include="Content\Images\services_gradient.png" />
     <Content Include="Content\Images\ui-bg_highlight-hard_15_459e00_1x100.png" />
@@ -286,8 +287,6 @@
     <Content Include="Content\Images\banner\thumb.png" />
     <Content Include="Content\Images\banner\vgnzvo.jpg" />
     <Content Include="Content\Images\banner\waterdrops-blue.jpg" />
-    <Content Include="Content\Images\brochures\brochure_final.jpg" />
-    <Content Include="Content\Images\brochures\brochure_oferta1.jpg" />
     <Content Include="Content\Images\facebook-like.jpg" />
     <Content Include="Content\Images\facebook-liked.jpg" />
     <Content Include="Content\Images\facebook_login_button.gif" />
@@ -432,6 +431,8 @@
     <Content Include="Content\plans\ServicesStyle.css" />
     <Content Include="Content\html\welcome.html" />
     <Content Include="cv\index.htm" />
+    <Content Include="Data\clientcounter.txt" />
+    <Content Include="Data\productcounter.txt" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\banner\diapo.js" />
@@ -466,7 +467,6 @@
     <Content Include="Views\Account\Index.aspx" />
     <Content Include="Views\Account\Login.ascx" />
     <Content Include="Views\Account\Register.ascx" />
-    <Content Include="Views\Brochures\Index.aspx" />
     <Content Include="Views\Contact\Index.aspx" />
     <Content Include="Views\Home\PartialViews\MainMenu.ascx" />
     <Content Include="Views\Home\PartialViews\PromoVideo.ascx" />

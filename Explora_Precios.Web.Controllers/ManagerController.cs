@@ -617,12 +617,23 @@ namespace Explora_Precios.Web.Controllers
 			}
 		}
 
+		public ActionResult UpdateCounters()
+		{
+			new AutomaticServices(_clientProductRepository, _productRepository).UpdateCounters();
+			return Json(new
+			{
+				result = "success",
+				msg = ""
+			});
+		}
+
 		// AJAX
 		public ActionResult LoadAutomaticUpdate()
 		{ 
 			try
 			{
 				new AutomaticServices(_clientProductRepository, _catalogAddressRepository, _productLogRepository, _userProductRepository).UpdateProducts(_clientProductRepository.GetAllActive());
+
 				return Json(new
 				{
 					result = "success",

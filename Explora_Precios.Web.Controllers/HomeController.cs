@@ -128,6 +128,10 @@ namespace Explora_Precios.Web.Controllers
 
 		private IEnumerable<GroupViewModel> LoadGroupedBannerList(IEnumerable<Group_User> GroupUserList)
 		{
+			var productCount = 5;
+			var productList = GroupUserList.Take(productCount);
+			// Actualiza conteo de productos
+			UpdateCounterFile(productList.Select(cp => cp.product.Id.ToString() + "," + ((float)(1 / productCount)).ToString("0.##")).ToArray(), CounterType.product);
 			return GroupUserList.Take(5).Select(group => LoadGroupViewModel(group, true)).Concat(GroupUserList.Skip(5).Select(group => LoadGroupViewModel(group, false)));
 		}
 
@@ -197,7 +201,11 @@ namespace Explora_Precios.Web.Controllers
 
 		private IEnumerable<BannerProduct> LoadBannerProductModelList(IEnumerable<Client_Product> cpList)
 		{
-			return cpList.Take(5).Select(cp => LoadBannerProduct(cp, true)).Concat(cpList.Skip(5).Select(cp => LoadBannerProduct(cp, false)));
+			var productCount = 5;
+			var productList = cpList.Take(productCount);
+			// Actualiza conteo de productos
+			UpdateCounterFile(productList.Select(cp => cp.product.Id.ToString() + "," + (1 / (float)productCount).ToString("0.##")).ToArray(), CounterType.product);
+			return productList.Select(cp => LoadBannerProduct(cp, true)).Concat(cpList.Skip(5).Select(cp => LoadBannerProduct(cp, false)));
 		}
 
 		private BannerProduct LoadBannerProduct(Client_Product cp, bool loadImage)
@@ -272,12 +280,16 @@ namespace Explora_Precios.Web.Controllers
 					break;
 			}
 			var pageItemsCount = toPage * pageSize < listCount ? pageSize : pageSize - ((toPage * pageSize) - listCount);
+			// Actualiza conteo de productos
+			UpdateCounterFile(ids.Take(pageItemsCount).Select(id => id.ToString() + "," + (1 / (float)pageItemsCount).ToString("0.##")).ToArray(), CounterType.product);
 			for (int i = 0; i < pageItemsCount; i++)
 			{
 				var image = _productRepository.Get(ids.ElementAt(i + ((toPage - 1) * pageSize))).image.imageObj;
 				var sizes = image.FitImage(width, height);
 				guids.Add(CommonUtilities.CacheImage(image) + "," + sizes[0] + "," + sizes[1]);
 			}
+
+
 
 			return Json(new { guids = string.Join(";", guids.ToArray()), count = pageItemsCount });
 		}
@@ -291,6 +303,12 @@ namespace Explora_Precios.Web.Controllers
 			homeModel.LoadFilters((int)catLev, (int)id);
 			ViewData["depId"] = homeModel.departmentId;
 			return View(homeModel);
+		}
+
+		public ActionResult AccessLink(int cpId, string url)
+		{
+			UpdateCounterFile(cpId.ToString() + ",1", CounterType.client);
+			return Redirect(url);
 		}
 
 		public ActionResult LoadMainMenu(int depId)
@@ -512,6 +530,9 @@ namespace Explora_Precios.Web.Controllers
 				if (!listIds.Contains(product.Id))
 					listIds.Add(product.Id);
 			}
+
+			// Actualiza conteo de productos
+			UpdateCounterFile(listIds.Select(p => p.ToString() + "," + (1 / (float)listIds.Count).ToString("0.##")).ToArray(), CounterType.product);
 
 			return Json(new
 			{
@@ -892,6 +913,8 @@ namespace Explora_Precios.Web.Controllers
 				productVMObj.group.Grouped = productObj.groups.Count == 0 || CurrentUser == null ? GroupDisplay.Create : productObj.groups.Where(x => x.user == CurrentUser).Count() > 0 ? GroupDisplay.InGroup : GroupDisplay.IncludeMe;
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);
 				ViewData.Model = productVMObj;
+				// Actualiza el archivo contador con el producto
+				UpdateCounterFile(productObj.Id.ToString() + ",1", CounterType.product);
 				return Json(new
 				{
 					result = "success",
@@ -1111,7 +1134,37 @@ namespace Explora_Precios.Web.Controllers
 			homeViewModel.productsListViewModel.products = new PagedList<Explora_Precios.Core.Product>(products.AsEnumerable(), currentPage, defaultPageSize);
 			homeViewModel.productsListViewModel.productsList = homeViewModel.productsListViewModel.products.Select(p => productVM.LoadModel(p, true));
 			homeViewModel.allProducts = products;
+			// Actualiza el archivo contador de productos
+			UpdateCounterFile(homeViewModel.productsListViewModel.products.Select(p => p.Id.ToString() + "," + ((1 / (float)homeViewModel.productsListViewModel.products.Count).ToString("0.##"))).ToArray(), CounterType.product);
 			return homeViewModel;
+		}
+
+		private enum CounterType { product, client }
+
+		private void UpdateCounterFile(string productWeight, CounterType type)
+		{
+			var array = new string[]{ productWeight };
+			UpdateCounterFile(array, type);
+		}
+
+		/// <summary>
+		/// Actualiza el archivo contador de productos visualizados
+		/// </summary>
+		/// <param name="productsWeights">Id de producto y peso separado por una coma</param>
+		private void UpdateCounterFile(string[] productsWeights, CounterType type)
+		{
+			if (productsWeights.Length > 0)
+			{
+				var FilePath = Helper.RootFolder() + "\\Data\\" + type.ToString() + "counter.txt";
+				var sb = new System.Text.StringBuilder();
+				var fileLines = System.IO.File.ReadAllLines(FilePath);
+				foreach (string line in fileLines)
+				{ sb.Append(line); }
+				if (fileLines.Length > 0)
+					sb.Append(";");
+				sb.Append(string.Join(";", productsWeights));
+				System.IO.File.WriteAllText(FilePath, sb.ToString());
+			}
 		}
 	}
 }

@@ -24,5 +24,6 @@ namespace Explora_Precios.Core.DataInterfaces
 		EdgePrices GetbyCategoryEdgePrices(int categoryId);
 		EdgePrices GetbySubCategoryEdgePrices(int subCategoryId);
 		EdgePrices GetbyProductTypeEdgePrices(int productTypeId);
+		void Update(Product product);
     }
 }
