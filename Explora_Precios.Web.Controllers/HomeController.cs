@@ -131,7 +131,7 @@ namespace Explora_Precios.Web.Controllers
 			var productCount = 5;
 			var productList = GroupUserList.Take(productCount);
 			// Actualiza conteo de productos
-			UpdateCounterFile(productList.Select(cp => cp.product.Id.ToString() + "," + ((float)(1 / productCount)).ToString("0.##")).ToArray(), CounterType.product);
+			UpdateCounterFile(productList.Select(cp => cp.product.Id.ToString() + "," + ((float)(1 / productCount)).TwoDecimals() + "," + DateTime.Now.ToShortDateString()).ToArray(), CounterType.product);
 			return GroupUserList.Take(5).Select(group => LoadGroupViewModel(group, true)).Concat(GroupUserList.Skip(5).Select(group => LoadGroupViewModel(group, false)));
 		}
 
@@ -204,7 +204,7 @@ namespace Explora_Precios.Web.Controllers
 			var productCount = 5;
 			var productList = cpList.Take(productCount);
 			// Actualiza conteo de productos
-			UpdateCounterFile(productList.Select(cp => cp.product.Id.ToString() + "," + (1 / (float)productCount).ToString("0.##")).ToArray(), CounterType.product);
+			UpdateCounterFile(productList.Select(cp => cp.product.Id.ToString() + "," + (1 / (float)productCount).TwoDecimals() + "," + DateTime.Now.ToShortDateString()).ToArray(), CounterType.product);
 			return productList.Select(cp => LoadBannerProduct(cp, true)).Concat(cpList.Skip(5).Select(cp => LoadBannerProduct(cp, false)));
 		}
 
@@ -281,7 +281,7 @@ namespace Explora_Precios.Web.Controllers
 			}
 			var pageItemsCount = toPage * pageSize < listCount ? pageSize : pageSize - ((toPage * pageSize) - listCount);
 			// Actualiza conteo de productos
-			UpdateCounterFile(ids.Take(pageItemsCount).Select(id => id.ToString() + "," + (1 / (float)pageItemsCount).ToString("0.##")).ToArray(), CounterType.product);
+			UpdateCounterFile(ids.Take(pageItemsCount).Select(id => id.ToString() + "," + (1 / (float)pageItemsCount).TwoDecimals() + "," + DateTime.Now.ToShortDateString()).ToArray(), CounterType.product);
 			for (int i = 0; i < pageItemsCount; i++)
 			{
 				var image = _productRepository.Get(ids.ElementAt(i + ((toPage - 1) * pageSize))).image.imageObj;
@@ -307,7 +307,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult AccessLink(int cpId, string url)
 		{
-			UpdateCounterFile(cpId.ToString() + ",1", CounterType.client);
+			UpdateCounterFile(cpId.ToString() + ",1," + DateTime.Now.ToShortDateString(), CounterType.client);
 			return Redirect(url);
 		}
 
@@ -515,30 +515,30 @@ namespace Explora_Precios.Web.Controllers
 				offerProducts = _cpRepository.GetProductsOnSale();
 
 			}
-			var listIds = new List<int>();
+			var listClientProductIds = new List<Client_Product>();
 
-			while (listIds.Count < 4)
+			while (listClientProductIds.Count < 4)
 			{
 				if (offerProducts.Count <= 4)
 				{
 					foreach (var offerProduct in offerProducts)
-						listIds.Add(offerProduct.Id);
+						listClientProductIds.Add(offerProduct);
 					break;
 				}
 
-				var product = offerProducts[new Random().Next(offerProducts.Count - 1)];
-				if (!listIds.Contains(product.Id))
-					listIds.Add(product.Id);
+				var clientProduct = offerProducts[new Random().Next(offerProducts.Count - 1)];
+				if (!listClientProductIds.Contains(clientProduct))
+					listClientProductIds.Add(clientProduct);
 			}
 
 			// Actualiza conteo de productos
-			UpdateCounterFile(listIds.Select(p => p.ToString() + "," + (1 / (float)listIds.Count).ToString("0.##")).ToArray(), CounterType.product);
+			var productList = listClientProductIds.Select(cp => cp.product.Id);
+			UpdateCounterFile(productList.Select(p => p.ToString() + "," + (1 / (float)productList.Count()).TwoDecimals() + "," + DateTime.Now.ToShortDateString()).ToArray(), CounterType.product);
 
 			return Json(new
 			{
-				ids = listIds.ToArrayString()
+				ids = listClientProductIds.Select(cp => cp.Id).ToArrayString()
 			});
-
 		}
 
 		// AJAX
@@ -887,7 +887,7 @@ namespace Explora_Precios.Web.Controllers
 				var response = Json(new
 									{
 										result = "valid",
-										avg = oProduct.ratings.Where(up => up.Type == User_Product.RelationType.Rating).Average(rat => rat.value).ToString("0.##")
+										avg = oProduct.ratings.Where(up => up.Type == User_Product.RelationType.Rating).Average(rat => rat.value).TwoDecimals()
 									});
 				return response;
 			}
@@ -914,7 +914,7 @@ namespace Explora_Precios.Web.Controllers
 				productVMObj.group.IsFacebooked = CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.facebookToken);
 				ViewData.Model = productVMObj;
 				// Actualiza el archivo contador con el producto
-				UpdateCounterFile(productObj.Id.ToString() + ",1", CounterType.product);
+				UpdateCounterFile(productObj.Id.ToString() + ",1," + DateTime.Now.ToShortDateString(), CounterType.product);
 				return Json(new
 				{
 					result = "success",
@@ -1135,7 +1135,7 @@ namespace Explora_Precios.Web.Controllers
 			homeViewModel.productsListViewModel.productsList = homeViewModel.productsListViewModel.products.Select(p => productVM.LoadModel(p, true));
 			homeViewModel.allProducts = products;
 			// Actualiza el archivo contador de productos
-			UpdateCounterFile(homeViewModel.productsListViewModel.products.Select(p => p.Id.ToString() + "," + ((1 / (float)homeViewModel.productsListViewModel.products.Count).ToString("0.##"))).ToArray(), CounterType.product);
+			UpdateCounterFile(homeViewModel.productsListViewModel.products.Select(p => p.Id.ToString() + "," + ((1 / (float)homeViewModel.productsListViewModel.products.Count).TwoDecimals()) + "," + DateTime.Now.ToShortDateString()).ToArray(), CounterType.product);
 			return homeViewModel;
 		}
 

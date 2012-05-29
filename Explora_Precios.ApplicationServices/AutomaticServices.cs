@@ -191,6 +191,7 @@ namespace Explora_Precios.ApplicationServices
 	{
 		public int Id { get; set; }
 		public float Weight { get; set; }
+		public DateTime Date { get; set; }
 	}
 
 	public class AutomaticServices
@@ -203,12 +204,17 @@ namespace Explora_Precios.ApplicationServices
 		IList<FollowerDetails> _followers;
 		IList<ProductLog> _productLogs;
 		IList<Client_Product> _clientProductUpdated;
+		IProductCounterRepository _productCounterRepository;
+		IClientCounterRepository _clientCounterRepository;
 		protected DateTime StartedAt { get; set; }
 
-		public AutomaticServices(IClient_ProductRepository clientProductRepository, IProductRepository productRepository)
+		public AutomaticServices(IClient_ProductRepository clientProductRepository, IProductRepository productRepository, IProductCounterRepository productCounterRepository,
+			IClientCounterRepository clientCounterRepository)
 		{
 			_clientProductRepository = clientProductRepository;
 			_productRepository = productRepository;
+			_productCounterRepository = productCounterRepository;
+			_clientCounterRepository = clientCounterRepository;
 			StartedAt = DateTime.Now;
 		}
 
@@ -232,35 +238,33 @@ namespace Explora_Precios.ApplicationServices
 				// Cargar informacion de archivos
 				var ClientFilePath = Helper.RootFolder() + "\\Data\\clientcounter.txt";
 				var fileLines = System.IO.File.ReadAllLines(ClientFilePath);
-				var clientItems = fileLines[0].Split(';').Select(i => new CounterItem { Id = int.Parse(i.Split(',')[0]), Weight = float.Parse(i.Split(',')[1]) });
+				var clientItems = fileLines.Length > 0 ? fileLines[0].Split(';').Select(i => new CounterItem { Id = int.Parse(i.Split(',')[0]), Weight = float.Parse(i.Split(',')[1]), Date = DateTime.Parse(i.Split(',')[2]) }) : null;
 				var ProductFilePath = Helper.RootFolder() + "\\Data\\productcounter.txt";
 				fileLines = System.IO.File.ReadAllLines(ProductFilePath);
-				var productItems = fileLines[0].Split(';').Select(i => new CounterItem { Id = int.Parse(i.Split(',')[0]), Weight = float.Parse(i.Split(',')[1]) });
+				var productItems = fileLines.Length > 0 ? fileLines[0].Split(';').Select(i => new CounterItem { Id = int.Parse(i.Split(',')[0]), Weight = float.Parse(i.Split(',')[1]), Date = DateTime.Parse(i.Split(',')[2]) }) : null;
 
-				// Cargar listado de productos
-				var products = _productRepository.GetAll();
-				// Cargar listado de productos de clientes
-				var clientProducts = _clientProductRepository.GetAll();
-
-				// Sumar ponderacion al producto
-				foreach (var product in products)
+				if(clientItems != null)
+				foreach (var counter in clientItems)
 				{
-					var productCount = productItems.Where(pi => pi.Id == product.Id).Sum(x => x.Weight);
-					if (productCount > 0)
+					_clientCounterRepository.SaveOrUpdate(new ClientCounter
 					{
-						product.counter += productCount;
-						_productRepository.Update(product);
-					}
+						client = _clientProductRepository.Get(counter.Id),
+						date = counter.Date,
+						Type = CounterType.Client,
+						weight = counter.Weight
+					});
 				}
-				// Sumar ponderacion al producto del cliente
-				foreach (var clientProduct in clientProducts)
+
+				if (productItems != null)
+				foreach (var counter in productItems)
 				{
-					var clientProductCount = clientItems.Where(ci => ci.Id == clientProduct.Id).Sum(x => x.Weight);
-					if (clientProductCount > 0)
+					_productCounterRepository.SaveOrUpdate(new ProductCounter
 					{
-						clientProduct.counter += clientProductCount;
-						_clientProductRepository.Update(clientProduct);
-					}
+						product = _productRepository.Get(counter.Id),
+						date = counter.Date,
+						Type = CounterType.Product,
+						weight = counter.Weight
+					});
 				}
 
 				System.IO.File.WriteAllText(ClientFilePath, "");

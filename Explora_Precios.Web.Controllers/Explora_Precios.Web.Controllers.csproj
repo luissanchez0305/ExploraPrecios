@@ -159,8 +159,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AccountController.cs" />
-    <Compile Include="BrochuresController.cs" />
     <Compile Include="ContactController.cs" />
+    <Compile Include="ServicesController.cs" />
     <Compile Include="ErrorController.cs" />
     <Compile Include="ImageController.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />

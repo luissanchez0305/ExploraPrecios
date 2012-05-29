@@ -133,7 +133,9 @@
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="Client_ProductRepository.cs" />
     <Compile Include="ClientRepository.cs" />
+    <Compile Include="CounterRepository.cs" />
     <Compile Include="Group_UserRepository.cs" />
+    <Compile Include="NHibernateMaps\CounterMap.cs" />
     <Compile Include="NHibernateMaps\Group_UserMap.cs" />
     <Compile Include="NHibernateMaps\ProductLogMap.cs" />
     <Compile Include="NHibernateMaps\ContactCommentsMap.cs" />

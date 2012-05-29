@@ -31,13 +31,16 @@ namespace Explora_Precios.Web.Controllers
 		ICatalog_AddressRepository _catalogAddressRepository;
 		IProductLogRepository _productLogRepository;
 		IUser_ProductRepository _userProductRepository;
+		IProductCounterRepository _productCounterRepository;
+		IClientCounterRepository _clientCounterRepository;
 		private int clientIdToBeShown = -1;
 
 		public ManagerController(IProductRepository productRepository, IQualityRepository qualityRepository, ICategoryRepository categoryRepository,
 			ISubCategoryRepository subCategoryRepository, IProductTypeRepository productTypeRepository, IDepartmentRepository departmentRepository,
 			IClientRepository clientRepository, IBrandRepository brandRepository, IClient_ProductRepository clientProductRepository,
 			IProduct_QualityRepository productQualityRepository, ICatalog_AddressRepository catalogAddressRepository,
-			IProductLogRepository productLogRepository, IUser_ProductRepository userProductRepository)
+			IProductLogRepository productLogRepository, IUser_ProductRepository userProductRepository, IProductCounterRepository productCounterRepository,
+			IClientCounterRepository clientCounterRepository)
 		{
 			_productRepository = productRepository;
 			_qualityRepository = qualityRepository;
@@ -53,6 +56,8 @@ namespace Explora_Precios.Web.Controllers
 			_catalogAddressRepository = catalogAddressRepository;
 			_productLogRepository = productLogRepository;
 			_userProductRepository = userProductRepository;
+			_productCounterRepository = productCounterRepository;
+			_clientCounterRepository = clientCounterRepository;
 		}
 
 		#region Llamados de Views
@@ -619,7 +624,7 @@ namespace Explora_Precios.Web.Controllers
 
 		public ActionResult UpdateCounters()
 		{
-			new AutomaticServices(_clientProductRepository, _productRepository).UpdateCounters();
+			new AutomaticServices(_clientProductRepository, _productRepository, _productCounterRepository, _clientCounterRepository).UpdateCounters();
 			return Json(new
 			{
 				result = "success",

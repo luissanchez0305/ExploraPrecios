@@ -21,7 +21,6 @@ namespace Explora_Precios.Data.NHibernateMaps
 			mapping.References(x => x.brand).Cascade.SaveUpdate();
 			mapping.References(x => x.image).LazyLoad().Cascade.SaveUpdate();
 			mapping.Map(x => x.description);
-			mapping.Map(x => x.counter);
 			mapping.HasMany(x => x.qualities)
 				.Cascade.SaveUpdate()
 				.Cascade.AllDeleteOrphan()

@@ -39,6 +39,11 @@ $(document).ready(function () {
 		});
 	});
 	$("#radio3").click(function () {
+		$.scrollTo(".efectividad", 1000, {
+			offset: -111
+		});
+	});
+	$("#radio4").click(function () {
 		$.scrollTo(".planes", 1000, {
 			offset: -111
 		});

@@ -129,6 +129,8 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Counter.cs" />
+    <Compile Include="DataInterfaces\ICounterRepository.cs" />
     <Compile Include="DataInterfaces\IGroup_UserRepository.cs" />
     <Compile Include="DataInterfaces\IProductLogRepository.cs" />
     <Compile Include="DataInterfaces\IUserRepository.cs" />

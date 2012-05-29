@@ -270,6 +270,22 @@ namespace Explora_Precios.Web.Controllers.Helpers
 			}
 		}
 
+		public static Department GetProductDepartment(this Product p)
+		{
+			IDepartmentRepository _dr = new DepartmentRepository();
+			ICategoryRepository _cr = new CategoryRepository();
+			ISubCategoryRepository _scr = new SubCategoryRepository();
+			IProductTypeRepository _ptr = new ProductTypeRepository();
+
+			switch (p.level_Id)
+			{
+				case 0: return _dr.Get(p.catalog_Id);
+				case 1: return _cr.Get(p.catalog_Id).department;
+				case 2: return _scr.Get(p.catalog_Id).category.department;
+				default: return _ptr.Get(p.catalog_Id).subCategory.category.department;
+			}
+		}
+
 		public static Object GetCatalogParent(int level_Id, int catalog_Id)
 		{
 			IDepartmentRepository _dr = new DepartmentRepository();

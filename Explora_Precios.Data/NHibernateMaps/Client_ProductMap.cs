@@ -17,7 +17,6 @@ namespace Explora_Precios.Data.NHibernateMaps
             mapping.References(x => x.product);
             mapping.Map(x => x.productReference);
             mapping.Map(x => x.name, "productName");
-            mapping.Map(x => x.counter);
             mapping.Map(x => x.price);
             mapping.Map(x => x.specialPrice);
             mapping.Map(x => x.isActive);

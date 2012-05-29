@@ -29,7 +29,7 @@ namespace Explora_Precios.Web.Controllers.Helpers
 				return "Recien creado";
 		}
 
-		public static string ToArrayString(this List<int> list)
+		public static string ToArrayString(this IEnumerable<int> list)
 		{
 			var arrayString = "";
 
@@ -59,6 +59,17 @@ namespace Explora_Precios.Web.Controllers.Helpers
 		public static string Money(this float val)
 		{
 			return val.ToString("$#,0.00");
+		}
+		public static string TwoDecimals(this float val)
+		{ return val.ToString("0.##"); }
+		public static string FirstCharacterUpper(this string value)
+		{
+			if (value == null || value.Length == 0)
+				return string.Empty;
+			if (value.Length == 1)
+				return value.ToUpper();
+			var firstChar = value.Substring(0, 1).ToUpper();
+			return firstChar + value.Substring(1, value.Length - 1);
 		}
 	}
 

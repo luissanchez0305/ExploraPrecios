@@ -28,6 +28,5 @@ namespace Explora_Precios.Core
 		public virtual IList<Client_Product> clients { get; set; }
 		public virtual IList<User_Product> ratings { get; set; }
 		public virtual IList<Group_User> groups { get; set; }
-		public virtual float counter { get; set; }
 	}
 }
