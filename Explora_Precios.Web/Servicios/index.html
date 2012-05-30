@@ -42,11 +42,11 @@
 					$.get('/Services/LoadChartData', function (obj) {
 						var masterArrays = obj.data.split(';');
 						var array1 = masterArrays[0].split(',');
-						var array2 = ArrayConvert(masterArrays[1].split(','));
-						var array3 = ArrayConvert(masterArrays[2].split(','));
-						var array4 = ArrayConvert(masterArrays[3].split(','));
-						var array5 = ArrayConvert(masterArrays[4].split(','));
-						var array6 = ArrayConvert(masterArrays[5].split(','));
+						var array2 = ArrayConvert(masterArrays[1].split(','), obj.max);
+						var array3 = ArrayConvert(masterArrays[2].split(','), obj.max);
+						var array4 = ArrayConvert(masterArrays[3].split(','), obj.max);
+						var array5 = ArrayConvert(masterArrays[4].split(','), obj.max);
+						var array6 = ArrayConvert(masterArrays[5].split(','), obj.max);
 						var data = google.visualization.arrayToDataTable([
 						array1, array2, array3, array4, array5, array6
 						]);
@@ -60,20 +60,24 @@
 						//			  ['Septiembre-2012', 1100, 1463, 1530, 1203, 758]
 						//			]);
 						var options = {
-							title: 'Productos Visitados'
+							title: 'Productos Visitados - desde el 28 de mayo',
+							height: 300
 						};
 
 						var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
 						chart.draw(data, options);
 						$("#ChartLoader").hide();
+						$("#bodyWrapper").css("padding-top", "700px");
 					});
 				});
 			});
-			function ArrayConvert(obj) {
+			function ArrayConvert(obj, max) {
 				var arrayResult = new Array();
 				arrayResult[0] = obj[0];
 				for (i = 1; i < obj.length; i++) {
-					arrayResult[i] = parseInt(obj[i]);
+					var value = parseInt(obj[i]);
+					//var percentage = (value * 100) / max
+					arrayResult[i] = value; // parseInt(percentage);
 				}
 				return arrayResult;
 			}
@@ -188,10 +192,18 @@
 		<!-- End Employment History -->
 
 		<div class="efectividad">
-			<div class="prefix_1 grid_11"><h2 id="H3">Efectividad</h2>
-			<img id="ChartLoader" src="../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Chart Loader" /></div>
+			<div class="prefix_1 grid_11">
+				<h2 id="efectividad">Efectividad</h2>
+			</div>
+			<div class="grid_8 suffix_1">
+				<h4>Productos visitados</h4>
+				<p>La siguiente gráfica ejemplifica la cantidad de visitas que han tenido los productos dentro de las categorías <i>Electronicos, Hogar y Juguetes</i>, lo que muestra que constantemente estamos recibiendo visitas de personas interesadas en ver sus productos publicados en nuestra página.</p>
+			</div>
 			<!--Div that will hold the pie chart-->
-			<div id="chart_div"></div>
+			<div class="grid_2" style="width:960px;">
+				<img id="ChartLoader" src="../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Chart Loader" />
+				<div id="chart_div"></div>
+			</div>
 		</div>
 	
 		<!-- Start Eduation History -->

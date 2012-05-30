@@ -39,7 +39,7 @@ $(document).ready(function () {
 		});
 	});
 	$("#radio3").click(function () {
-		$.scrollTo(".efectividad", 1000, {
+		$.scrollTo(".efectividad", 500, {
 			offset: -111
 		});
 	});
