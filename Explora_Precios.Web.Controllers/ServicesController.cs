@@ -34,12 +34,12 @@ namespace Explora_Precios.Web.Controllers
 			var productData = _productCounterRepository.GetChartData();
 
 			var array = from p in productData
-						where p.product.GetProductDepartment().Id != 3 && p.product.GetProductDepartment().Id != 4
-						group p by new { p.date, catalog = p.product.GetProductDepartment() } into newp
+						where p.departmentId != 3 && p.departmentId != 4
+						group p by new { p.date, catalog = p.departmentId } into newp
 						select new { date = newp.Key.date, department = newp.Key.catalog, weight = newp.Sum(product => product.weight) };
 
 			var result = "Mes,Electronicos,Hogar,Juguetes;";
-			var fromDate = DateTime.Now > DateTime.Parse("06/01/2012").AddDays(-1) ? DateTime.Now.Subtract(DateTime.Parse("06/01/2012").AddDays(-1)).Days > 150 ? DateTime.Parse("05/01/2012") : DateTime.Now.AddMonths(-4) : DateTime.Parse("05/01/2012");
+			var fromDate = DateTime.Now >= DateTime.Parse("06/01/2012").AddDays(-1) ? DateTime.Now.Subtract(DateTime.Parse("06/01/2012").AddDays(-1)).Days < 150 ? DateTime.Parse("05/01/2012") : DateTime.Now.AddMonths(-4) : DateTime.Parse("05/01/2012");
 
 			float max = 0;
 			for (int i = 0; i <= 4; i++)
@@ -48,16 +48,16 @@ namespace Explora_Precios.Web.Controllers
 				var weights = "";
 				var data = array.Where(item => item.date.Month == compareDate.Month && item.date.Year == compareDate.Year);
 				// Electronicos
-				var value = data.Where(item => item.department.Id == 1).Sum(item => item.weight);
+				var value = data.Where(item => item.department == 1).Sum(item => item.weight);
 				if (value > max)
 					max = value;
 				weights += value.TwoDecimals() + ",";
 				// Hogar
-				value = data.Where(item => item.department.Id == 2).Sum(item => item.weight);
+				value = data.Where(item => item.department == 2).Sum(item => item.weight);
 				if (value > max)
 					max = value;
 				weights += value.TwoDecimals() + ","; 
-				value = data.Where(item => item.department.Id == 5).Sum(item => item.weight);
+				value = data.Where(item => item.department == 5).Sum(item => item.weight);
 				// Juguetes
 				if (value > max)
 					max = value;

@@ -22,4 +22,11 @@ namespace Explora_Precios.Core
 		public virtual float weight { get; set; }
 		public virtual DateTime date { get; set; }
 	}
+
+	public class ProductCounterDepartment
+	{
+		public DateTime date { get; set; }
+		public float weight { get; set; }
+		public int departmentId { get; set; }
+	}
 }
