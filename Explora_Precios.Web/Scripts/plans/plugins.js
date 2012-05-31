@@ -35,17 +35,17 @@ $(document).ready(function () {
 	});
 	$("#radio2").click(function () {
 		$.scrollTo("#servicios", 800, {
-			offset: -111
+			offset: { top: -111, left: -200 }
 		});
 	});
 	$("#radio3").click(function () {
-		$.scrollTo(".efectividad", 100, {
-			offset: -111
+		$.scrollTo(".efectividad", 1000, {
+			offset: { top: 60, left: -200 }
 		});
 	});
 	$("#radio4").click(function () {
 		$.scrollTo(".planes", 1000, {
-			offset: -111
+			offset: { top: 540, left: -200 }
 		});
 	});
 
