@@ -385,7 +385,6 @@
 				if (ids[0]) {
 					//Left
 					$.get('/Home/GenerateBannerProduct', { side: 'Left', position: 0, id: ids[0] }, function (data) {
-						alert(data);
 						$(".content.offer1").append(data.html);
 						if (ids[1]) {
 							//Right
