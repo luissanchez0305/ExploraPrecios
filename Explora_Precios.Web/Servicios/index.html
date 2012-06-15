@@ -40,6 +40,9 @@
 			google.load("visualization", "1", { packages: ["corechart"] });
 			google.setOnLoadCallback(function () {
 				$(function () {
+					$.get('/Services/LoadUsersCount', function (obj) {
+						$('#users').html(obj.data);
+					});
 					$.get('/Services/LoadChartData', function (obj) {
 						var masterArrays = obj.data.split(';');
 						var array1 = masterArrays[0].split(',');
@@ -195,8 +198,14 @@
 		<div class="efectividad">
 			<div class="prefix_1 grid_11">
 				<h2 id="efectividad">Efectividad</h2>
+			</div>	
+			<div class="prefix_1 grid_3">
+				<h3 class="section-title">Usuarios inscritos</h3>
 			</div>
-			<div class="prefix_1 grid_2">
+			<div class="grid_8 suffix_1">
+				<p>Actualmente contamos con <label style="font-weight:bold;" id="users"></label> usuarios con la capacidad de crear grupos de compras con sus productos o de seguir sus productos. Gracias a la buena acogida de ExploraPrecios.com&copy; por parte del publico en general esta cantidad está en aumento continuamente por lo que el mercado al que sus productos están expuestos es enorme.</p>
+			</div>
+			<div class="prefix_1 grid_3">
 				<h3 class="section-title">Productos visitados</h3>
 			</div>
 			<div class="grid_8 suffix_1">
@@ -205,7 +214,7 @@
 			<div class="grid_2" style="width:960px;">
 				<img id="ChartLoader" src="../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Chart Loader" />
 				<div id="chart_div"></div>
-			</div>
+			</div>		
 		</div>
 	
 		<!-- Start Eduation History -->

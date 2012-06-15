@@ -23,10 +23,21 @@ namespace Explora_Precios.Web.Controllers
 	public class ServicesController : PrimaryController
 	{
 		IProductCounterRepository _productCounterRepository;
+		IUserRepository _userRepository;
 
-		public ServicesController(IProductCounterRepository productCounterRepository)
+		public ServicesController(IProductCounterRepository productCounterRepository, IUserRepository userRepository)
 		{
 			_productCounterRepository = productCounterRepository;
+			_userRepository = userRepository;
+		}
+
+		public ActionResult LoadUsersCount()
+		{
+			return Json(new
+			{
+				data = _userRepository.GetAll().Count()
+			});
+			
 		}
 
 		public ActionResult LoadChartData()
