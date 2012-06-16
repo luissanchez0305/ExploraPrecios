@@ -212,16 +212,18 @@ namespace Explora_Precios.Web.Controllers
 			var currentPage = Request.QueryString["page"];
 			clientIdToBeShown = !string.IsNullOrEmpty(Request.QueryString["client"]) && Request.QueryString["client"] != "undefined" ? int.Parse(Request.QueryString["client"]) : clientIdToBeShown;
 			bool hasErrors = !TryUpdateModel(productVM);
+			// verificar si todos los clientes tienen # reference
+			var missingReferences = productVM.clientList.Where(c => c.reference.Length == 0).Count() > 0;
 			productVM.catalogProduct = CatalogHelper.FromLevelsToCatalog(productVM.catalogLevel, productVM.catalogId);
-			if (hasErrors)
+			if (hasErrors || missingReferences)
 			{
-				ViewData.Model = productVM;
+				//ViewData.Model = productVM;
 				return Json(new
 				{
 					result = "fail",
-					html = this.RenderViewToString("PartialViews/ProductForm", ViewData)
+					//html = this.RenderViewToString("PartialViews/ProductsForm", ViewData),
+					msg = missingReferences ? "Todos los clientes deben de tener su referencia" : ""
 				});
-				//return View("CreateProduct", productVM);
 			}
 
 			var oldPrice = new List<float>();
@@ -478,7 +480,7 @@ namespace Explora_Precios.Web.Controllers
 						catalog_Id = CatalogItem.catalogId,
 						client = _clientRepository.Get(CatalogItem.clientId),
 						level_Id = CatalogItem.levelId,
-						url = CatalogItem.url,
+						url = CatalogItem.url[0] != '/' ? "/" + CatalogItem.url : CatalogItem.url,
 						manualFeed = false
 					};
 				}
@@ -622,14 +624,45 @@ namespace Explora_Precios.Web.Controllers
 			}
 		}
 
+		public string UpdateCountersText()
+		{
+			try
+			{
+				UpdateCounters();
+				return "Exito, Contadores actualizados!";
+			}
+			catch
+			{
+				return "Fail, Contadores actualizados!";
+			}
+		}
+
 		public ActionResult UpdateCounters()
 		{
-			new AutomaticServices(_clientProductRepository, _productRepository, _productCounterRepository, _clientCounterRepository).UpdateCounters();
+			try
+			{
+				new AutomaticServices(_clientProductRepository, _productRepository, _productCounterRepository, _clientCounterRepository).UpdateCounters();
+			}
+			catch
+			{
+				throw;
+			}
+
 			return Json(new
 			{
 				result = "success",
 				msg = ""
 			});
+		}
+
+		public string LoadAutomaticUpdateText()
+		{
+			var autoUpdate = LoadAutomaticUpdate();
+			if ((((JsonResult)autoUpdate).Data).ToString().Contains("Success"))
+			{
+				return "Exito, Productos Actualizados!";
+			}
+			return "Fail, Productos Actualizados!";
 		}
 
 		// AJAX
@@ -816,6 +849,47 @@ namespace Explora_Precios.Web.Controllers
 			}
 		}
 
+		// AJAX
+		public ActionResult GetReferenceRelation(string reference, int clientId)
+		{
+			var clientList = ProductsRelated(reference, clientId);
+
+			return Json(new
+			{
+				result = "success",
+				data = string.Join(";", clientList.Select(c => c.clientId + "," + c.clientName + "," + c.price + "," + c.url + "," + c.reference).ToArray()),
+				found = clientList.Count > 0
+			});
+		}
+
+		private List<ClientViewModel> ProductsRelated(string reference, int clientId)
+		{
+			var clientProductVM = new List<ClientViewModel>();
+			// busca otros productos con esa referencia
+			var productsFound = _productRepository.GetbyReference(reference, Precision.Medium);
+
+			// si encuentra alguno se lo agrega al client product del producto nuevo
+			foreach (var productFound in productsFound)
+			{
+				// solo necesito el primer client product (con el que fue creada la referencia) para relacionar el producto nuevo con el del client product
+				var clientProductFound = productFound.clients[0];
+				if (clientProductFound.client.Id != clientId)
+					clientProductVM.Add(new ClientViewModel
+					{
+						brandName = productFound.brand.name,
+						clientId = clientProductFound.client.Id,
+						clientName = clientProductFound.client.name,
+						reference = productFound.productReference,
+						specialPrice = clientProductFound.specialPrice,
+						url = clientProductFound.url,
+						oldPrice = clientProductFound.price,
+						price = clientProductFound.price,
+						productStatus = ClientServices.ItemType.Possible_Related
+					});
+			}
+			return clientProductVM;
+		}
+
 		private List<ProductViewModel> LoadSessionProductsList(int? itemId, Catalog_Address catalogAddress)
 		{
 			var isEmpty = false;
@@ -914,27 +988,9 @@ namespace Explora_Precios.Web.Controllers
 					productVMObj = LoadProductModel(product);
 					if (productOnDB == null)
 					{
-						// busca otros productos con esa referencia
-						var productsFound = _productRepository.GetbyReference(product.productReference, Precision.Medium);
-						// si encuentra alguno se lo agrega al client product del producto nuevo
-						foreach (var productFound in productsFound)
-						{
-							// solo necesito el primer client product (con el que fue creada la referencia) para relacionar el producto nuevo con el del client product
-							var clientProductFound = productFound.clients[0];
-							if (clientProductFound.client.Id != catalogAddress.client.Id)
-								productVMObj.clientList.Add(new ClientViewModel()
-								{
-									brandName = productFound.brand.name,
-									clientId = clientProductFound.client.Id,
-									clientName = clientProductFound.client.name,
-									reference = productFound.productReference,
-									specialPrice = clientProductFound.specialPrice,
-									url = clientProductFound.url,
-									oldPrice = clientProductFound.price,
-									price = clientProductFound.price,
-									productStatus = ClientServices.ItemType.Possible_Related
-								});
-						}
+						var foundClientProducts = ProductsRelated(product.productReference, catalogAddress.client.Id);
+						if (foundClientProducts.Count > 0)
+							productVMObj.clientList.AddRange(foundClientProducts);
 						var clientIndex = getClientIndex(productVMObj.clientList, catalogAddress.client);
 						productVMObj.clientList[clientIndex].productStatus = ClientServices.ItemType.OnSite_NotOnDB;
 					}
@@ -1362,7 +1418,8 @@ namespace Explora_Precios.Web.Controllers
 				productStatus = type.Count > 0 ? type.SingleOrDefault(status => status.Key == x.client.Id).Value : Explora_Precios.ApplicationServices.ClientServices.ItemType.Local,
 				showMe = clientIdToBeShown > -1 ? clientIdToBeShown == x.client.Id : true,
 				page = x.page, 
-				reference = x.productReference
+				reference = x.productReference,
+				masterReference = pObj.productReference
 			}).ToList();
 				
 			//    _clientRepository.GetAll().Select(x => new ClientViewModel()

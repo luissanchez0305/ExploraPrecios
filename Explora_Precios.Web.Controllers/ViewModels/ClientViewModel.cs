@@ -33,5 +33,6 @@ namespace Explora_Precios.Web.Controllers.ViewModels
 		public bool facebookPublish { get; set; }
 		public bool choosen { get; set; }
 		public string catalogAddress { get; set; }
+		public string masterReference { get; set; }
 	}
 }

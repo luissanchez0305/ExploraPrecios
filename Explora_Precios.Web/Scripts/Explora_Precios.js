@@ -1,4 +1,18 @@
-﻿function runDropDownAjax(source_singular, source_plural, target_singular, target_plural){
+﻿if (!Array.prototype.forEach) {
+	Array.prototype.forEach = function (fun /*, thisp*/) {
+		var len = this.length;
+		if (typeof fun != "function")
+			throw new TypeError();
+
+		var thisp = arguments[1];
+		for (var i = 0; i < len; i++) {
+			if (i in this)
+				fun.call(thisp, this[i], i, this);
+		}
+	};
+}
+
+function runDropDownAjax(source_singular, source_plural, target_singular, target_plural){
 
 	var val = $("#" + source_plural + " > option:selected").attr("value");
 		
@@ -67,19 +81,9 @@ $(document).ready(function () {
 		var qVal = $("#qualityValue").val();
 		$("#qualityName").val("");
 		$("#qualityValue").val("");
-		if (qName.length > 1 && qVal.length > 1) {
+		if (qVal.length > 1) {
 			$("#noQualities").remove();
 			var rowcount = $("#tableQualities tr").length;
-			/*$.ajax({                
-			type: "GET",
-			contentType: "application/json; charset=utf-8",
-			url: "FindQualityName?v=" + val,
-			data: "{}",
-			dataType: "json",
-			success: function(data){
-			data.qId
-			}
-			});*/
 
 			// Nuevo row de caracteristica
 			$("#tableQualities").find("tbody")

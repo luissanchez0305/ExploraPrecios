@@ -503,7 +503,6 @@
     <Content Include="Views\Home\PartialViews\ProductReport.ascx" />
     <Content Include="Views\Home\Products.aspx" />
     <Content Include="Views\Image\Index.aspx" />
-    <Content Include="Views\Manager\CatalogForm %28lsanchez-PC%27s conflicted copy 2011-06-29%29.ascx" />
     <Content Include="Views\Manager\Catalogs\CategoryForm.ascx" />
     <Content Include="Views\Manager\Catalogs\DepartmentForm.ascx" />
     <Content Include="Views\Manager\Catalogs\ProductTypeForm.ascx" />
