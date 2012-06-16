@@ -36,7 +36,7 @@ body { color: #828282; font-family: "HelveticaNeue-Regular", "Helvetica Neue", H
 
 * { -webkit-font-smoothing: subpixel-antialiased !important; text-rendering:optimizeLegibility; }
     
-#bodyWrapper { width: 100%; padding: 420px 0; }
+#bodyWrapper { width: 100%; padding: 720px 0; }
 .signup #bodyWrapper { padding: 40px 0 70px;}
 #body { width: 960px; margin: 0 auto; display: block; position: relative;}
     #mainColumn { }
