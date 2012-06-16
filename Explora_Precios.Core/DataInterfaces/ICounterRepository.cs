@@ -9,10 +9,12 @@ namespace Explora_Precios.Core.DataInterfaces
 {
 	public interface IProductCounterRepository : IRepository<ProductCounter>
 	{
-		IEnumerable<ProductCounterDepartment> GetChartData();
+		IEnumerable<ProductCounterDepartment> GetChartGeneralData();
+		IEnumerable<ProductCounterDepartment> GetChartIndividualData();
 	}
 	public interface IClientCounterRepository : IRepository<ClientCounter>
 	{
 		IEnumerable<ClientCounter> GetChartData();
+		IEnumerable<ProductCounterDepartment> GetChartClientData();
 	}
 }

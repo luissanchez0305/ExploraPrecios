@@ -40,10 +40,30 @@
 			google.load("visualization", "1", { packages: ["corechart"] });
 			google.setOnLoadCallback(function () {
 				$(function () {
-					$.get('/Services/LoadUsersCount', function (obj) {
-						$('#users').html(obj.data);
+					//					$.get('/Services/LoadUsersCount', function (obj) {
+					//						$('#users').html(obj.data);
+					//					});
+
+					$.get('/Services/LoadClientChartData', function (obj) {
+						var masterArrays = obj.data.split(';');
+						for (index = 0; index < 3; index++) {
+							var dataArray = ArrayConvert(masterArrays[index].split(','), 0);
+							var data = google.visualization.arrayToDataTable([
+									['Tipo', 'Cantidades'],
+									['Productos visitados', dataArray[1]],
+									['Tiendas visitadas', dataArray[2]]
+								]);
+
+							var options = {
+								title: dataArray[0], tooltip: { text: 'both' }
+							};
+							var chart = new google.visualization.PieChart(document.getElementById('chart_clients' + (index + 1) + '_div'));
+							chart.draw(data, options);
+							$("#ChartClientsLoader").hide();
+						}
 					});
-					$.get('/Services/LoadChartData', function (obj) {
+
+					$.get('/Services/LoadProductsChartData', function (obj) {
 						var masterArrays = obj.data.split(';');
 						var array1 = masterArrays[0].split(',');
 						var array2 = ArrayConvert(masterArrays[1].split(','), obj.max);
@@ -68,10 +88,10 @@
 							height: 300
 						};
 
-						var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+						var chart = new google.visualization.ColumnChart(document.getElementById('chart_products_div'));
 						chart.draw(data, options);
-						$("#ChartLoader").hide();
-						$("#bodyWrapper").css("padding-top", "700px");
+						$("#ChartProductsLoader").hide();
+						$("#bodyWrapper").css("padding-top", "1050px");
 					});
 				});
 			});
@@ -199,21 +219,33 @@
 			<div class="prefix_1 grid_11">
 				<h2 id="efectividad">Efectividad</h2>
 			</div>	
-			<div class="prefix_1 grid_3">
+			<!--<div class="prefix_1 grid_3">
 				<h3 class="section-title">Usuarios inscritos</h3>
 			</div>
 			<div class="grid_8 suffix_1">
 				<p>Actualmente contamos con <label style="font-weight:bold;" id="users"></label> usuarios con la capacidad de crear grupos de compras con sus productos o de seguir sus productos. Gracias a la buena acogida de ExploraPrecios.com&copy; por parte del publico en general esta cantidad está en aumento continuamente por lo que el mercado al que sus productos están expuestos es enorme.</p>
-			</div>
+			</div>-->
 			<div class="prefix_1 grid_3">
-				<h3 class="section-title">Productos visitados</h3>
+				<h3 class="section-title">Tiendas visitadas</h3>
+			</div>
+			<div class="grid_8 suffix_1">
+				<p>Las siguientes graficas indican cuantos de nuestros usuarios ingresaron en la página web de una tienda al mostrar interés en el producto publicado con nosotros. Cuando uno de nuestros usuarios da click en un producto publicado en nuestra página lo tomamos como <i>Producto Visitado</i>, desde aquí ExploraPrecios.com&copy; ya esta trabajando para ud. Cuando un usuario da click en el link de la tienda dentro de un producto lo tomamos como <i>Tienda Visitada</i>, lo cual podría significar en una venta para ud.</p>
+			</div>
+			<div class="grid_2" style="width:960px;">
+				<div id="ChartClientsLoader"><img src="../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Chart Loader" /></div>
+				<div id="chart_clients1_div" class="charts"></div>
+				<div id="chart_clients2_div" class="charts"></div>
+				<div id="chart_clients3_div" class="charts"></div>
+			</div>	
+			<div class="prefix_1 grid_3">
+				<h3 class="section-title">Total de visitas</h3>
 			</div>
 			<div class="grid_8 suffix_1">
 				<p>La siguiente gráfica ejemplifica la cantidad de visitas que han tenido los productos dentro de las categorías <i>Electronicos, Hogar y Juguetes</i>, lo que muestra que constantemente estamos recibiendo visitas de personas interesadas en ver sus productos publicados en nuestra página.</p>
 			</div>
 			<div class="grid_2" style="width:960px;">
-				<img id="ChartLoader" src="../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Chart Loader" />
-				<div id="chart_div"></div>
+				<img id="ChartProductsLoader" src="../Content/Images/ajax-loader.gif" width="16px" height="16px" alt="Chart Loader" />
+				<div id="chart_products_div"></div>
 			</div>		
 		</div>
 	

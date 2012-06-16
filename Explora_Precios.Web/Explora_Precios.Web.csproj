@@ -253,6 +253,7 @@
     <Content Include="Content\Images\ico_info.png" />
     <Content Include="Content\Images\ico_no.png" />
     <Content Include="Content\Images\ico_ok.gif" />
+    <Content Include="Content\Images\logo_firma.png" />
     <Content Include="Content\Images\logo_solo.png" />
     <Content Include="Content\Images\nuevo-icon.gif" />
     <Content Include="Content\Images\services_gradient.png" />
