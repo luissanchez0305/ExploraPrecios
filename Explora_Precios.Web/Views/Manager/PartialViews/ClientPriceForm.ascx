@@ -102,8 +102,8 @@
 		$.get('<%= Url.Action("GetReferenceRelation", "Manager") %>', { reference: _reference, clientId: <%= clientId %>}, function (jObject) {
 			if (jObject.result == "success"){
 				if(jObject.found){
-					$('input[name="clientList[0].isActive"]').remove();
-					$('#isActiveCell0').append('<input type="hidden" id="clientList[0].isMain" name="clientList[0].isMain" value="false" /><input type="radio" name="mainGroup" id="clientList[0].isMain" class="mainClientProduct" />');
+					//$('input[name="clientList[0].isActive"]').remove();
+					//$('#isActiveCell0').append('<input type="hidden" id="clientList[0].isMain" name="clientList[0].isMain" value="false" /><input type="radio" name="mainGroup" id="clientList[0].isMain" class="mainClientProduct" />');
 					if($("#clientPriceTable tbody tr").length == 1){
 						var dataArray = jObject.data.split(';');
 						dataArray.forEach(function(element, index, array){
@@ -123,10 +123,8 @@
 							'</tr>');						
 						});
 					}
-				}		
-				else{				
-					$("#productRef").val(_reference);
-				}
+				}	
+				$("#productRef").val(_reference);
 				$(".clientReference").removeClass("hideme");
 				$(".clientReference").val(_reference);
 				$("#possibleReferences").addClass("hideme");

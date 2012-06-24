@@ -82,6 +82,10 @@ $(document).ready(function () {
 		$("#qualityName").val("");
 		$("#qualityValue").val("");
 		if (qVal.length > 1) {
+			if ($("#showQualities").html().indexOf("Mostrar") > -1) {
+				$("#tableQualities").show();
+				$("#showQualities").html("Ocultar -");
+			}
 			$("#noQualities").remove();
 			var rowcount = $("#tableQualities tr").length;
 

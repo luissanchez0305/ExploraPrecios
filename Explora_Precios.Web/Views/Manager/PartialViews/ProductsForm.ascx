@@ -56,14 +56,12 @@
 				</tbody>
 			</table><br />
 	
-				<% if (Model.qualities.Count > 0)
-				   { %>
 			<a href="javascript:void(0);" id="showQualities">Mostrar +</a>
-				   <% }
-				   else { %> 
-						<b>Sin caracteristicas</b> <% } %>
 			<table id="tableQualities">
 				<tbody> 
+				<% if (Model.qualities.Count == 0)
+				   { %><tr id="noQualities"><td><b>Sin caracteristicas</b></td></tr>
+						 <% } %>
 				<% var index2 = 0; 
 				   foreach (var quality in Model.qualities)
 				   {%>

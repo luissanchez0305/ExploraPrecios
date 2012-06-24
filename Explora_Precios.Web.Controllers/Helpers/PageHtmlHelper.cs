@@ -62,6 +62,12 @@ namespace Explora_Precios.Web.Controllers.Helpers
 		}
 		public static string TwoDecimals(this float val)
 		{ return val.ToString("0.##"); }
+
+		public static string UrlAddressFix(this string val)
+		{
+			return val[0] != '/' ? "/" + val : val;
+		}
+
 		public static string FirstCharacterUpper(this string value)
 		{
 			if (value == null || value.Length == 0)

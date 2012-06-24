@@ -214,15 +214,16 @@ namespace Explora_Precios.Web.Controllers
 			bool hasErrors = !TryUpdateModel(productVM);
 			// verificar si todos los clientes tienen # reference
 			var missingReferences = productVM.clientList.Where(c => c.reference.Length == 0).Count() > 0;
+			var missingBrand = productVM.productBrand.Length == 0;
 			productVM.catalogProduct = CatalogHelper.FromLevelsToCatalog(productVM.catalogLevel, productVM.catalogId);
-			if (hasErrors || missingReferences)
+			if (hasErrors || missingReferences || missingBrand)
 			{
 				//ViewData.Model = productVM;
 				return Json(new
 				{
 					result = "fail",
 					//html = this.RenderViewToString("PartialViews/ProductsForm", ViewData),
-					msg = missingReferences ? "Todos los clientes deben de tener su referencia" : ""
+					msg = "Falta: " + (missingReferences ?  "**Referencia en algun cliente " : "") + (missingBrand ? "**Marca" : "")
 				});
 			}
 
@@ -343,21 +344,21 @@ namespace Explora_Precios.Web.Controllers
 					oProduct.image = image;
 				}
 
-				// quita los qualities que no estan activados
-				for (var i = 0; i < oProduct.qualities.Count; i++)
-				{
-					var pQuality = oProduct.qualities[i];
-					var pVMQuality = productVM.qualities.FirstOrDefault(x => x.Id == pQuality.quality.Id);
-					if (pVMQuality != null && !pVMQuality.active)
-					{
-						oProduct.qualities.Remove(pQuality);
-						i--;
-						//_productQualityRepository.Delete(pQuality);
-					}
-				}
-
 				if (productVM.qualities != null)
 				{
+					// quita los qualities que no estan activados
+					for (var i = 0; i < oProduct.qualities.Count; i++)
+					{
+						var pQuality = oProduct.qualities[i];
+						var pVMQuality = productVM.qualities.FirstOrDefault(x => x.Id == pQuality.quality.Id);
+						if (pVMQuality != null && !pVMQuality.active)
+						{
+							oProduct.qualities.Remove(pQuality);
+							i--;
+							//_productQualityRepository.Delete(pQuality);
+						}
+					}
+
 					// actualiza o agrega los qualities
 					foreach (var quality in productVM.qualities.Where(x => x.active))
 					{
@@ -939,6 +940,9 @@ namespace Explora_Precios.Web.Controllers
 					//}
 					var productOnSite = new Product();
 					var listProductsOnSite = productsOnSite.Where(onSite => onSite.clients[0].productReference.ToLower() == clientProduct.productReference.ToLower());
+					if (listProductsOnSite.Count() == 0)
+						listProductsOnSite = productsOnSite.Where(onSite => onSite.productReference.ToLower().Contains(clientProduct.productReference.ToLower()));
+					
 					if (listProductsOnSite.Count() > 1)
 						productOnSite = listProductsOnSite.SingleOrDefault(onSite => onSite.clients[0].url == clientProduct.url);
 					else if (listProductsOnSite.Count() == 1)
@@ -982,23 +986,27 @@ namespace Explora_Precios.Web.Controllers
 				}
 
 				// se verifica que productos estan en el sitio y no estan en nuestra base de datos
-				foreach (var product in productsOnSite)
+				foreach (var productOnSite in productsOnSite)
 				{
-					var productOnDB = clientProductsList.SingleOrDefault(onDB => onDB.productReference.ToLower() == product.productReference.ToLower());
-					productVMObj = LoadProductModel(product);
+					var productOnDB = clientProductsList.SingleOrDefault(onDB => onDB.productReference.ToLower() == productOnSite.productReference.ToLower());
+					productVMObj = LoadProductModel(productOnSite);
+					var ForceInclude = false;
 					if (productOnDB == null)
 					{
-						var foundClientProducts = ProductsRelated(product.productReference, catalogAddress.client.Id);
+						var foundClientProducts = ProductsRelated(productOnSite.productReference, catalogAddress.client.Id);
 						if (foundClientProducts.Count > 0)
+						{
 							productVMObj.clientList.AddRange(foundClientProducts);
+							//ForceInclude = true;
+						}
 						var clientIndex = getClientIndex(productVMObj.clientList, catalogAddress.client);
 						productVMObj.clientList[clientIndex].productStatus = ClientServices.ItemType.OnSite_NotOnDB;
 					}
 
-					if (sessionResponse.SelectMany(p => p.clientList).Where(cp => cp.reference.ToLower() == product.productReference.ToLower()).Count() == 0)
+					if (sessionResponse.SelectMany(p => p.clientList).Where(cp => cp.reference.ToLower() == productOnSite.productReference.ToLower()).Count() == 0
+						&& (sessionResponse.SelectMany(p => p.clientList).Where(cp => productOnSite.productReference.ToLower().Contains(cp.reference.ToLower()) && cp.reference.Length > 0).Count() == 0 || ForceInclude))
 						sessionResponse.Add(productVMObj);
 				}
-
 			}
 			else
 			{
@@ -1324,7 +1332,7 @@ namespace Explora_Precios.Web.Controllers
 			{
 				ViewData.Model = _catalogAddressRepository.GetByClient(client).Select(item => new CatalogItemViewModel() {
 					dbId = item.Id,
-					url = item.url,
+					url = item.url.UrlAddressFix(),
 					clientId = client.Id,
 					clientAddress = client.url,
 					name = CatalogHelper.CatalogToString(false, CatalogHelper.FromLevelsToCatalog(item.level_Id, item.catalog_Id), false),
@@ -1342,7 +1350,7 @@ namespace Explora_Precios.Web.Controllers
 					.Select(x => new CatalogItemViewModel()
 					{
 						dbId = x.id,
-						url = x.address,
+						url = x.address.UrlAddressFix(),
 						clientId = client.Id,
 						clientAddress = client.url,
 						name = string.IsNullOrEmpty(x.name) ? CatalogHelper.CatalogToString(false, CatalogHelper.FromLevelsToCatalog(x.levelId, x.catalodId), false) : x.name,

@@ -229,8 +229,8 @@ namespace Explora_Precios.Data
 			var producList = GetProductListCriteria(level, catalog_Ids)
 							.AddOrder(new Order("c.price", true))
 							.List<Product>();
-
-			return producList;
+			var productsResult = new HashSet<Product>(producList); // para evitar duplicados del master row
+			return productsResult;
 		}
 
 		private EdgePrices GetCatalogDataEdge(int level, IEnumerable<int> catalog_Ids)
@@ -251,6 +251,7 @@ namespace Explora_Precios.Data
 			return NHibernateSession.Current.CreateCriteria(typeof(Product), "p")
 								.Add(Expression.And(Expression.Eq("level_Id", level), Expression.In("catalog_Id", catalog_Ids.ToArray())))
 								.CreateCriteria("p.clients", "c").Add(Expression.Eq("c.isActive", true));
+			
 		}
 	}
 }

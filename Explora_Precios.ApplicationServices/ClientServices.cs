@@ -939,9 +939,11 @@ namespace Explora_Precios.ApplicationServices
 													if (readerProduct.NodeType == XmlNodeType.Element && readerProduct.Name == "img")
 													{
 														var src = readerProduct.GetAttribute("src");
-														productImageUrl = src != "store$item.itemimage" ? src : "";
+														productImageUrl = src != "store$item.itemimage" ? "http://" + _catalog_addressObj.client.url + "/" + src : "";
+														break;
 													}
 												}
+												break;
 											}
 										}
 
@@ -953,7 +955,7 @@ namespace Explora_Precios.ApplicationServices
 											image = new Image { url = productImageUrl },
 											name = productRef
 										};
-										product.clients.Add(new Client_Product { client = _catalog_addressObj.client, price = float.Parse(productPrice), url = productUrl, productReference = "" });
+										product.clients.Add(new Client_Product { client = _catalog_addressObj.client, price = float.Parse(productPrice), url = productUrl, productReference = "", isActive = true });
 										productList.Add(product);
 									}
 									break;
