@@ -268,16 +268,17 @@ namespace Explora_Precios.Web.Controllers
 					oProduct.clients.Add(newClientProduct);
 				}
 
-				foreach (var quality in productVM.qualities.Where(q => q.active))
-				{
-					if (string.IsNullOrEmpty(quality.name) || oProduct.qualities.SingleOrDefault(qual => qual.quality.name == quality.name) == null)
-						oProduct.qualities.Add(new Product_Quality()
-						{
-							quality = GetQuality(quality),
-							value = quality.value.Trim(),
-							product = oProduct
-						});
-				}
+				if (productVM.qualities != null)
+					foreach (var quality in productVM.qualities.Where(q => q.active))
+					{
+						if (string.IsNullOrEmpty(quality.name) || oProduct.qualities.SingleOrDefault(qual => qual.quality.name == quality.name) == null)
+							oProduct.qualities.Add(new Product_Quality()
+							{
+								quality = GetQuality(quality),
+								value = quality.value.Trim(),
+								product = oProduct
+							});
+					}
 			}
 			else
 			{

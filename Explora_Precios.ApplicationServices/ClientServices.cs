@@ -1346,7 +1346,8 @@ namespace Explora_Precios.ApplicationServices
 
 					while (goOn)
 					{
-						var xhtmlProducts = _commonObj.GetXHTML(masterAddress + "pagina=" + page.ToString());
+						var pageVal = page > 1 ? page.ToString() : "";
+						var xhtmlProducts = _commonObj.GetXHTML(masterAddress + "pagina=" + pageVal);
 						var htmlMatches = new Regex(regex_tables).Matches(xhtmlProducts);
 
 						var readerProducts = System.Xml.XmlReader.Create(new System.IO.StringReader(xhtmlProducts));
