@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Explora_Precios.Web.Controllers.ViewModels.ContactViewModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/SimpleSite.Master" Inherits="System.Web.Mvc.ViewPage<Explora_Precios.Web.Controllers.ViewModels.ContactViewModel>" %>
 <%@ Import Namespace="Explora_Precios.Web.Controllers.Helpers" %>
 <asp:Content ID="HeaderTitleContent" ContentPlaceHolderID="TitleContent" runat="server">
 ExploraPrecios.com
@@ -48,7 +48,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </asp:Content>
 <asp:Content ID="ProductContent" ContentPlaceHolderID="MainContent" runat="server">
 <%= Html.ValidationSummary("Corrija los siguientes errores:")%>
-<form id="contactform" method="post" action="/Contact/SendContact">
+<form id="contactform" method="post" action="/Contact2/SendContact">
  <div class="contact">
 	<% if (Model.success)
 	   { %>

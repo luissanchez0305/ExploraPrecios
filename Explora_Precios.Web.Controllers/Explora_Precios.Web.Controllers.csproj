@@ -154,8 +154,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\bin\System.Web.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -174,6 +173,7 @@
     </Compile>
     <Compile Include="AccountController.cs" />
     <Compile Include="ContactController.cs" />
+    <Compile Include="Contact2Controller.cs" />
     <Compile Include="ServicesController.cs" />
     <Compile Include="ErrorController.cs" />
     <Compile Include="ImageController.cs" />
